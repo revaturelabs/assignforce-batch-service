@@ -8,7 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,13 +30,13 @@ public class BatchController {
 	BatchService batchService;
 
 	// findAll
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Batch> getAll() {
 		return batchService.getAll();
 	}
 
 	// findOne
-	@RequestMapping(value = "{id}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Batch> getById(@PathVariable int id) {
 		Optional<Batch> b = batchService.findById(id);
 		if (!b.isPresent())
@@ -41,7 +45,8 @@ public class BatchController {
 	}
 
 	// create
-	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Batch> add(@RequestBody Batch a) {
 		a = batchService.create(a);
 		if (a == null)
@@ -50,19 +55,20 @@ public class BatchController {
 	}
 
 	// update
-	@RequestMapping(value = "{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Batch> update(@PathVariable int id, @RequestBody Batch a) {
+	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Batch> update(@RequestBody Batch a) {
 		a = batchService.update(a);
 		if (a == null)
 			return new ResponseEntity<Batch>(HttpStatus.BAD_REQUEST);
-		return new ResponseEntity<Batch>(a, HttpStatus.CREATED);
+		return new ResponseEntity<Batch>(a, HttpStatus.OK);
 	}
 
 	// delete
-	@RequestMapping(value = "{id}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Batch> delete(@PathVariable int id) {
 		batchService.delete(id);
-		return new ResponseEntity<Batch>(HttpStatus.CREATED);
+		return new ResponseEntity<Batch>(HttpStatus.OK);
 	}
 
 }

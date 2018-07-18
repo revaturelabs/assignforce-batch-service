@@ -40,37 +40,32 @@ public class Batch {
 	private Date endDate;
 	
 	@Column(name="Curriculum_Id")
-	private int curriculum;
+	private Integer curriculum;
 	
 	@Column(name="Trainer_Id")
-	private int trainer;
+	private Integer trainer;
 	
 	@Column(name="Cotrainer_Id")
-	private int cotrainer;
+	private Integer cotrainer;
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinTable(name="Batch_Skills",
 			joinColumns=@JoinColumn(name="Batch_ID"),
 			inverseJoinColumns=@JoinColumn(name="Skill_ID"))
-	private Set<SkillIdHolder> Skills;
+	private Set<SkillIdHolder> skills;
 	
 	@Column(name="Address_Id")
-	private int address;
+	private Integer location;
 	
-	@Column(name="Building_Id")
-	private int building;
-	
-	@Column(name="Room_Id")
-	private int room;
-	
-	
+	@Column(name="Class_Size")
+	private Integer classSize;
+		
 	public Batch() {
 		super();
 	}
 
-
-	public Batch(int id, String name, Date startDate, Date endDate, int curriculum, int trainer, int cotrainer,
-			Set<SkillIdHolder> skills, int address, int building, int room) {
+	public Batch(int id, String name, Date startDate, Date endDate, Integer curriculum, Integer trainer,
+			Integer cotrainer, Set<SkillIdHolder> skills, Integer location, Integer classSize) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -79,121 +74,88 @@ public class Batch {
 		this.curriculum = curriculum;
 		this.trainer = trainer;
 		this.cotrainer = cotrainer;
-		Skills = skills;
-		this.address = address;
-		this.building = building;
-		this.room = room;
+		this.skills = skills;
+		this.location = location;
+		this.classSize = classSize;
 	}
-
 
 	public int getId() {
 		return id;
 	}
 
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
 
 	public String getName() {
 		return name;
 	}
 
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	public Date getStartDate() {
 		return startDate;
 	}
 
-
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-
 
 	public Date getEndDate() {
 		return endDate;
 	}
 
-
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
-
-	public int getCurriculum() {
+	public Integer getCurriculum() {
 		return curriculum;
 	}
 
-
-	public void setCurriculum(int curriculum) {
+	public void setCurriculum(Integer curriculum) {
 		this.curriculum = curriculum;
 	}
 
-
-	public int getTrainer() {
+	public Integer getTrainer() {
 		return trainer;
 	}
 
-
-	public void setTrainer(int trainer) {
+	public void setTrainer(Integer trainer) {
 		this.trainer = trainer;
 	}
 
-
-	public int getCotrainer() {
+	public Integer getCotrainer() {
 		return cotrainer;
 	}
 
-
-	public void setCotrainer(int cotrainer) {
+	public void setCotrainer(Integer cotrainer) {
 		this.cotrainer = cotrainer;
 	}
 
-
 	public Set<SkillIdHolder> getSkills() {
-		return Skills;
+		return skills;
 	}
-
 
 	public void setSkills(Set<SkillIdHolder> skills) {
-		Skills = skills;
+		this.skills = skills;
 	}
 
-
-	public int getAddress() {
-		return address;
+	public Integer getLocation() {
+		return location;
 	}
 
-
-	public void setAddress(int address) {
-		this.address = address;
+	public void setLocation(Integer location) {
+		this.location = location;
 	}
 
-
-	public int getBuilding() {
-		return building;
+	public Integer getClassSize() {
+		return classSize;
 	}
 
-
-	public void setBuilding(int building) {
-		this.building = building;
+	public void setClassSize(Integer classSize) {
+		this.classSize = classSize;
 	}
-
-
-	public int getRoom() {
-		return room;
-	}
-
-
-	public void setRoom(int room) {
-		this.room = room;
-	}
-
-	
 }
