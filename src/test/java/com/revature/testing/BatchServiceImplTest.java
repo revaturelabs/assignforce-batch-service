@@ -57,10 +57,8 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Date startDate = new Date(124L);
-		Date endDate = new Date(200L);
-		Batch b1 = new Batch(1, "Microservices", startDate, endDate, 3, 6, 5, skillSet, 1, 1);
-		Batch b2 = new Batch(2, "Salesforce", startDate, endDate, 3, 7, 3, skillSet, 2,3);
+		Batch b1 = new Batch(1, "Microservices", "01-12-2018", "03-03-2018", 3, 6, 5, skillSet, 1, 1);
+		Batch b2 = new Batch(2, "Salesforce", "02-03-2018", "03-28-2018", 3, 7, 3, skillSet, 2,3);
 		List<Batch> batchList = new ArrayList<Batch>();
 		batchList.add(b1);
 		batchList.add(b2);
@@ -83,9 +81,7 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Date startDate = new Date(124L);
-		Date endDate = new Date(200L);
-		Batch b1 = new Batch(1, "Microservices", startDate, endDate, 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(1, "Microservices", "01-12-2018", "03-03-2018", 3, 6, 5, skillSet, 1, 1);
 		Optional<Batch> op1 = Optional.ofNullable(b1);
 		Mockito.when(batchRepository.findById(1)).thenReturn(op1);
 		
@@ -108,12 +104,12 @@ public class BatchServiceImplTest {
 		skillSet.add(s5);
 		Date startDate = new Date(124L);
 		Date endDate = new Date(200L);
-		Batch b1 = new Batch(1, "Microservices", startDate, endDate, 3, 6, 5, skillSet, 1, 1);
-		b1.setEndDate(new Date(500L));
+		Batch b1 = new Batch(1, "Microservices", "01-12-2018", "03-03-2018", 3, 6, 5, skillSet, 1, 1);
+		b1.setEndDate("06-05-2019");
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 		
 		Batch batchTest = batchService.update(b1);
-		assertTrue(batchTest.getEndDate().getTime() == 500L);
+		assertTrue(batchTest.getEndDate().equals("06-05-2019"));
 	}
 	
 	@Test
@@ -129,9 +125,7 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Date startDate = new Date(124L);
-		Date endDate = new Date(200L);
-		Batch b1 = new Batch(1, "Microservices", startDate, endDate, 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(1, "Microservices", "01-12-2018", "03-03-2018", 3, 6, 5, skillSet, 1, 1);
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 		
 		Batch batchTest = batchService.create(b1);
@@ -151,9 +145,8 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Date startDate = new Date(124L);
-		Date endDate = new Date(200L);
-		Batch b1 = new Batch(20, "AWS", startDate, endDate, 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(20, "AWS", "01-12-2018", "03-03-2018", 3, 6, 5, skillSet, 1, 1);
+		Mockito.doNothing().when(batchRepository).deleteById(20);
 		batchService.delete(20);
 		Optional<Batch> batchTest = batchService.findById(20);
 		assertFalse(batchTest.isPresent());
