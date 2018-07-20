@@ -64,7 +64,7 @@ public class Batch {
 		super();
 	}
 
-	public Batch(int id, String name, Date startDate, Date endDate, Integer curriculum, Integer trainer,
+	public Batch(int id, String name, String startDate, String endDate, Integer curriculum, Integer trainer,
 			Integer cotrainer, Set<SkillIdHolder> skills, Integer location, Integer classSize) {
 		super();
 		this.id = id;
@@ -95,19 +95,19 @@ public class Batch {
 		this.name = name;
 	}
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 
@@ -158,4 +158,6 @@ public class Batch {
 	public void setClassSize(Integer classSize) {
 		this.classSize = classSize;
 	}
+
+	
 }
