@@ -1,6 +1,5 @@
 package com.revature.assignforce;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -12,7 +11,5 @@ public class BatchServiceApplication {
 
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(BatchServiceApplication.class).run(args);
-
-//		SpringApplication.run(BatchServiceApplication.class, args);
 	}
 }

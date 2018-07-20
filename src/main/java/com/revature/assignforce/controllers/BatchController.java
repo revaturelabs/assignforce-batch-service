@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.assignforce.beans.Batch;
@@ -40,8 +37,8 @@ public class BatchController {
 	public ResponseEntity<Batch> getById(@PathVariable int id) {
 		Optional<Batch> b = batchService.findById(id);
 		if (!b.isPresent())
-			return new ResponseEntity<Batch>(HttpStatus.NOT_FOUND);
-		return new ResponseEntity<Batch>(b.get(), HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(b.get(), HttpStatus.OK);
 	}
 
 	// create
@@ -50,8 +47,8 @@ public class BatchController {
 	public ResponseEntity<Batch> add(@RequestBody Batch a) {
 		a = batchService.create(a);
 		if (a == null)
-			return new ResponseEntity<Batch>(HttpStatus.BAD_REQUEST);
-		return new ResponseEntity<Batch>(a, HttpStatus.CREATED);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(a, HttpStatus.CREATED);
 	}
 
 	// update
@@ -60,15 +57,15 @@ public class BatchController {
 	public ResponseEntity<Batch> update(@RequestBody Batch a) {
 		a = batchService.update(a);
 		if (a == null)
-			return new ResponseEntity<Batch>(HttpStatus.BAD_REQUEST);
-		return new ResponseEntity<Batch>(a, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(a, HttpStatus.OK);
 	}
 
 	// delete
 	@DeleteMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Batch> delete(@PathVariable int id) {
 		batchService.delete(id);
-		return new ResponseEntity<Batch>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }
