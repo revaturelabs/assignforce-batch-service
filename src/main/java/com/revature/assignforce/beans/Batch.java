@@ -33,10 +33,10 @@ public class Batch {
 	private String name;
 	
 	@Column(name="start_Date")
-	private Date startDate;
+	private String startDate;
 	
 	@Column(name="end_Date")
-	private Date endDate;
+	private String endDate;
 	
 	@Column(name="Curriculum_Id")
 	private Integer curriculum;
