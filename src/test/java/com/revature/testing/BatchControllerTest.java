@@ -159,7 +159,7 @@ public class BatchControllerTest {
 		b1.setEndDate(new Date(1525147200000L));
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 		ResponseEntity<Batch> reTest = batchController.update(b1);
-		assertTrue(reTest.getBody().getEndDate().equals("05-01-2018") && reTest.getStatusCode() == HttpStatus.OK);
+		assertTrue(reTest.getBody().getEndDate().equals(new Date(1525147200000L)) && reTest.getStatusCode() == HttpStatus.OK);
 	}
 	
 	@Test
