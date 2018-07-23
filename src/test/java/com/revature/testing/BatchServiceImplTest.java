@@ -102,8 +102,6 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Date startDate = new Date(124L);
-		Date endDate = new Date(200L);
 		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1);
 		b1.setEndDate(new Date(1559707200000L));
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
@@ -134,23 +132,10 @@ public class BatchServiceImplTest {
 	
 	@Test
 	public void deleteTest() {
-		SkillIdHolder s1 = new SkillIdHolder(1);
-		SkillIdHolder s2 = new SkillIdHolder(2);
-		SkillIdHolder s3 = new SkillIdHolder(3);
-		SkillIdHolder s4 = new SkillIdHolder(4);
-		SkillIdHolder s5 = new SkillIdHolder(5);
-		HashSet<SkillIdHolder> skillSet = new HashSet<SkillIdHolder>();
-		skillSet.add(s1);
-		skillSet.add(s2);
-		skillSet.add(s3);
-		skillSet.add(s4);
-		skillSet.add(s5);
-		Batch b1 = new Batch(20, "AWS", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1);
 		Mockito.doNothing().when(batchRepository).deleteById(20);
 		batchService.delete(20);
 		Optional<Batch> batchTest = batchService.findById(20);
 		assertFalse(batchTest.isPresent());
-		
 	}
 
 }

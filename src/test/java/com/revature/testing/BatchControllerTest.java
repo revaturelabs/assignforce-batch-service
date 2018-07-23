@@ -47,8 +47,6 @@ public class BatchControllerTest {
 	}
 	
 	@Autowired
-	private BatchService batchService;
-	@Autowired
 	private BatchRepository batchRepository;
 	@Autowired
 	private BatchController batchController;
