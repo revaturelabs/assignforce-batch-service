@@ -1,5 +1,6 @@
 package com.revature.assignforce.beans;
 
+import java.sql.Date;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,50 +19,48 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Entity
-@Table(name="Batch")
+@Table(name = "Batch")
 public class Batch {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="Batch_ID")
-	@SequenceGenerator(name="Batch_ID", sequenceName="Batch_ID_seq", allocationSize=1)
-	@Column(name="Batch_ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Batch_ID")
+	@SequenceGenerator(name = "Batch_ID", sequenceName = "Batch_ID_seq", allocationSize = 1)
+	@Column(name = "Batch_ID")
 	private int id;
 
-	@Column(name="Batch_Name")
+	@Column(name = "Batch_Name")
 	private String name;
-	
-	@Column(name="start_Date")
-	private String startDate;
-	
-	@Column(name="end_Date")
-	private String endDate;
-	
-	@Column(name="Curriculum_Id")
+
+	@Column(name = "start_Date")
+	private Date startDate;
+
+	@Column(name = "end_Date")
+	private Date endDate;
+
+	@Column(name = "Curriculum_Id")
 	private Integer curriculum;
-	
-	@Column(name="Trainer_Id")
+
+	@Column(name = "Trainer_Id")
 	private Integer trainer;
-	
-	@Column(name="Cotrainer_Id")
+
+	@Column(name = "Cotrainer_Id")
 	private Integer cotrainer;
-	
-	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	@JoinTable(name="Batch_Skills",
-			joinColumns=@JoinColumn(name="Batch_ID"),
-			inverseJoinColumns=@JoinColumn(name="Skill_ID"))
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "Batch_Skills", joinColumns = @JoinColumn(name = "Batch_ID"), inverseJoinColumns = @JoinColumn(name = "Skill_ID"))
 	private Set<SkillIdHolder> skills;
-	
-	@Column(name="Address_Id")
+
+	@Column(name = "Address_Id")
 	private Integer location;
-	
-	@Column(name="Class_Size")
+
+	@Column(name = "Class_Size")
 	private Integer classSize;
-		
+
 	public Batch() {
 		super();
 	}
 
-	public Batch(int id, String name, String startDate, String endDate, Integer curriculum, Integer trainer,
+	public Batch(int id, String name, Date startDate, Date endDate, Integer curriculum, Integer trainer,
 			Integer cotrainer, Set<SkillIdHolder> skills, Integer location, Integer classSize) {
 		super();
 		this.id = id;
@@ -92,19 +91,19 @@ public class Batch {
 		this.name = name;
 	}
 
-	public String getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
@@ -156,5 +155,4 @@ public class Batch {
 		this.classSize = classSize;
 	}
 
-	
 }
