@@ -1,7 +1,9 @@
 package com.revature.assignforce.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.assignforce.beans.Batch;
+import com.revature.assignforce.beans.SkillIdHolder;
 import com.revature.assignforce.repos.BatchRepository;
 
 @Transactional
@@ -35,6 +38,10 @@ public class BatchServiceImpl implements BatchService {
 
 	@Override
 	public Batch create(Batch b) {
+		Set<SkillIdHolder> skills = b.getSkills();
+		b.setSkills(new HashSet<SkillIdHolder>());
+		batchRepository.save(b);
+		b.setSkills(skills);
 		return batchRepository.save(b);
 	}
 
