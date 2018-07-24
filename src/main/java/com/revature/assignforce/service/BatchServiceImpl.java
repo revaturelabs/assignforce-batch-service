@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.beans.SkillIdHolder;
 import com.revature.assignforce.repos.BatchRepository;
+import com.revature.assignforce.repos.SkillRepository;
 
 @Transactional
 @Service
@@ -20,6 +21,9 @@ public class BatchServiceImpl implements BatchService {
 
 	@Autowired
 	private BatchRepository batchRepository;
+	
+	@Autowired
+	private SkillRepository skillRepository;
 
 	@Override
 	public List<Batch> getAll() {
@@ -41,6 +45,9 @@ public class BatchServiceImpl implements BatchService {
 		Set<SkillIdHolder> skills = b.getSkills();
 		if (skills == null) {
 			skills = new HashSet<SkillIdHolder>();
+		}
+		for(SkillIdHolder s : skills) {
+			skillRepository.save(s);
 		}
 		b.setSkills(new HashSet<SkillIdHolder>());
 		batchRepository.save(b);
