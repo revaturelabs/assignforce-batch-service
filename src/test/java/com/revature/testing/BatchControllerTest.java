@@ -33,29 +33,32 @@ public class BatchControllerTest {
 
 	@Configuration
 	static class BatchServiceTestContextConfiguration {
-	@Bean
-	public BatchService batchService() {
-		return new BatchServiceImpl();
+		@Bean
+		public BatchService batchService() {
+			return new BatchServiceImpl();
 		}
-	@Bean
-	public BatchRepository batchRepository() {
-		return Mockito.mock(BatchRepository.class);
+
+		@Bean
+		public BatchRepository batchRepository() {
+			return Mockito.mock(BatchRepository.class);
 		}
-	@Bean
-	public BatchController batchController() {
-		return new BatchController();
+
+		@Bean
+		public BatchController batchController() {
+			return new BatchController();
+		}
+
+		@Bean
+		public SkillRepository skillRepository() {
+			return Mockito.mock(SkillRepository.class);
+		}
 	}
-	@Bean
-	public SkillRepository skillRepository() {
-		return Mockito.mock(SkillRepository.class);
-	}
-	}
-	
+
 	@Autowired
 	private BatchRepository batchRepository;
 	@Autowired
 	private BatchController batchController;
-	
+
 	@Test
 	public void getAllTest() {
 		SkillIdHolder s1 = new SkillIdHolder(1);
@@ -69,19 +72,22 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1);
-		Batch b2 = new Batch(2, "Salesforce", new Date(1517634000000L), new Date(1522209600000L), 3, 7, 3, skillSet, 2,3);
-		Batch b3 = new Batch(4, "Database", new Date(1522728000000L), new Date(1527048000000L), 5, 3, 5, skillSet, 2, 1);
+		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet,
+				1, 1, 1, 1);
+		Batch b2 = new Batch(2, "Salesforce", new Date(1517634000000L), new Date(1522209600000L), 3, 7, 3, skillSet, 2,
+				3, 1, 1);
+		Batch b3 = new Batch(4, "Database", new Date(1522728000000L), new Date(1527048000000L), 5, 3, 5, skillSet, 2, 1,
+				1, 1);
 		List<Batch> batchList = new ArrayList<Batch>();
 		batchList.add(b1);
 		batchList.add(b2);
 		batchList.add(b3);
 		Mockito.when(batchRepository.findAll()).thenReturn(batchList);
-		
+
 		List<Batch> testList = batchController.getAll();
 		assertTrue(testList.size() == 3);
 	}
-	
+
 	@Test
 	public void getByIdTestOk() {
 		SkillIdHolder s1 = new SkillIdHolder(1);
@@ -95,19 +101,20 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(3, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(3, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet,
+				1, 1, 1, 1);
 		Optional<Batch> op1 = Optional.ofNullable(b1);
 		Mockito.when(batchRepository.findById(3)).thenReturn(op1);
 		ResponseEntity<Batch> reTest = batchController.getById(3);
 		assertTrue(reTest.getBody().getId() == 3 && reTest.getStatusCode() == HttpStatus.OK);
 	}
-	
+
 	@Test
 	public void getByIdTestNotFound() {
 		ResponseEntity<Batch> reTest = batchController.getById(6);
 		assertTrue(reTest.getStatusCode() == HttpStatus.NOT_FOUND);
 	}
-	
+
 	@Test
 	public void addTestCreated() {
 		SkillIdHolder s1 = new SkillIdHolder(1);
@@ -121,12 +128,13 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(5, "AWS", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(5, "AWS", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1, 1,
+				1);
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 		ResponseEntity<Batch> reTest = batchController.add(b1);
 		assertTrue(reTest.getBody().getId() == 5 && reTest.getStatusCode() == HttpStatus.CREATED);
 	}
-	
+
 	@Test
 	public void addTestBadRequest() {
 		SkillIdHolder s1 = new SkillIdHolder(1);
@@ -140,11 +148,12 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(15, "Salesforce", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(15, "Salesforce", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1,
+				1, 1, 1);
 		ResponseEntity<Batch> reTest = batchController.add(b1);
 		assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@Test
 	public void updateTestOk() {
 		SkillIdHolder s1 = new SkillIdHolder(1);
@@ -158,13 +167,15 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(15, "Salesforce", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(15, "Salesforce", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1,
+				1, 1, 1);
 		b1.setEndDate(new Date(1525147200000L));
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 		ResponseEntity<Batch> reTest = batchController.update(b1);
-		assertTrue(reTest.getBody().getEndDate().equals(new Date(1525147200000L)) && reTest.getStatusCode() == HttpStatus.OK);
+		assertTrue(reTest.getBody().getEndDate().equals(new Date(1525147200000L))
+				&& reTest.getStatusCode() == HttpStatus.OK);
 	}
-	
+
 	@Test
 	public void updateTestBadRequest() {
 		SkillIdHolder s1 = new SkillIdHolder(1);
@@ -178,12 +189,13 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(15, "Salesforce", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(15, "Salesforce", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1,
+				1, 1, 1);
 		b1.setEndDate(new Date(1525147200000L));
 		ResponseEntity<Batch> reTest = batchController.update(b1);
 		assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@Test
 	public void deleteTest() {
 		Mockito.doNothing().when(batchRepository).deleteById(9);

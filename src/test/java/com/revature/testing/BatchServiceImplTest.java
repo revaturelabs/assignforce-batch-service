@@ -30,25 +30,27 @@ public class BatchServiceImplTest {
 
 	@Configuration
 	static class BatchServiceTestContextConfiguration {
-	@Bean
-	public BatchService batchService() {
-		return new BatchServiceImpl();
+		@Bean
+		public BatchService batchService() {
+			return new BatchServiceImpl();
 		}
-	@Bean
-	public BatchRepository batchRepository() {
-		return Mockito.mock(BatchRepository.class);
+
+		@Bean
+		public BatchRepository batchRepository() {
+			return Mockito.mock(BatchRepository.class);
 		}
-	@Bean
-	public SkillRepository skillRepository() {
-		return Mockito.mock(SkillRepository.class);
+
+		@Bean
+		public SkillRepository skillRepository() {
+			return Mockito.mock(SkillRepository.class);
 		}
 	}
-	
+
 	@Autowired
 	private BatchService batchService;
 	@Autowired
 	private BatchRepository batchRepository;
-	
+
 	@Test
 	public void getAllTest() {
 		SkillIdHolder s1 = new SkillIdHolder(1);
@@ -62,17 +64,19 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1);
-		Batch b2 = new Batch(2, "Salesforce", new Date(1517634000000L), new Date(1522209600000L), 3, 7, 3, skillSet, 2,3);
+		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet,
+				1, 1, 1, 1);
+		Batch b2 = new Batch(2, "Salesforce", new Date(1517634000000L), new Date(1522209600000L), 3, 7, 3, skillSet, 2,
+				3, 1, 1);
 		List<Batch> batchList = new ArrayList<Batch>();
 		batchList.add(b1);
 		batchList.add(b2);
 		Mockito.when(batchRepository.findAll()).thenReturn(batchList);
-		
+
 		List<Batch> testList = batchService.getAll();
 		assertTrue(testList.size() == 2);
 	}
-	
+
 	@Test
 	public void findByIdTest() {
 		SkillIdHolder s1 = new SkillIdHolder(1);
@@ -86,14 +90,15 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet,
+				1, 1, 1, 1);
 		Optional<Batch> op1 = Optional.ofNullable(b1);
 		Mockito.when(batchRepository.findById(1)).thenReturn(op1);
-		
+
 		Optional<Batch> opTest = batchService.findById(1);
 		assertTrue(opTest.get().getName().equals("Microservices"));
 	}
-	
+
 	@Test
 	public void updateTest() {
 		SkillIdHolder s1 = new SkillIdHolder(1);
@@ -107,14 +112,15 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet,
+				1, 1, 1, 1);
 		b1.setEndDate(new Date(1559707200000L));
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
-		
+
 		Batch batchTest = batchService.update(b1);
 		assertTrue(batchTest.getEndDate().equals(new Date(1559707200000L)));
 	}
-	
+
 	@Test
 	public void createTest() {
 		SkillIdHolder s1 = new SkillIdHolder(1);
@@ -128,13 +134,14 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet,
+				1, 1, 1, 1);
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
-		
+
 		Batch batchTest = batchService.create(b1);
 		assertTrue(batchTest.getSkills().size() == 5);
 	}
-	
+
 	@Test
 	public void deleteTest() {
 		Mockito.doNothing().when(batchRepository).deleteById(20);
