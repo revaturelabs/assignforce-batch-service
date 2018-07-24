@@ -47,6 +47,9 @@ public class BatchServiceImpl implements BatchService {
 
 	@Override
 	public void delete(int id) {
+		Batch batch = batchRepository.findById(id).get();
+		batch.setSkills(new HashSet<SkillIdHolder>());
+		batchRepository.save(batch);
 		batchRepository.deleteById(id);
 	}
 
