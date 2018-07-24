@@ -23,6 +23,7 @@ import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.beans.SkillIdHolder;
 import com.revature.assignforce.controllers.BatchController;
 import com.revature.assignforce.repos.BatchRepository;
+import com.revature.assignforce.repos.SkillRepository;
 import com.revature.assignforce.service.BatchService;
 import com.revature.assignforce.service.BatchServiceImpl;
 
@@ -43,6 +44,10 @@ public class BatchControllerTest {
 	@Bean
 	public BatchController batchController() {
 		return new BatchController();
+	}
+	@Bean
+	public SkillRepository skillRepository() {
+		return Mockito.mock(SkillRepository.class);
 	}
 	}
 	

@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.beans.SkillIdHolder;
 import com.revature.assignforce.repos.BatchRepository;
+import com.revature.assignforce.repos.SkillRepository;
 import com.revature.assignforce.service.BatchService;
 import com.revature.assignforce.service.BatchServiceImpl;
 
@@ -36,6 +37,10 @@ public class BatchServiceImplTest {
 	@Bean
 	public BatchRepository batchRepository() {
 		return Mockito.mock(BatchRepository.class);
+		}
+	@Bean
+	public SkillRepository skillRepository() {
+		return Mockito.mock(SkillRepository.class);
 		}
 	}
 	
