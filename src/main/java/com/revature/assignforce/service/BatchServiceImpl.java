@@ -52,10 +52,7 @@ public class BatchServiceImpl implements BatchService {
 		for(SkillIdHolder s : skills) {
 			skillRepository.save(s);
 		}
-		b.setSkills(new HashSet<SkillIdHolder>());
-		batchRepository.save(b);
-		b.setSkills(skills);
-		batchRepository.flush();
+		
 		return batchRepository.save(b);
 	}
 
