@@ -51,12 +51,12 @@ public class BatchServiceImpl implements BatchService {
 
 	@Override
 	public void delete(int id) {
-		Batch batch = batchRepository.findById(id).get();
-		if (batch == null) {
+		Optional<Batch> batch = batchRepository.findById(id);
+		if (!batch.isPresent()) {
 			return;
 		}
-		batch.setSkills(new HashSet<SkillIdHolder>());
-		batchRepository.save(batch);
+		batch.get().setSkills(new HashSet<SkillIdHolder>());
+		batchRepository.save(batch.get());
 		batchRepository.deleteById(id);
 	}
 
