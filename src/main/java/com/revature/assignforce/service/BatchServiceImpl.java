@@ -37,6 +37,9 @@ public class BatchServiceImpl implements BatchService {
 
 	@Override
 	public Batch update(Batch b) {
+		for(SkillIdHolder s : b.getSkills()) {
+			skillRepository.save(s);
+		}
 		return batchRepository.save(b);
 	}
 

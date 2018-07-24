@@ -46,7 +46,7 @@ public class Batch {
 	@Column(name = "Cotrainer_Id")
 	private Integer cotrainer;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Batch_Skills", joinColumns = @JoinColumn(name = "Batch_ID"), inverseJoinColumns = @JoinColumn(name = "Skill_ID"))
 	private Set<SkillIdHolder> skills;
 
