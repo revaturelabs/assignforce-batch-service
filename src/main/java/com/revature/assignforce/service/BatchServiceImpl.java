@@ -47,7 +47,7 @@ public class BatchServiceImpl implements BatchService {
 	public Batch create(Batch b) {
 		Set<SkillIdHolder> skills = b.getSkills();
 		if (skills == null) {
-			skills = new HashSet<SkillIdHolder>();
+			skills = new HashSet<>();
 		}
 		for(SkillIdHolder s : skills) {
 			skillRepository.save(s);
