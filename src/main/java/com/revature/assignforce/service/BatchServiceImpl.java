@@ -20,7 +20,7 @@ public class BatchServiceImpl implements BatchService {
 
 	@Autowired
 	private BatchRepository batchRepository;
-	
+
 	@Override
 	public List<Batch> getAll() {
 		return batchRepository.findAll();
@@ -39,6 +39,9 @@ public class BatchServiceImpl implements BatchService {
 	@Override
 	public Batch create(Batch b) {
 		Set<SkillIdHolder> skills = b.getSkills();
+		if (skills == null) {
+			skills = new HashSet<SkillIdHolder>();
+		}
 		b.setSkills(new HashSet<SkillIdHolder>());
 		batchRepository.save(b);
 		b.setSkills(skills);
@@ -49,7 +52,7 @@ public class BatchServiceImpl implements BatchService {
 	@Override
 	public void delete(int id) {
 		Batch batch = batchRepository.findById(id).get();
-		if ( batch == null ) {
+		if (batch == null) {
 			return;
 		}
 		batch.setSkills(new HashSet<SkillIdHolder>());
