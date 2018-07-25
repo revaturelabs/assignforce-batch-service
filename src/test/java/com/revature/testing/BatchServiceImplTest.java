@@ -41,7 +41,7 @@ public class BatchServiceImplTest {
 		}
 
 		@Bean
-		public SkillRepository skillRepository() {
+		public SkillRepository SkillRepository() {
 			return Mockito.mock(SkillRepository.class);
 		}
 	}
@@ -50,6 +50,8 @@ public class BatchServiceImplTest {
 	private BatchService batchService;
 	@Autowired
 	private BatchRepository batchRepository;
+	@Autowired
+	private SkillRepository skillRepository;
 
 	@Test
 	public void getAllTest() {
@@ -141,6 +143,15 @@ public class BatchServiceImplTest {
 		Batch batchTest = batchService.create(b1);
 		assertTrue(batchTest.getSkills().size() == 5);
 	}
+	
+	@Test
+	public void createTest2() {
+		Batch b1 = new Batch();
+		b1.setBuilding(19);
+		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
+		Batch bTest = batchService.create(b1);
+		assertTrue(bTest.getBuilding() == 19);
+	}
 
 	@Test
 	public void deleteTest() {
@@ -148,6 +159,19 @@ public class BatchServiceImplTest {
 		batchService.delete(20);
 		Optional<Batch> batchTest = batchService.findById(20);
 		assertFalse(batchTest.isPresent());
+	}
+	
+	@Test
+	public void deleteTest2() {
+		Batch b1 = new Batch();
+		b1.setId(26);
+		Optional<Batch> op1 = Optional.ofNullable(b1);
+		Mockito.when(batchRepository.findById(26)).thenReturn(op1);
+		Mockito.doNothing().when(batchRepository).deleteById(26);
+		batchService.delete(26);
+		Mockito.when(batchRepository.findById(26)).thenReturn(Optional.ofNullable(null));
+		Optional<Batch> opTest = batchService.findById(26);
+		assertFalse(opTest.isPresent());
 	}
 
 }
