@@ -1,6 +1,7 @@
 package com.revature.assignforce.beans;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,12 +15,23 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.springframework.stereotype.Component;
+
+import validators.IsValidInterval;
+import validators.IsValidIntervalValidator;
 
 @Component
 @Entity
 @Table(name = "Batch")
+@IsValidInterval(startDate="startDate", endDate="endDate", message="Start date is not before end date")
 public class Batch {
 
 	@Id
@@ -29,18 +41,28 @@ public class Batch {
 	private int id;
 
 	@Column(name = "Batch_Name")
+	@NotNull(message="name cannot be null")
+	@Size(min = 1, max = 128)
 	private String name;
 
 	@Column(name = "start_Date")
-	private Date startDate;
+	@NotNull (message="startDate cannot be null")
+	@Future(message="Start date can not be in the past")
+	private LocalDate startDate;
 
 	@Column(name = "end_Date")
-	private Date endDate;
+	@NotNull(message="endDate cannot be null")
+	@Future(message="End date can not be in the past")
+	private LocalDate endDate;
 
 	@Column(name = "Curriculum_Id")
+	@Min(1)
+	@NotNull (message="curriculum cannot be null")
 	private Integer curriculum;
 
 	@Column(name = "Trainer_Id")
+	@Min(1)
+	@NotNull(message="trainer cannot be null")
 	private Integer trainer;
 
 	@Column(name = "Cotrainer_Id")
@@ -51,16 +73,21 @@ public class Batch {
 	private Set<SkillIdHolder> skills;
 
 	@Column(name = "Address_Id")
+	@Min(1)
+	@NotNull (message="location cannot be null")
 	private Integer location;
 
 	@Column(name = "Class_Size")
+	@Min(5)
+	@Max(35)
+	@NotNull(message="classSize cannot be null")
 	private Integer classSize;
 
 	public Batch() {
 		super();
 	}
 
-	public Batch(int id, String name, Date startDate, Date endDate, Integer curriculum, Integer trainer,
+	public Batch(int id, String name, LocalDate startDate, LocalDate endDate, Integer curriculum, Integer trainer,
 			Integer cotrainer, Set<SkillIdHolder> skills, Integer location, Integer classSize) {
 		super();
 		this.id = id;
@@ -91,19 +118,19 @@ public class Batch {
 		this.name = name;
 	}
 
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 

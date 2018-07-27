@@ -1,9 +1,19 @@
 package com.revature.testing;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
+import org.junit.*;
+
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,13 +33,18 @@ import com.revature.assignforce.service.BatchServiceImpl;
 @SpringBootTest
 public class BatchTest {
 
+	
+
 	@Configuration
 	static class BatchTestContextConfiguration {
+		
+		
 	@Bean
 	public Batch Batch() {
 		return new Batch();
 		}
 	}
+	
 	
 	@Test
 	public void batchTest1() {
@@ -50,7 +65,7 @@ public class BatchTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(1, "Microservices", LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet, 1, 1);
 		assertTrue(b1.getId() == 1);
 	}
 	
@@ -71,15 +86,15 @@ public class BatchTest {
 	@Test
 	public void getSetStartDateTest() {
 		Batch b1 = new Batch();
-		b1.setStartDate(new Date(1203L));
-		assertTrue(b1.getStartDate().getTime() == 1203L);
+		b1.setStartDate(LocalDate.of(2018, 10, 5));
+		assertTrue(b1.getStartDate().isEqual(LocalDate.of(2018, 10, 5)));
 	}
 	
 	@Test
 	public void getSetEndDateTest() {
 		Batch b1 = new Batch();
-		b1.setEndDate(new Date(2945L));
-		assertTrue(b1.getEndDate().getTime() == 2945L);
+		b1.setEndDate(LocalDate.of(2018, 11, 10));
+		assertTrue(b1.getEndDate().isEqual(LocalDate.of(2018, 11, 10)));
 	}
 	
 	@Test
@@ -134,5 +149,7 @@ public class BatchTest {
 		b1.setClassSize(new Integer(31));
 		assertTrue(b1.getClassSize() == 31);
 	}
+	
+	
 
 }
