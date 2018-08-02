@@ -1,4 +1,3 @@
-
 spring:
   cloud:
     config:
@@ -6,3 +5,4 @@ spring:
       discovery:
         service-id: config-service
         enabled: true
+        

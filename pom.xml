@@ -94,11 +94,21 @@
 		    <version>1.5.12</version>
 		</dependency>
 
-				
+	<dependency>	
+		<groupId>org.springframework.cloud</groupId>
+		<artifactId>spring-cloud-starter-config</artifactId>
+	</dependency>
 	</dependencies>
 	
 	<dependencyManagement>
 	    <dependencies>
+		    <dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Finchley.M9</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 	        <dependency>
 	            <groupId>org.springframework.cloud</groupId>
 	            <artifactId>spring-cloud-openfeign</artifactId>
@@ -108,6 +118,32 @@
 	        </dependency>
 	    </dependencies>
 	</dependencyManagement>
+	<repositories>
+		<repository>
+			<id>spring-libs-release</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/libs-release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/libs-milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+	        <id>spring-snapshots</id>
+	        <name>Spring Snapshots</name>
+	        <url>https://repo.spring.io/libs-snapshot</url>
+	        <snapshots>
+	            <enabled>true</enabled>
+	        </snapshots>
+	    </repository>
+	</repositories>
 
 	<build>
 		<finalName>batch-service</finalName>
@@ -172,17 +208,6 @@
 			
 		</plugins>
 	</build>
-	
-	<repositories>
-	    <repository>
-	        <id>spring-snapshots</id>
-	        <name>Spring Snapshots</name>
-	        <url>https://repo.spring.io/libs-snapshot</url>
-	        <snapshots>
-	            <enabled>true</enabled>
-	        </snapshots>
-	    </repository>
-	</repositories>
 
 
 </project>

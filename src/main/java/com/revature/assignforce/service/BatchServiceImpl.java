@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.beans.SkillIdHolder;
+import com.revature.assignforce.commands.FindTrainerCommand;
 import com.revature.assignforce.repos.BatchRepository;
 import com.revature.assignforce.repos.SkillRepository;
 
@@ -24,6 +25,9 @@ public class BatchServiceImpl implements BatchService {
 	
 	@Autowired
 	private SkillRepository skillRepository;
+	
+	@Autowired
+	private FindTrainerCommand findTrainerCommand;
 
 	@Override
 	public List<Batch> getAll() {
@@ -45,6 +49,7 @@ public class BatchServiceImpl implements BatchService {
 
 	@Override
 	public Batch create(Batch b) {
+		b = validateReferences(b);
 		Set<SkillIdHolder> skills = b.getSkills();
 		if (skills == null) {
 			skills = new HashSet<>();
@@ -65,6 +70,12 @@ public class BatchServiceImpl implements BatchService {
 		batch.get().setSkills(new HashSet<SkillIdHolder>());
 		batchRepository.save(batch.get());
 		batchRepository.deleteById(id);
+	}
+	
+	private Batch validateReferences(Batch b) {
+		b = findTrainerCommand.findTrainer(b);
+		
+		return b;
 	}
 
 }
