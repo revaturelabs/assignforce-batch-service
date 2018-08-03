@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.beans.SkillIdHolder;
+import com.revature.assignforce.commands.FindCurriculumCommand;
+import com.revature.assignforce.commands.FindLocationCommand;
 import com.revature.assignforce.commands.FindTrainerCommand;
 import com.revature.assignforce.repos.BatchRepository;
 import com.revature.assignforce.repos.SkillRepository;
@@ -28,6 +30,12 @@ public class BatchServiceImpl implements BatchService {
 	
 	@Autowired
 	private FindTrainerCommand findTrainerCommand;
+	
+	@Autowired
+	private FindLocationCommand findLocationCommand;
+	
+	@Autowired
+	private FindCurriculumCommand findCurriculumCommand;
 
 	@Override
 	public List<Batch> getAll() {
@@ -74,7 +82,8 @@ public class BatchServiceImpl implements BatchService {
 	
 	private Batch validateReferences(Batch b) {
 		b = findTrainerCommand.findTrainer(b);
-		
+		b = findLocationCommand.findLocation(b);
+		b = findCurriculumCommand.findCurriculum(b);
 		return b;
 	}
 

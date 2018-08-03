@@ -12,8 +12,10 @@ import com.revature.assignforce.beans.Batch;
 @Component
 public class FindTrainerCommand {
 
-	@Value("")
-	private String trainerGatewayURL;
+	@Value("${environment.gateway-url:http://localhost:8765/}")
+	private String gatewayUrl;
+	@Value("${environement.service.trainer:trainer-service/}")
+	private String trainerUri;
 	
 	private final RestTemplate restTemplate = new RestTemplate();
 	
@@ -24,7 +26,7 @@ public class FindTrainerCommand {
 	 */
 	@HystrixCommand(fallbackMethod = "findTrainerFallback")
 	public Batch findTrainer(Batch batch) {
-		ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8765/trainer-service/" + batch.getTrainer(), String.class);
+		ResponseEntity<String> response = restTemplate.getForEntity(gatewayUrl + trainerUri + batch.getTrainer(), String.class);
 		return batch;
 	}
 	

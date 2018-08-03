@@ -11,15 +11,16 @@ import com.revature.assignforce.beans.Batch;
 @Component
 public class FindCurriculumCommand {
 
-	@Value("")
-	private String curriculumGatewayURL;
+	@Value("${environment.gateway-url:http://localhost:8765/}")
+	private String gatewayUrl;
+	@Value("${environement.service.curriculum:curriculum-service/}")
+	private String curriculumUri;
 	
 	private final RestTemplate restTemplate = new RestTemplate();
 	
 	@HystrixCommand(fallbackMethod = "findCurriculumFallback")
 	public Batch findCurriculum(Batch batch) {
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8765/curriculum-service/" + batch.getCurriculum(), String.class);
+		ResponseEntity<String> response = restTemplate.getForEntity(gatewayUrl + curriculumUri + batch.getCurriculum(), String.class);
 		return batch;
 	}
 	

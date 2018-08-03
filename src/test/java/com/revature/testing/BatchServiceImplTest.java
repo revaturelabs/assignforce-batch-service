@@ -1,13 +1,17 @@
 package com.revature.testing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-import java.util.ArrayList;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -16,9 +20,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.client.MockRestServiceServer;
 
 import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.beans.SkillIdHolder;
+import com.revature.assignforce.commands.FindCurriculumCommand;
+import com.revature.assignforce.commands.FindLocationCommand;
+import com.revature.assignforce.commands.FindSkillsCommand;
+import com.revature.assignforce.commands.FindTrainerCommand;
 import com.revature.assignforce.repos.BatchRepository;
 import com.revature.assignforce.repos.SkillRepository;
 import com.revature.assignforce.service.BatchService;
@@ -44,6 +53,21 @@ public class BatchServiceImplTest {
 		public SkillRepository SkillRepository() {
 			return Mockito.mock(SkillRepository.class);
 		}
+		
+		@Bean
+		public FindTrainerCommand findTrainerCommand() {
+			return new FindTrainerCommand();
+		}
+		
+		@Bean
+		public FindLocationCommand findLocationCommand() {
+			return new FindLocationCommand();
+		}
+		
+		@Bean
+		public FindCurriculumCommand findCurriculumCommand() {
+			return new FindCurriculumCommand();
+		}
 	}
 
 	@Autowired
@@ -52,6 +76,27 @@ public class BatchServiceImplTest {
 	private BatchRepository batchRepository;
 	@Autowired
 	private SkillRepository skillRepository;
+	@Autowired
+	private FindTrainerCommand findTrainerCommand;
+	@Autowired
+	private FindLocationCommand findLocationCommand;
+	@Autowired
+	private FindCurriculumCommand findCurriculumCommand;
+	@Autowired
+	private FindSkillsCommand findSkillsCommand;
+	
+	private MockRestServiceServer mockTrainerServer;
+	private MockRestServiceServer mockLocationServer;
+	private MockRestServiceServer mockCurriculumServer;
+	private MockRestServiceServer mockSkillsServer;
+	
+	@Before
+	public void setup() {
+		mockTrainerServer = MockRestServiceServer.bindTo(findTrainerCommand.getRestTemplate()).build();
+		mockLocationServer = MockRestServiceServer.bindTo(findLocationCommand.getRestTemplate()).build();
+		mockCurriculumServer = MockRestServiceServer.bindTo(findCurriculumCommand.getRestTemplate()).build();
+		mockSkillsServer = MockRestServiceServer.bindTo(findSkillsCommand.getRestTemplate()).build();
+	}
 
 	@Test
 	public void getAllTest() {
@@ -139,8 +184,16 @@ public class BatchServiceImplTest {
 		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet,
 				1, 1, 1, 1);
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
-
+		mockTrainerServer.expect(requestTo("http://localhost:8765/trainer-service/" + b1.getTrainer()))
+		  .andRespond(withSuccess());
+		mockCurriculumServer.expect(requestTo("http://localhost:8765/curriculum-service/" + b1.getCurriculum()))
+		  .andRespond(withSuccess());
+		mockLocationServer.expect(requestTo("http://localhost:8765/location-service/" + b1.getLocation()))
+		  .andRespond(withSuccess());
 		Batch batchTest = batchService.create(b1);
+		mockTrainerServer.verify();
+		mockLocationServer.verify();
+		mockCurriculumServer.verify();
 		assertTrue(batchTest.getSkills().size() == 5);
 	}
 	
@@ -149,7 +202,16 @@ public class BatchServiceImplTest {
 		Batch b1 = new Batch();
 		b1.setBuilding(19);
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
+		mockTrainerServer.expect(requestTo("http://localhost:8765/trainer-service/" + b1.getTrainer()))
+		  .andRespond(withSuccess());
+		mockCurriculumServer.expect(requestTo("http://localhost:8765/curriculum-service/" + b1.getCurriculum()))
+		  .andRespond(withSuccess());
+		mockLocationServer.expect(requestTo("http://localhost:8765/location-service/" + b1.getLocation()))
+		  .andRespond(withSuccess());
 		Batch bTest = batchService.create(b1);
+		mockTrainerServer.verify();
+		mockLocationServer.verify();
+		mockCurriculumServer.verify();
 		assertTrue(bTest.getBuilding() == 19);
 	}
 

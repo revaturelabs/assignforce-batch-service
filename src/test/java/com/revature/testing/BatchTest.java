@@ -87,7 +87,7 @@ public class BatchTest {
 	public void getSetCurriculumTest() {
 		Batch b1 = new Batch();
 		b1.setCurriculum(new Integer(55));
-		assertTrue(b1.getTrainer() == 55);
+		assertTrue(b1.getCurriculum() == 55);
 	}
 
 	@Test

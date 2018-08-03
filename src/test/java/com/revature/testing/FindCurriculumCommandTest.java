@@ -19,67 +19,67 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
 
 import com.revature.assignforce.beans.Batch;
-import com.revature.assignforce.commands.FindTrainerCommand;
+import com.revature.assignforce.commands.FindCurriculumCommand;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @EnableCircuitBreaker
 @EnableAspectJAutoProxy
-public class FindTrainerCommandTest {
-	
+public class FindCurriculumCommandTest {
+
 	@Configuration
 	static class BatchServiceTestContextConfiguration {
 		@Bean
-		public FindTrainerCommand findTrainerCommand() {
+		public FindCurriculumCommand findCurriculumCommand() {
 			
-			return new FindTrainerCommand();
+			return new FindCurriculumCommand();
 		}
 		
 	}
 
 	@Autowired
-	private FindTrainerCommand findTrainerCommand;
+	private FindCurriculumCommand findCurriculumCommand;
 	
 	private MockRestServiceServer mockServer;
 	
 	@Before
 	public void setup() {
-		mockServer = MockRestServiceServer.bindTo(findTrainerCommand.getRestTemplate()).build();
+		mockServer = MockRestServiceServer.bindTo(findCurriculumCommand.getRestTemplate()).build();
 	}
 	
 	@Test
-	public void trainerFound() {
+	public void curriculumFound() {
 		Batch batch = new Batch();
-		batch.setTrainer(1);
+		batch.setCurriculum(1);
 		
-		mockServer.expect(requestTo("http://localhost:8765/trainer-service/" + batch.getTrainer()))
+		mockServer.expect(requestTo("http://localhost:8765/curriculum-service/" + batch.getCurriculum()))
 		  .andRespond(withSuccess());
-		batch = findTrainerCommand.findTrainer(batch);
+		batch = findCurriculumCommand.findCurriculum(batch);
 		
 		mockServer.verify();
-        assertEquals(batch.getTrainer(), Integer.valueOf(1));
+        assertEquals(batch.getCurriculum(), Integer.valueOf(1));
 	}
 	
 	@Test
-	public void trainerNotFound() {
+	public void curriculumNotFound() {
 		Batch batch = new Batch();
-		batch.setTrainer(1);
+		batch.setCurriculum(1);
 		
-		mockServer.expect(requestTo("http://localhost:8765/trainer-service/" + batch.getTrainer()))
+		mockServer.expect(requestTo("http://localhost:8765/curriculum-service/" + batch.getCurriculum()))
 		  .andRespond(withBadRequest());
-		batch = findTrainerCommand.findTrainer(batch);
+		batch = findCurriculumCommand.findCurriculum(batch);
 		
 		mockServer.verify();
-        assertNull(batch.getTrainer());
+        assertNull(batch.getCurriculum());
 	}
 	
 	@Test
 	public void fallbackMethodTest() {
 		Batch b = new Batch();
-		b.setTrainer(1);
-		b = findTrainerCommand.findTrainerFallback(b);
-		assertNull(b.getTrainer());
+		b.setCurriculum(1);
+		b = findCurriculumCommand.findCurriculumFallback(b);
+		assertNull(b.getCurriculum());
 	}
 
-	
+
 }

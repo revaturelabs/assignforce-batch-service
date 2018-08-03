@@ -1,10 +1,13 @@
 package com.revature.testing;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,67 +22,58 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
 
 import com.revature.assignforce.beans.Batch;
-import com.revature.assignforce.commands.FindTrainerCommand;
+import com.revature.assignforce.beans.SkillIdHolder;
+import com.revature.assignforce.commands.FindSkillsCommand;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @EnableCircuitBreaker
 @EnableAspectJAutoProxy
-public class FindTrainerCommandTest {
-	
+public class FindSkillsCommandTest {
+
 	@Configuration
 	static class BatchServiceTestContextConfiguration {
 		@Bean
-		public FindTrainerCommand findTrainerCommand() {
+		public FindSkillsCommand findSkillsCommand() {
 			
-			return new FindTrainerCommand();
+			return new FindSkillsCommand();
 		}
 		
 	}
 
 	@Autowired
-	private FindTrainerCommand findTrainerCommand;
+	private FindSkillsCommand findSkillsCommand;
 	
 	private MockRestServiceServer mockServer;
 	
 	@Before
 	public void setup() {
-		mockServer = MockRestServiceServer.bindTo(findTrainerCommand.getRestTemplate()).build();
+		mockServer = MockRestServiceServer.bindTo(findSkillsCommand.getRestTemplate()).build();
 	}
 	
 	@Test
-	public void trainerFound() {
-		Batch batch = new Batch();
-		batch.setTrainer(1);
-		
-		mockServer.expect(requestTo("http://localhost:8765/trainer-service/" + batch.getTrainer()))
+	public void SkillFound() {
+		SkillIdHolder skillIdHolder = new SkillIdHolder(1);
+		mockServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getSkillId()))
 		  .andRespond(withSuccess());
-		batch = findTrainerCommand.findTrainer(batch);
-		
+		boolean found = findSkillsCommand.findSkill(skillIdHolder);
 		mockServer.verify();
-        assertEquals(batch.getTrainer(), Integer.valueOf(1));
+        assertTrue(found);
 	}
 	
 	@Test
-	public void trainerNotFound() {
-		Batch batch = new Batch();
-		batch.setTrainer(1);
-		
-		mockServer.expect(requestTo("http://localhost:8765/trainer-service/" + batch.getTrainer()))
+	public void skillNotFound() {
+		SkillIdHolder skillIdHolder = new SkillIdHolder(1);
+		mockServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getSkillId()))
 		  .andRespond(withBadRequest());
-		batch = findTrainerCommand.findTrainer(batch);
-		
+		boolean found = findSkillsCommand.findSkill(skillIdHolder);
 		mockServer.verify();
-        assertNull(batch.getTrainer());
+        assertFalse(found);
 	}
 	
 	@Test
 	public void fallbackMethodTest() {
-		Batch b = new Batch();
-		b.setTrainer(1);
-		b = findTrainerCommand.findTrainerFallback(b);
-		assertNull(b.getTrainer());
+		assertFalse(findSkillsCommand.findSkillFallback(new SkillIdHolder(1)));
 	}
-
 	
 }

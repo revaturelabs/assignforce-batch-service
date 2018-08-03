@@ -19,67 +19,65 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
 
 import com.revature.assignforce.beans.Batch;
-import com.revature.assignforce.commands.FindTrainerCommand;
+import com.revature.assignforce.commands.FindLocationCommand;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @EnableCircuitBreaker
 @EnableAspectJAutoProxy
-public class FindTrainerCommandTest {
-	
+public class FindLocationCommandTest {
+
 	@Configuration
 	static class BatchServiceTestContextConfiguration {
 		@Bean
-		public FindTrainerCommand findTrainerCommand() {
+		public FindLocationCommand findLocationCommand() {
 			
-			return new FindTrainerCommand();
+			return new FindLocationCommand();
 		}
 		
 	}
 
 	@Autowired
-	private FindTrainerCommand findTrainerCommand;
+	private FindLocationCommand findLocationCommand;
 	
 	private MockRestServiceServer mockServer;
 	
 	@Before
 	public void setup() {
-		mockServer = MockRestServiceServer.bindTo(findTrainerCommand.getRestTemplate()).build();
+		mockServer = MockRestServiceServer.bindTo(findLocationCommand.getRestTemplate()).build();
 	}
 	
 	@Test
-	public void trainerFound() {
+	public void locationFound() {
 		Batch batch = new Batch();
-		batch.setTrainer(1);
+		batch.setLocation(1);
 		
-		mockServer.expect(requestTo("http://localhost:8765/trainer-service/" + batch.getTrainer()))
+		mockServer.expect(requestTo("http://localhost:8765/location-service/" + batch.getLocation()))
 		  .andRespond(withSuccess());
-		batch = findTrainerCommand.findTrainer(batch);
+		batch = findLocationCommand.findLocation(batch);
 		
 		mockServer.verify();
-        assertEquals(batch.getTrainer(), Integer.valueOf(1));
+        assertEquals(batch.getLocation(), Integer.valueOf(1));
 	}
 	
 	@Test
-	public void trainerNotFound() {
+	public void locationNotFound() {
 		Batch batch = new Batch();
-		batch.setTrainer(1);
+		batch.setLocation(1);
 		
-		mockServer.expect(requestTo("http://localhost:8765/trainer-service/" + batch.getTrainer()))
+		mockServer.expect(requestTo("http://localhost:8765/location-service/" + batch.getLocation()))
 		  .andRespond(withBadRequest());
-		batch = findTrainerCommand.findTrainer(batch);
+		batch = findLocationCommand.findLocation(batch);
 		
 		mockServer.verify();
-        assertNull(batch.getTrainer());
+        assertNull(batch.getLocation());
 	}
 	
 	@Test
 	public void fallbackMethodTest() {
 		Batch b = new Batch();
-		b.setTrainer(1);
-		b = findTrainerCommand.findTrainerFallback(b);
-		assertNull(b.getTrainer());
+		b.setLocation(1);
+		b = findLocationCommand.findLocationFallback(b);
+		assertNull(b.getLocation());
 	}
-
-	
 }
