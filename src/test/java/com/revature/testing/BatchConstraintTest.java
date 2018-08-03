@@ -36,7 +36,7 @@ import org.junit.Before;
 
 
 /**
- * the BatchConstraint program checks that the validators on the Batch bean function as expected
+ * the BatchConstraintTest program checks that the validators on the Batch bean function as expected
  * @author jesuschavez
  *
  */
@@ -56,8 +56,6 @@ public class BatchConstraintTest {
 	   /**
 	   * This is the BatchIsNull method that checks that the amount of null constraints is equivalent to 7 plus the one custom constraint IsValidInterval (which checks that a 
 	   * endDate is not before startDate, however it also returns a violation if one the dates or both are null ) 
-	   * @param Nothing. 
-	   * @return Nothing.
 	   */
 	  @Test
 	   public void BatchIsNull() {
@@ -82,8 +80,6 @@ public class BatchConstraintTest {
 	  
 	  /**
 	   * This is the stringNameSizeMinimum method that tests that the constraint that test to see if a string is "" works
-	   * @param Nothing. 
-	   * @return Nothing.
 	   */
 	  @Test
 	   public void stringNameSizeMinimum() {
@@ -117,8 +113,6 @@ public class BatchConstraintTest {
 	 
 	  /**
 	   * This is the curriculumMinimumTest method which tests that the curriculum id cannot be 0 or a negative number
-	   * @param Nothing. 
-	   * @return Nothing.
 	   */
 	  @Test
 	   public void curriculumMinimumTest() {
@@ -155,8 +149,6 @@ public class BatchConstraintTest {
 	  
 	  /**
 	   * This is the trainerMinimumTest method which tests that the trainer id cannot be 0 or a negative number 
-	   * @param Nothing. 
-	   * @return Nothing.
 	   */
 	  @Test
 	   public void trainerMinimumTest() {
@@ -192,8 +184,6 @@ public class BatchConstraintTest {
 	 
 	  /**
 	   * This is the locationMinimumTest method which tests that the location id cannot be 0 or a negative number
-	   * @param Nothing. 
-	   * @return Nothing.
 	   */
 	  @Test
 	   public void locationMinimumTest() {
@@ -230,9 +220,7 @@ public class BatchConstraintTest {
 	  
 	  /**
 	   * This is the classSizeMinimumTest method which tests to see if a class size is below 5 (under the allowed minimum) and if the contraint to avoid this
-	   * happening works. 
-	   * @param Nothing. 
-	   * @return Nothing.
+	   * happening works.
 	   */
 	  @Test
 	   public void classSizeMinimumTest() {
@@ -268,8 +256,6 @@ public class BatchConstraintTest {
 	  
 	  /**
 	   * This is the classSizeMaximumTest method test that the constraint that checks that class size does not exceed 35 works 
-	   * @param Nothing. 
-	   * @return Nothing.
 	   */
 	  @Test
 	   public void classSizeMaximumTest() {
@@ -306,8 +292,6 @@ public class BatchConstraintTest {
 	  /**
 	   * This is the isValidIntervalTest method that IsValidInterval constraint is working fine.
 	   *  It checks that endDate is not earlier than startDate 
-	   * @param Nothing. 
-	   * @return Nothing.
 	   */
 	  @Test
 	   public void isValidIntervalTest() {
