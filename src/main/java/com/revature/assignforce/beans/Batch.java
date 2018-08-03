@@ -1,6 +1,5 @@
 package com.revature.assignforce.beans;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -15,23 +14,19 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.springframework.stereotype.Component;
 
-import validators.IsValidInterval;
-import validators.IsValidIntervalValidator;
+import com.revature.assignforce.validators.IsValidInterval;
 
 @Component
 @Entity
 @Table(name = "Batch")
-@IsValidInterval(startDate="startDate", endDate="endDate", message="Start date is not before end date")
+@IsValidInterval(startInterval="startDate", endInterval="endDate", message="Start date is not before end date")
 public class Batch {
 
 	@Id
