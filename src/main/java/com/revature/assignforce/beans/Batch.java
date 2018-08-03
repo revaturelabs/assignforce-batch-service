@@ -47,12 +47,10 @@ public class Batch {
 
 	@Column(name = "start_Date")
 	@NotNull (message="startDate cannot be null")
-	@Future(message="Start date can not be in the past")
 	private LocalDate startDate;
 
 	@Column(name = "end_Date")
 	@NotNull(message="endDate cannot be null")
-	@Future(message="End date can not be in the past")
 	private LocalDate endDate;
 
 	@Column(name = "Curriculum_Id")
