@@ -72,7 +72,7 @@ public class BatchConstraintTest {
 	    }
 	 
 	 
-	      assertEquals( 8, constraintViolations.size() );
+	      assertEquals( 5, constraintViolations.size() );
 	     
 	   }
 	  

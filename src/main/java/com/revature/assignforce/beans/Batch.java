@@ -55,12 +55,10 @@ public class Batch {
 
 	@Column(name = "Curriculum_Id")
 	@Min(1)
-	@NotNull (message="curriculum cannot be null")
 	private Integer curriculum;
 
 	@Column(name = "Trainer_Id")
 	@Min(1)
-	@NotNull(message="trainer cannot be null")
 	private Integer trainer;
 
 	@Column(name = "Cotrainer_Id")
@@ -72,7 +70,6 @@ public class Batch {
 
 	@Column(name = "Address_Id")
 	@Min(1)
-	@NotNull (message="location cannot be null")
 	private Integer location;
 
 	@Column(name = "Class_Size")
