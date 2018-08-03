@@ -14,7 +14,7 @@ public class FindTrainerCommand {
 
 	@Value("${environment.gateway-url:http://localhost:8765/}")
 	private String gatewayUrl;
-	@Value("${environement.service.trainer:trainer-service/}")
+	@Value("${environment.service.trainer:trainer-service/}")
 	private String trainerUri;
 	
 	private final RestTemplate restTemplate = new RestTemplate();

@@ -17,7 +17,7 @@ public class FindSkillsCommand {
 
 	@Value("${environment.gateway-url:http://localhost:8765/}")
 	private String gatewayUrl;
-	@Value("${environement.service.skills:skill-service/}")
+	@Value("${environment.service.skills:skill-service/}")
 	private String skillUri;
 	
 	private final RestTemplate restTemplate = new RestTemplate();

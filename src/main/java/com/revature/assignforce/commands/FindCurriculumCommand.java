@@ -13,7 +13,7 @@ public class FindCurriculumCommand {
 
 	@Value("${environment.gateway-url:http://localhost:8765/}")
 	private String gatewayUrl;
-	@Value("${environement.service.curriculum:curriculum-service/}")
+	@Value("${environment.service.curriculum:curriculum-service/}")
 	private String curriculumUri;
 	
 	private final RestTemplate restTemplate = new RestTemplate();

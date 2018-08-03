@@ -13,7 +13,7 @@ public class FindLocationCommand {
 
 	@Value("${environment.gateway-url:http://localhost:8765/}")
 	private String gatewayUrl;
-	@Value("${environement.service.location:location-service/}")
+	@Value("${environment.service.location:location-service/}")
 	private String locationUri;
 	
 	private final RestTemplate restTemplate = new RestTemplate();
