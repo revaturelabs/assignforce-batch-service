@@ -22,12 +22,22 @@ public class FindSkillsCommand {
 	
 	private final RestTemplate restTemplate = new RestTemplate();
 	
+	/**
+	 * Command called to verify that the skill provided exists in the skill service
+	 * @param skillIdHolder - skill id
+	 * @return - if the skill exists, return true
+	 */
 	@HystrixCommand(fallbackMethod = "findSkillFallback")
 	public boolean findSkill(SkillIdHolder skillIdHolder) {
 		ResponseEntity<String> response = restTemplate.getForEntity(gatewayUrl + skillUri + skillIdHolder.getSkillId(), String.class);
 		return true;
 	}
 	
+	/**
+	 * Fallback method in case the skill does not exist
+	 * @param skillIdHolder - skill id
+	 * @return - if the skill is not found, return false
+	 */
 	public boolean findSkillFallback(SkillIdHolder skillIdHolder) {
 		return false;
 	}

@@ -18,12 +18,22 @@ public class FindLocationCommand {
 	
 	private final RestTemplate restTemplate = new RestTemplate();
 	
+	/**
+	 * Command called to verify that the batch location provided exists in the location service
+	 * @param batch - new batch trying to be created
+	 * @return - if the location exists, return an unmodified batch
+	 */
 	@HystrixCommand(fallbackMethod = "findLocationFallback")
 	public Batch findLocation(Batch batch) {
 		ResponseEntity<String> response = restTemplate.getForEntity(gatewayUrl + locationUri + batch.getLocation(), String.class);
 		return batch;
 	}
 	
+	/**
+	 * Fallback method in case the location does not exist
+	 * @param batch - new batch to be created
+	 * @return - if the location is not found, sets location to null
+	 */
 	public Batch findLocationFallback(Batch batch) {
 		batch.setLocation(null);
 		return batch;

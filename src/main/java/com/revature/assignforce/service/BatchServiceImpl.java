@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -14,6 +15,7 @@ import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.beans.SkillIdHolder;
 import com.revature.assignforce.commands.FindCurriculumCommand;
 import com.revature.assignforce.commands.FindLocationCommand;
+import com.revature.assignforce.commands.FindSkillsCommand;
 import com.revature.assignforce.commands.FindTrainerCommand;
 import com.revature.assignforce.repos.BatchRepository;
 import com.revature.assignforce.repos.SkillRepository;
@@ -36,6 +38,9 @@ public class BatchServiceImpl implements BatchService {
 	
 	@Autowired
 	private FindCurriculumCommand findCurriculumCommand;
+	
+	@Autowired
+	private FindSkillsCommand findSkillsCommand;
 
 	@Override
 	public List<Batch> getAll() {
@@ -57,11 +62,14 @@ public class BatchServiceImpl implements BatchService {
 
 	@Override
 	public Batch create(Batch b) {
-		b = validateReferences(b);
 		Set<SkillIdHolder> skills = b.getSkills();
 		if (skills == null) {
 			skills = new HashSet<>();
+			b.setSkills(skills);
 		}
+		
+		b = validateReferences(b);
+		
 		for(SkillIdHolder s : skills) {
 			skillRepository.save(s);
 		}
@@ -84,6 +92,7 @@ public class BatchServiceImpl implements BatchService {
 		b = findTrainerCommand.findTrainer(b);
 		b = findLocationCommand.findLocation(b);
 		b = findCurriculumCommand.findCurriculum(b);
+		b.setSkills(b.getSkills().stream().filter((skillIdHolder) -> findSkillsCommand.findSkill(skillIdHolder)).collect(Collectors.toSet()));
 		return b;
 	}
 

@@ -18,12 +18,22 @@ public class FindCurriculumCommand {
 	
 	private final RestTemplate restTemplate = new RestTemplate();
 	
+	/**
+	 * Command called to verify that the batch curriculum provided exists in the curriculum service
+	 * @param batch - new batch trying to be created
+	 * @return - if the curriculum exists, return an unmodified batch
+	 */
 	@HystrixCommand(fallbackMethod = "findCurriculumFallback")
 	public Batch findCurriculum(Batch batch) {
 		ResponseEntity<String> response = restTemplate.getForEntity(gatewayUrl + curriculumUri + batch.getCurriculum(), String.class);
 		return batch;
 	}
 	
+	/**
+	 * Fallback method in case the curriculum does not exist
+	 * @param batch - new batch to be created
+	 * @return - if the curriculum is not found, sets curriculum to null
+	 */
 	public Batch findCurriculumFallback(Batch batch) {
 		batch.setCurriculum(null);
 		return batch;

@@ -21,12 +21,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 
 import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.beans.SkillIdHolder;
 import com.revature.assignforce.commands.FindCurriculumCommand;
 import com.revature.assignforce.commands.FindLocationCommand;
+import com.revature.assignforce.commands.FindSkillsCommand;
 import com.revature.assignforce.commands.FindTrainerCommand;
 import com.revature.assignforce.controllers.BatchController;
 import com.revature.assignforce.repos.BatchRepository;
@@ -74,6 +76,11 @@ public class BatchControllerTest {
 		public FindCurriculumCommand findCurriculumCommand() {
 			return new FindCurriculumCommand();
 		}
+		
+		@Bean
+		public FindSkillsCommand findSkillsCommand() {
+			return new FindSkillsCommand();
+		}
 	}
 
 	@Autowired
@@ -86,16 +93,19 @@ public class BatchControllerTest {
 	private FindLocationCommand findLocationCommand;
 	@Autowired
 	private FindCurriculumCommand findCurriculumCommand;
+	@Autowired
+	private FindSkillsCommand findSkillsCommand;
 	
 	private MockRestServiceServer mockTrainerServer;
 	private MockRestServiceServer mockLocationServer;
 	private MockRestServiceServer mockCurriculumServer;
-	
+	private MockRestServiceServer mockSkillsServer;
 	@Before
 	public void setup() {
 		mockTrainerServer = MockRestServiceServer.bindTo(findTrainerCommand.getRestTemplate()).build();
 		mockLocationServer = MockRestServiceServer.bindTo(findLocationCommand.getRestTemplate()).build();
 		mockCurriculumServer = MockRestServiceServer.bindTo(findCurriculumCommand.getRestTemplate()).build();
+		mockSkillsServer = MockRestServiceServer.bindTo(findSkillsCommand.getRestTemplate()).build();
 	}
 
 	@Test
@@ -176,10 +186,14 @@ public class BatchControllerTest {
 		  .andRespond(withSuccess());
 		mockLocationServer.expect(requestTo("http://localhost:8765/location-service/" + b1.getLocation()))
 		  .andRespond(withSuccess());
+		b1.getSkills().forEach((skillIdHolder) -> 
+		mockSkillsServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getSkillId()))
+			  .andRespond(withSuccess()));
 		ResponseEntity<Batch> reTest = batchController.add(b1);
 		mockTrainerServer.verify();
 		mockLocationServer.verify();
 		mockCurriculumServer.verify();
+		mockSkillsServer.verify();
 		assertTrue(reTest.getBody().getId() == 5 && reTest.getStatusCode() == HttpStatus.CREATED);
 	}
 
@@ -204,10 +218,14 @@ public class BatchControllerTest {
 		  .andRespond(withSuccess());
 		mockLocationServer.expect(requestTo("http://localhost:8765/location-service/" + b1.getLocation()))
 		  .andRespond(withSuccess());
+		b1.getSkills().forEach((skillIdHolder) -> 
+		mockSkillsServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getSkillId()))
+			  .andRespond(withSuccess()));
 		ResponseEntity<Batch> reTest = batchController.add(b1);
 		mockTrainerServer.verify();
 		mockLocationServer.verify();
 		mockCurriculumServer.verify();
+		mockSkillsServer.verify();
 		assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
 	}
 

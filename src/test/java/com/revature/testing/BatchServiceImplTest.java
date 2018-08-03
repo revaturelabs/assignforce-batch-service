@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 
 import com.revature.assignforce.beans.Batch;
@@ -67,6 +68,11 @@ public class BatchServiceImplTest {
 		@Bean
 		public FindCurriculumCommand findCurriculumCommand() {
 			return new FindCurriculumCommand();
+		}
+		
+		@Bean
+		public FindSkillsCommand findSkillsCommand() {
+			return new FindSkillsCommand();
 		}
 	}
 
@@ -190,10 +196,14 @@ public class BatchServiceImplTest {
 		  .andRespond(withSuccess());
 		mockLocationServer.expect(requestTo("http://localhost:8765/location-service/" + b1.getLocation()))
 		  .andRespond(withSuccess());
+		b1.getSkills().forEach((skillIdHolder) -> 
+			mockSkillsServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getSkillId()))
+				  .andRespond(withSuccess()));
 		Batch batchTest = batchService.create(b1);
 		mockTrainerServer.verify();
 		mockLocationServer.verify();
 		mockCurriculumServer.verify();
+		mockSkillsServer.verify();
 		assertTrue(batchTest.getSkills().size() == 5);
 	}
 	
