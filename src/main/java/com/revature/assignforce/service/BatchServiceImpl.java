@@ -59,7 +59,14 @@ public class BatchServiceImpl implements BatchService {
 		}
 		return batchRepository.save(b);
 	}
-
+	
+	/**
+	 * Saves batch to the repository. The method first checks if there are skills
+	 * present, if there is not, make a new HashSet. The references are then validated
+	 * and finally it is saved.
+	 * @param b - Batch to be saved
+	 * @return batch created
+	 */
 	@Override
 	public Batch create(Batch b) {
 		Set<SkillIdHolder> skills = b.getSkills();
