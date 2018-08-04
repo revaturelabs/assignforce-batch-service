@@ -12,9 +12,9 @@ import com.revature.assignforce.beans.Batch;
 @Component
 public class FindTrainerCommand {
 
-	@Value("${environment.gateway-url:http://localhost:8765/}")
+	@Value("${environment.gateway-url}")
 	private String gatewayUrl;
-	@Value("${environment.service.trainer:trainer-service/}")
+	@Value("${environment.service.trainer}")
 	private String trainerUri;
 	
 	private final RestTemplate restTemplate = new RestTemplate();

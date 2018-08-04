@@ -5,4 +5,13 @@ spring:
       discovery:
         service-id: config-service
         enabled: true
-        
+    
+environment:
+  gateway-url: http://localhost:8765/
+  service:
+    trainer: trainer-service/
+    batch: batch-service/
+    location: location-service/
+    curriculum: curriculum-service/
+    focus: focus-service/
+    skills: skill-service/

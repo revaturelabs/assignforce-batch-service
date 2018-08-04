@@ -88,6 +88,16 @@ public class BatchServiceImpl implements BatchService {
 		batchRepository.deleteById(id);
 	}
 	
+	public List<Batch> getAllByCurriculum(int curriculumId){
+		return batchRepository.findByCurriculum(curriculumId);
+	}
+	public List<Batch> getAllByTrainer(int trainerId){
+		return batchRepository.findByTrainer(trainerId);
+	}
+	public List<Batch> getAllByLocation(int locationId){
+		return batchRepository.findByLocation(locationId);
+	}
+	
 	/**
 	 * Checks for referential integrity. The method will first call FindTrainer
 	 * Command and check if the trainer exists, then move on to Location and Curriculum
