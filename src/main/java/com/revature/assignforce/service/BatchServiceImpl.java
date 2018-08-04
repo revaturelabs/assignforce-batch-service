@@ -88,6 +88,13 @@ public class BatchServiceImpl implements BatchService {
 		batchRepository.deleteById(id);
 	}
 	
+	/**
+	 * Checks for referential integrity. The method will first call FindTrainer
+	 * Command and check if the trainer exists, then move on to Location and Curriculum
+	 * and finally, filters out all the skills that does not exist
+	 * @param b Batch to be checked
+	 * @return batch after all, if any, changes are made
+	 */
 	private Batch validateReferences(Batch b) {
 		b = findTrainerCommand.findTrainer(b);
 		b = findLocationCommand.findLocation(b);
