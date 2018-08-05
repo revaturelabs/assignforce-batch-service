@@ -13,15 +13,15 @@ import javax.validation.Payload;
 
 /**
  * @author Hayden Fields
- * Annotation to be applied to a class, is repeatable if class must validate 
- * multiple intervals and is validated by IsValidIntervalValidator.
- * @see IsValidIntervalValidator
+ Annotation to be applied to a class, is repeatable if class must validate 
+ multiple intervals and is validated by IntervalHolderValidator.
+ * @see IntervalHolderValidator
  */
-@Repeatable(IsValidInterval.List.class)
+@Repeatable(IntervalHolder.List.class)
 @Target({TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = IsValidIntervalValidator.class)
-public @interface IsValidInterval
+@Constraint(validatedBy = IntervalHolderValidator.class)
+public @interface IntervalHolder
 {
     /**
      * List for repeated annotations.
@@ -33,7 +33,7 @@ public @interface IsValidInterval
         /**
          * @return An array of the interval constraints.
          */
-        IsValidInterval[] value();
+        IntervalHolder[] value();
     }
     
     /**
