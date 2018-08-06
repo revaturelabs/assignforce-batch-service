@@ -17,7 +17,7 @@ import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.service.BatchService;
 
 @Component
-public class CurriculumListener {
+public class LocationListener {
 
 	private BatchService batchService;
 	
@@ -26,26 +26,26 @@ public class CurriculumListener {
 	@RabbitListener(bindings = @QueueBinding(
 			value = @Queue(value = "batch-queue", durable = "true"),
 			exchange = @Exchange(value = "assignforce", ignoreDeclarationExceptions = "true"),
-			key = "assignforce.curriculum.delete")
+			key = "assignforce.location.delete")
 	)
-	public void receiveCurriculum(final Integer curriculumId, Channel channel, 
+	public void receiveLocation(final Integer locationId, Channel channel, 
 				@Header(AmqpHeaders.DELIVERY_TAG) long tag) {
 		try {
-			//get all batches that refer to curriculum
-			List<Batch> batchList = batchService.getAllByCurriculum(curriculumId);
+			//get all batches that refer the location
+			List<Batch> batchList = batchService.getAllByLocation(locationId);
 			//iterate through and set it to null
-			batchList.forEach((batch) -> batch.setCurriculum(null)); 
+			batchList.forEach((batch) -> batch.setLocation(null)); 
 			//save 
 			batchList.forEach((batch) -> batchService.update(batch));
 			//send acknowledgement
 			channel.basicAck(tag, false);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
-	public CurriculumListener(BatchService batchService, 
+	public LocationListener(BatchService batchService, 
 			@Value("${spring.rabbitmq.batch-queue:batch-queue}") String batchQueue) {
 		super();
 		this.batchService = batchService;

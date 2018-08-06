@@ -94,13 +94,15 @@ public class BatchServiceImpl implements BatchService {
 		batchRepository.save(batch.get());
 		batchRepository.deleteById(id);
 	}
-	
+	@Override
 	public List<Batch> getAllByCurriculum(int curriculumId){
 		return batchRepository.findByCurriculum(curriculumId);
 	}
+	@Override
 	public List<Batch> getAllByTrainer(int trainerId){
 		return batchRepository.findByTrainer(trainerId);
 	}
+	@Override
 	public List<Batch> getAllByLocation(int locationId){
 		return batchRepository.findByLocation(locationId);
 	}
