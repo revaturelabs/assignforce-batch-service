@@ -12,4 +12,8 @@ public interface BatchService {
 	Batch update(Batch b);
 	Batch create(Batch b);
 	void delete(int id);
+	
+	List<Batch> getAllByCurriculum(int curriculumId);
+	List<Batch> getAllByTrainer(int trainerId);
+	List<Batch> getAllByLocation(int locationId);
 }
