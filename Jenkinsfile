@@ -29,6 +29,7 @@ pipeline {
                 anyOf {
                     branch 'master'
                     branch 'development'
+                    environment name: 'DEBUG_BLD', value: '1'
                 }
             }
             steps {
