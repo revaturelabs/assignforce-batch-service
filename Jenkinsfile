@@ -52,9 +52,10 @@ echo "run docker build"
         stage('Docker Push') {
             // this step could be integrated with 'Container Build'
             when {
-                anyOf{
+                anyOf {
                     branch 'master'
                     branch 'development'
+                    environment name: 'DEBUG_BLD', value: '0'
                 }
             }
             steps {
@@ -71,13 +72,14 @@ docker rmi $DK_U/$APP_NAME:latest'''
                 anyOf {
                     branch 'master'
                     branch 'development'
+                    environment name: 'DEBUG_BLD', value: '0'
                 }
             }
             steps {
                 script {
                     if(env.BRANCH_NAME == 'master') {
                         env.SPACE = "production"
-                    } else {
+                    } else if(env.BRANCH_NAME == 'development' || DEBUG_BLD == '0') {
                         env.space = "development"
                     }
                     env.CF_DOCKER_PASSWORD=readFile("/run/secrets/CF_DOCKER_PASSWORD").trim()
