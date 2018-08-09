@@ -86,7 +86,7 @@ docker rmi $DK_U/$APP_NAME:latest'''
                     if(env.BRANCH_NAME == 'master') {
                         env.SPACE = "production"
                     } else if(env.BRANCH_NAME == 'development' || DEBUG_BLD == '0') {
-                        env.space = "development"
+                        env.SPACE = "development"
                     }
                     env.CF_DOCKER_PASSWORD=readFile("/run/secrets/CF_DOCKER_PASSWORD").trim()
                 }
