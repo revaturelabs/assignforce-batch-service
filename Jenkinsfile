@@ -11,6 +11,11 @@ pipeline {
                 stage('Unit Tests') {
                   steps {
                     sh 'echo "run ng test"'
+                    script {
+                        if(DEBUG_BLD == '0') {
+                            sh 'echo running debug build'
+                        }
+                    }
                   }
                 }
                 stage('Code Scan') {
