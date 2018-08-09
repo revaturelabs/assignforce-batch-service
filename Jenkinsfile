@@ -10,11 +10,6 @@ pipeline {
             parallel {
                 stage('Unit Tests') {
                   steps {
-                    script {
-                       print env.getEnvironment()
-                       print "${env.DEBUG_BLD}"
-                       print "$DEBUG_BLD"
-                    }
                     sh 'echo "run ng test"'
                   }
                 }
@@ -31,7 +26,7 @@ pipeline {
                 anyOf {
                     branch 'master'
                     branch 'development'
-                    environment name: 'DEBUG_BLD', value: '1'
+                    environment name: 'DEBUG_BLD', value: '0'
                 }
             }
             steps {
