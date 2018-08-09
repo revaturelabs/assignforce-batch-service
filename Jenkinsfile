@@ -12,7 +12,7 @@ pipeline {
                   steps {
                     script {
                        print env.getEnvironment()
-                       print "${env.DEBUG_BLD}
+                       print "${env.DEBUG_BLD}"
                        print "$DEBUG_BLD"
                     }
                     sh 'echo "run ng test"'
