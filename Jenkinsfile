@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         APP_NAME="af-batches"
-        DEBUG_BLD="git log --oneline -1 | grep -co '[debug]'"
+        DEBUG_BLD="git log --oneline -1 | grep -co '"[debug]"'"
     }
 
     stages {
