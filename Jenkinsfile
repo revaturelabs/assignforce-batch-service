@@ -79,7 +79,7 @@ docker rmi $DK_U/$APP_NAME:latest'''
                 }
                 env.CF_DOCKER_PASSWORD=readFile("/run/secrets/CF_DOCKER_PASSWORD").trim()
 
-                sh 'cf target -s $SPACE
+                sh 'cf target -s $SPACE'
                 sh 'cf push'
             }
         }
