@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         APP_NAME="af-batches"
+        COMMIT_MSG=sh "git log --one-line -1"
     }
 
     stages {
@@ -10,7 +11,7 @@ pipeline {
                 stage('Unit Tests') {
                   steps {
                     script {
-                        print env.getEnvironment()
+                        print "${env.COMMIT_MSG}"
                     }
                     sh 'echo "run ng test"'
                   }
