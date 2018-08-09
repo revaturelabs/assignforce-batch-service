@@ -51,7 +51,7 @@ pipeline {
             steps {
                 sh '''DK_U=$(cat /opt/dk_auth | cut -d\':\' -f1)
 echo "run docker build"
-./mvnw dockerfile:build'''
+mvn dockerfile:build'''
             }
         }
 
@@ -67,7 +67,7 @@ echo "run docker build"
             steps {
                 sh '''DK_U=$(cat /opt/dk_auth | cut -d\':\' -f1)
 echo "push"
-./mvnw dockerfile:push
+mvn dockerfile:push
 echo "remove local image"
 docker rmi $DK_U/$APP_NAME:latest'''
             }
