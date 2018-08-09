@@ -164,7 +164,7 @@
     <repositories>
         <repository>
             <id>local-rep</id>
-            <url>file:///~/.m2/repository</url>
+            <url>file://~/.m2/repository</url>
         </repository>
     </repositories>
 
