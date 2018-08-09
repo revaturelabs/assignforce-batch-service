@@ -1,5 +1,6 @@
 package com.revature.assignforce.beans;
 
+import com.revature.assignforce.validators.IntervalHolder;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -21,14 +22,10 @@ import javax.validation.constraints.Size;
 
 import org.springframework.stereotype.Component;
 
-import validators.IsValidInterval;
-
-
-
 @Component
 @Entity
 @Table(name = "Batch")
-@IsValidInterval(startDate ="startDate", endDate="endDate", message="Start date is not before end date")
+@IntervalHolder(startInterval ="startDate", endInterval="endDate", message="Start date is not before end date")
 public class Batch {
 
 	@Id

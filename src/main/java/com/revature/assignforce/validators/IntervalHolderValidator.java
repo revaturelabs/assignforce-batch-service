@@ -5,12 +5,12 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
- * Validator that is used along with IsValidInterval annotation to validate
- * that the start of an interval is before the end of an interval.
+ * Validator that is used along with IntervalHolder annotation to validate
+ that the start of an interval is before the end of an interval.
  * @author Hayden Fields
- * @see IsValidInterval
+ * @see IntervalHolder
  */
-public class IsValidIntervalValidator implements ConstraintValidator<IsValidInterval, Object>
+public class IntervalHolderValidator implements ConstraintValidator<IntervalHolder, Object>
 {
     // start and end of the interval
     private String start;
@@ -25,7 +25,7 @@ public class IsValidIntervalValidator implements ConstraintValidator<IsValidInte
      * @param constraintAnnotation an instance of the annotation 
      */
     @Override
-    public void initialize(IsValidInterval constraintAnnotation) 
+    public void initialize(IntervalHolder constraintAnnotation) 
     {
         this.start = constraintAnnotation.startInterval();
         this.end = constraintAnnotation.endInterval();
