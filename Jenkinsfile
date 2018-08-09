@@ -10,7 +10,7 @@ pipeline {
                 stage('Unit Tests') {
                   steps {
                     script {
-                        env.getEnvironment()
+                        print env.getEnvironment()
                     }
                     sh 'echo "run ng test"'
                   }
