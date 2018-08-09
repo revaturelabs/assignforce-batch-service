@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         APP_NAME="af-batches"
-        COMMIT_MSG=sh "git log --oneline -1"
+        COMMIT_MSG=sh "git log --oneline -1 |grep 'build' -"
     }
 
     stages {
