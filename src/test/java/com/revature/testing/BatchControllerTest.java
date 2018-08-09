@@ -1,3 +1,6 @@
+
+
+
 package com.revature.testing;
 
 import static org.junit.Assert.assertTrue;
@@ -5,6 +8,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -121,12 +125,12 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet,
+		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
 				1, 1, 1, 1);
-		Batch b2 = new Batch(2, "Salesforce", new Date(1517634000000L), new Date(1522209600000L), 3, 7, 3, skillSet, 2,
-				3, 1, 1);
-		Batch b3 = new Batch(4, "Database", new Date(1522728000000L), new Date(1527048000000L), 5, 3, 5, skillSet, 2, 1,
-				1, 1);
+		Batch b2 = new Batch(1, "Salesforce",  LocalDate.of(2020, 2, 1), LocalDate.of(2020,3,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
+		Batch b3 = new Batch(1, "Database",  LocalDate.of(2020, 4, 1), LocalDate.of(2020,5,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
 		List<Batch> batchList = new ArrayList<Batch>();
 		batchList.add(b1);
 		batchList.add(b2);
@@ -150,7 +154,7 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(3, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet,
+		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
 				1, 1, 1, 1);
 		Optional<Batch> op1 = Optional.ofNullable(b1);
 		Mockito.when(batchRepository.findById(3)).thenReturn(op1);
@@ -177,8 +181,8 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(5, "AWS", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1, 1,
-				1);
+		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 		mockTrainerServer.expect(requestTo("http://localhost:8765/trainer-service/" + b1.getTrainer()))
 		  .andRespond(withSuccess());
@@ -210,8 +214,8 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(15, "Salesforce", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1,
-				1, 1, 1);
+		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
 		mockTrainerServer.expect(requestTo("http://localhost:8765/trainer-service/" + b1.getTrainer()))
 		  .andRespond(withSuccess());
 		mockCurriculumServer.expect(requestTo("http://localhost:8765/curriculum-service/" + b1.getCurriculum()))
@@ -242,9 +246,11 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(15, "Salesforce", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1,
-				1, 1, 1);
-		b1.setEndDate(new Date(1525147200000L));
+		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
+		
+	
+		b1.setEndDate(LocalDate.of(2020, 2, 2));
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 		ResponseEntity<Batch> reTest = batchController.update(b1);
 		assertTrue(reTest.getBody().getEndDate().equals(new Date(1525147200000L))
@@ -264,9 +270,9 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(15, "Salesforce", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1,
-				1, 1, 1);
-		b1.setEndDate(new Date(1525147200000L));
+		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
+		b1.setEndDate(LocalDate.of(2020, 2, 2));
 		ResponseEntity<Batch> reTest = batchController.update(b1);
 		assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
 	}
@@ -279,3 +285,4 @@ public class BatchControllerTest {
 	}
 
 }
+
