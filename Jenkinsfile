@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         APP_NAME="af-batches"
-        COMMIT_MSG=sh "git log --oneline -1"
+        DEBUG_BLD="git log --oneline -1 | grep -co '--debug'"
     }
 
     stages {
@@ -11,7 +11,7 @@ pipeline {
                 stage('Unit Tests') {
                   steps {
                     script {
-                        sh "git log --oneline -1 | grep 'build' -"
+                        sh "$DEBUG_BLD"
                     }
                     sh 'echo "run ng test"'
                   }
