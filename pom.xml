@@ -81,25 +81,51 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 	<dependency>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-starter-config</artifactId>
 	</dependency>
 
+		
+		<dependency>
+	        <groupId>org.springframework.cloud</groupId>
+	        <artifactId>spring-cloud-starter-openfeign</artifactId>
+	    </dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.netflix.hystrix/hystrix-javanica -->
+		<dependency>
+		    <groupId>com.netflix.hystrix</groupId>
+		    <artifactId>hystrix-javanica</artifactId>
+		    <version>1.5.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+		
+	<dependency>	
+		<groupId>org.springframework.cloud</groupId>
+		<artifactId>spring-cloud-starter-config</artifactId>
+	</dependency>
 	</dependencies>
-
-
+	
 	<dependencyManagement>
-		<dependencies>
-			<dependency>
+	    <dependencies>
+		    <dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>Finchley.M9</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-		</dependencies>
+	        <dependency>
+	            <groupId>org.springframework.cloud</groupId>
+	            <artifactId>spring-cloud-openfeign</artifactId>
+	            <version>2.0.1.BUILD-SNAPSHOT</version>
+	            <type>pom</type>
+	            <scope>import</scope>
+	        </dependency>
+	    </dependencies>
 	</dependencyManagement>
 	<repositories>
 		<repository>
@@ -118,7 +144,17 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		</repositories>
+		<repository>
+	        <id>spring-snapshots</id>
+	        <name>Spring Snapshots</name>
+	        <url>https://repo.spring.io/libs-snapshot</url>
+	        <snapshots>
+	            <enabled>true</enabled>
+	        </snapshots>
+	    </repository>
+	</repositories>
+
+
 	<build>
 		<finalName>batch-service</finalName>
 		<plugins>

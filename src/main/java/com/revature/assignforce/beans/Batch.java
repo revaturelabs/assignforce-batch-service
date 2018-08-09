@@ -2,7 +2,7 @@ package com.revature.assignforce.beans;
 
 import java.time.LocalDate;
 import java.util.Set;
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
@@ -61,13 +61,20 @@ public class Batch {
 	@Column(name = "Cotrainer_Id")
 	private Integer cotrainer;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Batch_Skills", joinColumns = @JoinColumn(name = "Batch_ID"), inverseJoinColumns = @JoinColumn(name = "Skill_ID"))
 	private Set<SkillIdHolder> skills;
 
-	@Column(name = "Address_Id")
+
 	@Min(1)
+	@Column(name = "LOCATION_ID")
 	private Integer location;
+
+	@Column(name = "BUILDING_ID")
+	private Integer building;
+
+	@Column(name = "ROOM_ID")
+	private Integer room;
 
 	@Column(name = "Class_Size")
 	@Min(5)
@@ -79,8 +86,9 @@ public class Batch {
 		super();
 	}
 
+
 	public Batch(int id, String name, LocalDate startDate, LocalDate endDate, Integer curriculum, Integer trainer,
-			Integer cotrainer, Set<SkillIdHolder> skills, Integer location, Integer classSize) {
+			Integer cotrainer, Set<SkillIdHolder> skills, Integer location,Integer building, Integer room, Integer classSize) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -91,6 +99,7 @@ public class Batch {
 		this.cotrainer = cotrainer;
 		this.skills = skills;
 		this.location = location;
+		this.room = room;
 		this.classSize = classSize;
 	}
 
@@ -164,6 +173,22 @@ public class Batch {
 
 	public void setLocation(Integer location) {
 		this.location = location;
+	}
+
+	public Integer getBuilding() {
+		return building;
+	}
+
+	public void setBuilding(Integer building) {
+		this.building = building;
+	}
+
+	public Integer getRoom() {
+		return room;
+	}
+
+	public void setRoom(Integer room) {
+		this.room = room;
 	}
 
 	public Integer getClassSize() {

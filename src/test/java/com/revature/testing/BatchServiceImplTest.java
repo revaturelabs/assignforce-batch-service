@@ -1,3 +1,4 @@
+
 package com.revature.testing;
 
 import static org.junit.Assert.*;
@@ -58,8 +59,8 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices", LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet, 1, 1);
-		Batch b2 = new Batch(2, "Salesforce",LocalDate.of(2019, 5, 10), LocalDate.of(2019, 6, 10), 3, 7, 3, skillSet, 2,3);
+		Batch b1 = new Batch(1, "Microservices", LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet,1,1, 1, 1);
+		Batch b2 = new Batch(2, "Salesforce",LocalDate.of(2019, 5, 10), LocalDate.of(2019, 6, 10), 3, 7, 3, skillSet, 1,1,2,3);
 		List<Batch> batchList = new ArrayList<Batch>();
 		batchList.add(b1);
 		batchList.add(b2);
@@ -82,7 +83,7 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices", LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5),3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(1, "Microservices", LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5),3, 6, 5, skillSet,1,1, 1, 1);
 		Optional<Batch> op1 = Optional.ofNullable(b1);
 		Mockito.when(batchRepository.findById(1)).thenReturn(op1);
 		
@@ -103,7 +104,7 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices", LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(1, "Microservices", LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet, 1,1,1, 1);
 		b1.setEndDate(LocalDate.of(2019, 1, 6));
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 		
@@ -124,7 +125,7 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices",LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(1, "Microservices",LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet, 1,1,1, 1);
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 		
 		Batch batchTest = batchService.create(b1);

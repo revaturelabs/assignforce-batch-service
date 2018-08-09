@@ -1,3 +1,4 @@
+
 package com.revature.testing;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,7 +66,7 @@ public class BatchTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices", LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet, 1, 1);
+		Batch b1 = new Batch(1, "Microservices", LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet,1, 1, 1, 1);
 		assertTrue(b1.getId() == 1);
 	}
 	

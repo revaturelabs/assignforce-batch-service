@@ -96,7 +96,7 @@ public class BatchConstraintTest {
 			skillSet.add(s3);
 			skillSet.add(s4);
 			skillSet.add(s5);
-			Batch b1 = new Batch(1, "",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 3, 6, 5, skillSet, 1, 6);
+			Batch b1 = new Batch(1, "",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 3, 6, 5, skillSet,1,1, 1, 6);
 
 	      Set<ConstraintViolation<Batch>> constraintViolations =
 	      validator.validate( b1 );
@@ -129,7 +129,7 @@ public class BatchConstraintTest {
 			skillSet.add(s3);
 			skillSet.add(s4);
 			skillSet.add(s5);
-			Batch b1 = new Batch(1, "Java",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 0, 6, 5, skillSet, 1, 6);
+			Batch b1 = new Batch(1, "Java",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 0, 6, 5, skillSet,1,1, 1, 6);
 
 	      Set<ConstraintViolation<Batch>> constraintViolations =
 	      validator.validate( b1 );
@@ -165,7 +165,7 @@ public class BatchConstraintTest {
 			skillSet.add(s3);
 			skillSet.add(s4);
 			skillSet.add(s5);
-			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 1, 0, 5, skillSet, 1, 6);
+			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 1, 0, 5, skillSet,1,1, 1, 6);
 
 	      Set<ConstraintViolation<Batch>> constraintViolations =
 	      validator.validate( b1 );
@@ -200,7 +200,7 @@ public class BatchConstraintTest {
 			skillSet.add(s3);
 			skillSet.add(s4);
 			skillSet.add(s5);
-			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 1, 1, 5, skillSet, 0, 6);
+			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 1, 1, 5, skillSet,1,1, 0, 6);
 
 	      Set<ConstraintViolation<Batch>> constraintViolations =
 	      validator.validate( b1 );
@@ -237,7 +237,7 @@ public class BatchConstraintTest {
 			skillSet.add(s3);
 			skillSet.add(s4);
 			skillSet.add(s5);
-			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 1, 1, 5, skillSet, 1, -4);
+			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 1, 1, 5, skillSet, 1,1,1, -4);
 
 	      Set<ConstraintViolation<Batch>> constraintViolations =
 	      validator.validate( b1 );
@@ -272,7 +272,7 @@ public class BatchConstraintTest {
 			skillSet.add(s3);
 			skillSet.add(s4);
 			skillSet.add(s5);
-			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 1, 1, 5, skillSet, 1, 36);
+			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 1, 1, 5, skillSet, 1,1,1, 36);
 
 	      Set<ConstraintViolation<Batch>> constraintViolations =
 	      validator.validate( b1 );
@@ -308,7 +308,7 @@ public class BatchConstraintTest {
 			skillSet.add(s3);
 			skillSet.add(s4);
 			skillSet.add(s5);
-			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020,1,1), LocalDate.of(2019,12,21), 1, 1, 5, skillSet, 1, 35);
+			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020,1,1), LocalDate.of(2019,12,21), 1, 1, 5, skillSet,1,1, 1, 35);
 
 	      Set<ConstraintViolation<Batch>> constraintViolations =
 	      validator.validate( b1 );
