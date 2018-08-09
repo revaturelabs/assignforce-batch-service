@@ -72,12 +72,14 @@ docker rmi $DK_U/$APP_NAME:latest'''
                 }
             }
             steps {
-                if(env.BRANCH_NAME == 'master') {
-                    env.SPACE = "production"
-                } else {
-                    env.space = "development"
+                script {
+                    if(env.BRANCH_NAME == 'master') {
+                        env.SPACE = "production"
+                    } else {
+                        env.space = "development"
+                    }
+                    env.CF_DOCKER_PASSWORD=readFile("/run/secrets/CF_DOCKER_PASSWORD").trim()
                 }
-                env.CF_DOCKER_PASSWORD=readFile("/run/secrets/CF_DOCKER_PASSWORD").trim()
 
                 sh 'cf target -s $SPACE'
                 sh 'cf push'
