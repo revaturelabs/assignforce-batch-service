@@ -11,7 +11,7 @@ pipeline {
                 stage('Unit Tests') {
                   steps {
                     script {
-                        print "${env.COMMIT_MSG}"
+                        sh "git log --oneline -1"
                     }
                     sh 'echo "run ng test"'
                   }
