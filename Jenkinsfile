@@ -48,6 +48,7 @@ echo "run docker build"
         }
 
         stage('Docker Push') {
+            // this step could be integrated with 'Container Build'
             when {
                 anyOf{
                     branch 'master'
