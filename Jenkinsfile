@@ -9,6 +9,9 @@ pipeline {
             parallel {
                 stage('Unit Tests') {
                   steps {
+                    script {
+                        sh "echo ${env}"
+                    }
                     sh 'echo "run ng test"'
                   }
                 }
