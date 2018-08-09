@@ -11,7 +11,7 @@ pipeline {
                 stage('Unit Tests') {
                   steps {
                     script {
-                        sh "git log --oneline -1 | grep 'build'"
+                        sh "git log --oneline -1 | grep 'build' -"
                     }
                     sh 'echo "run ng test"'
                   }
