@@ -12,9 +12,9 @@ pipeline {
                     sh 'echo "run mvn test"'
                     sh "mvn test"
                     script {
-                        result = sh(script: "git log -1 | grep -co '[debug]'", returnStatus: true)
-                        sh "echo 'result is '${result}"
-                        if(result == 0 ) {
+                        sh "git log -1 | grep -co '[debug]' > debug_status"
+                        result = readFile("debug_status").trim()
+                        if(result == '1' ) {
                             sh 'echo running debug build'
                             env.DEBUG_BLD=result
                         }
