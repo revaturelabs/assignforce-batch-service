@@ -1,13 +1,20 @@
+
+
+
 package com.revature.testing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-import java.util.ArrayList;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -18,9 +25,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.client.ExpectedCount;
+import org.springframework.test.web.client.MockRestServiceServer;
 
 import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.beans.SkillIdHolder;
+import com.revature.assignforce.commands.FindCurriculumCommand;
+import com.revature.assignforce.commands.FindLocationCommand;
+import com.revature.assignforce.commands.FindSkillsCommand;
+import com.revature.assignforce.commands.FindTrainerCommand;
 import com.revature.assignforce.controllers.BatchController;
 import com.revature.assignforce.repos.BatchRepository;
 import com.revature.assignforce.repos.SkillRepository;
@@ -52,12 +65,52 @@ public class BatchControllerTest {
 		public SkillRepository skillRepository() {
 			return Mockito.mock(SkillRepository.class);
 		}
+		
+		@Bean
+		public FindTrainerCommand findTrainerCommand() {
+			return new FindTrainerCommand();
+		}
+		
+		@Bean
+		public FindLocationCommand findLocationCommand() {
+			return new FindLocationCommand();
+		}
+		
+		@Bean
+		public FindCurriculumCommand findCurriculumCommand() {
+			return new FindCurriculumCommand();
+		}
+		
+		@Bean
+		public FindSkillsCommand findSkillsCommand() {
+			return new FindSkillsCommand();
+		}
 	}
 
 	@Autowired
 	private BatchRepository batchRepository;
 	@Autowired
 	private BatchController batchController;
+	@Autowired
+	private FindTrainerCommand findTrainerCommand;
+	@Autowired
+	private FindLocationCommand findLocationCommand;
+	@Autowired
+	private FindCurriculumCommand findCurriculumCommand;
+	@Autowired
+	private FindSkillsCommand findSkillsCommand;
+	
+	private MockRestServiceServer mockTrainerServer;
+	private MockRestServiceServer mockLocationServer;
+	private MockRestServiceServer mockCurriculumServer;
+	private MockRestServiceServer mockSkillsServer;
+	@Before
+	public void setup() {
+		mockTrainerServer = MockRestServiceServer.bindTo(findTrainerCommand.getRestTemplate()).build();
+		mockLocationServer = MockRestServiceServer.bindTo(findLocationCommand.getRestTemplate()).build();
+		mockCurriculumServer = MockRestServiceServer.bindTo(findCurriculumCommand.getRestTemplate()).build();
+		mockSkillsServer = MockRestServiceServer.bindTo(findSkillsCommand.getRestTemplate()).build();
+	}
 
 	@Test
 	public void getAllTest() {
@@ -72,12 +125,12 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet,
+		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
 				1, 1, 1, 1);
-		Batch b2 = new Batch(2, "Salesforce", new Date(1517634000000L), new Date(1522209600000L), 3, 7, 3, skillSet, 2,
-				3, 1, 1);
-		Batch b3 = new Batch(4, "Database", new Date(1522728000000L), new Date(1527048000000L), 5, 3, 5, skillSet, 2, 1,
-				1, 1);
+		Batch b2 = new Batch(1, "Salesforce",  LocalDate.of(2020, 2, 1), LocalDate.of(2020,3,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
+		Batch b3 = new Batch(1, "Database",  LocalDate.of(2020, 4, 1), LocalDate.of(2020,5,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
 		List<Batch> batchList = new ArrayList<Batch>();
 		batchList.add(b1);
 		batchList.add(b2);
@@ -101,7 +154,7 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(3, "Microservices", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet,
+		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
 				1, 1, 1, 1);
 		Optional<Batch> op1 = Optional.ofNullable(b1);
 		Mockito.when(batchRepository.findById(3)).thenReturn(op1);
@@ -128,10 +181,23 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(5, "AWS", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1, 1, 1,
-				1);
+		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
+		mockTrainerServer.expect(requestTo("http://localhost:8765/trainer-service/" + b1.getTrainer()))
+		  .andRespond(withSuccess());
+		mockCurriculumServer.expect(requestTo("http://localhost:8765/curriculum-service/" + b1.getCurriculum()))
+		  .andRespond(withSuccess());
+		mockLocationServer.expect(requestTo("http://localhost:8765/location-service/" + b1.getLocation()))
+		  .andRespond(withSuccess());
+		b1.getSkills().forEach((skillIdHolder) -> 
+		mockSkillsServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getSkillId()))
+			  .andRespond(withSuccess()));
 		ResponseEntity<Batch> reTest = batchController.add(b1);
+		mockTrainerServer.verify();
+		mockLocationServer.verify();
+		mockCurriculumServer.verify();
+		mockSkillsServer.verify();
 		assertTrue(reTest.getBody().getId() == 5 && reTest.getStatusCode() == HttpStatus.CREATED);
 	}
 
@@ -148,9 +214,22 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(15, "Salesforce", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1,
-				1, 1, 1);
+		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
+		mockTrainerServer.expect(requestTo("http://localhost:8765/trainer-service/" + b1.getTrainer()))
+		  .andRespond(withSuccess());
+		mockCurriculumServer.expect(requestTo("http://localhost:8765/curriculum-service/" + b1.getCurriculum()))
+		  .andRespond(withSuccess());
+		mockLocationServer.expect(requestTo("http://localhost:8765/location-service/" + b1.getLocation()))
+		  .andRespond(withSuccess());
+		b1.getSkills().forEach((skillIdHolder) -> 
+		mockSkillsServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getSkillId()))
+			  .andRespond(withSuccess()));
 		ResponseEntity<Batch> reTest = batchController.add(b1);
+		mockTrainerServer.verify();
+		mockLocationServer.verify();
+		mockCurriculumServer.verify();
+		mockSkillsServer.verify();
 		assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
 	}
 
@@ -167,9 +246,11 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(15, "Salesforce", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1,
-				1, 1, 1);
-		b1.setEndDate(new Date(1525147200000L));
+		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
+		
+	
+		b1.setEndDate(LocalDate.of(2020, 2, 2));
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 		ResponseEntity<Batch> reTest = batchController.update(b1);
 		assertTrue(reTest.getBody().getEndDate().equals(new Date(1525147200000L))
@@ -189,9 +270,9 @@ public class BatchControllerTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(15, "Salesforce", new Date(1515733200000L), new Date(1520053200000L), 3, 6, 5, skillSet, 1,
-				1, 1, 1);
-		b1.setEndDate(new Date(1525147200000L));
+		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
+		b1.setEndDate(LocalDate.of(2020, 2, 2));
 		ResponseEntity<Batch> reTest = batchController.update(b1);
 		assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
 	}
@@ -204,3 +285,4 @@ public class BatchControllerTest {
 	}
 
 }
+
