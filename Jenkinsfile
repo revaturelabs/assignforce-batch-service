@@ -12,7 +12,6 @@ pipeline {
                     sh 'echo "run mvn test"'
                     sh "mvn test"
                     script {
-
                         result = sh(script: "git log -1 | grep -c '\\[debug\\]'", returnStatus: true)
                         if(result == 0 ) {
                             sh 'echo running debug build'
@@ -20,7 +19,6 @@ pipeline {
                         } else {
                             sh 'echo not running debug build'
                         }
-
                     }
                   }
                 }
