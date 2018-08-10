@@ -1,0 +1,12 @@
+---
+applications:
+  - name: af-batches
+    memory: 1024M
+    host: af-batches
+    services:
+      - rabbit-mq-rev
+      - discovery-rev
+      - config-rev
+    docker:
+      image: ajduet/af-batches
+      username: ajduet
