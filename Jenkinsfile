@@ -13,6 +13,7 @@ pipeline {
                     sh "mvn test"
                     script {
                         result = sh(script: "git log -1 | grep '[debug]'", returnStatus: true)
+                        sh "echo ${result}"
                         if(result == 0 ) {
                             sh 'echo running debug build'
                             env.DEBUG_BLD=result
