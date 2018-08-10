@@ -12,7 +12,7 @@ pipeline {
                     sh 'echo "run mvn test"'
                     sh "mvn test"
                     script {
-                        result = sh(script: "git log -1 | grep '[debug]'", returnStatus: true)
+                        result = sh(script: "git log -1 | grep '\\[debug\\]'", returnStatus: true)
                         sh "echo 'result is '${result}"
                         if(result == 0 ) {
                             sh 'echo running debug build'
