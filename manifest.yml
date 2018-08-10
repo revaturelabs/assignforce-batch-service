@@ -1,6 +1,6 @@
 ---
 applications:
-  - name: af-batches
+  - name: batch-service
     memory: 2048M
     timeout: 120
     services:
