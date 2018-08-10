@@ -7,5 +7,5 @@ applications:
       - discovery-rev
       - config-rev
     docker:
-      image: ajduet/af-batches
+      image: ajduet/af-batches:latest
       username: ajduet
