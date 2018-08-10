@@ -60,7 +60,7 @@ pipeline {
                 }
                 sh '''DK_U=$(cat /opt/dk_auth | cut -d\':\' -f1)
 echo "run docker build"
-mvn dockerfile:build@$DK_TAG_GOAL'''
+mvn dockerfile:tag@$DK_TAG_GOAL'''
             }
         }
 
