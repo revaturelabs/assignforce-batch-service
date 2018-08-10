@@ -1,13 +1,11 @@
 package com.revature.assignforce.commands;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.revature.assignforce.beans.Batch;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.revature.assignforce.beans.Batch;
 
 @Component
 public class FindTrainerCommand {
@@ -24,7 +22,7 @@ public class FindTrainerCommand {
 	 * @param batch - new batch trying to be created
 	 * @return - if the trainer exists, return an unmodified batch
 	 */
-	@HystrixCommand(fallbackMethod = "findTrainerFallback")
+	@HystrixCommand(fallbackMethod="findTrainerFallback")
 	public Batch findTrainer(Batch batch) {
 		ResponseEntity<String> response = restTemplate.getForEntity(gatewayUrl + trainerUri + batch.getTrainer(), String.class);
 		return batch;

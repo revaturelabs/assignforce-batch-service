@@ -13,9 +13,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 @SpringBootApplication
 @Profile("default")
-@EnableFeignClients
 @EnableCircuitBreaker
 @EnableHystrix
+@EnableFeignClients
 @EnableRabbit
 public class BatchServiceApplication {
 
