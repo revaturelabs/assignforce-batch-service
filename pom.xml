@@ -44,10 +44,6 @@
             <!--<version>2.0.0.RELEASE</version>-->
         <!--</dependency>-->
         <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-hystrix -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-hystrix</artifactId>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-feign -->
         <dependency>
