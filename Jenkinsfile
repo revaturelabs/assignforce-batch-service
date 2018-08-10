@@ -103,7 +103,7 @@ docker rmi $DK_U/$APP_NAME:$DK_TAG'''
                 }
 
                 sh 'cf target -s $SPACE'
-                sh 'cf push -o $IMG -u $DK_U'
+                sh 'cf push -o $IMG --docker-username $DK_U'
             }
         }
 
