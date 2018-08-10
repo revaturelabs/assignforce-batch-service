@@ -2,7 +2,6 @@ pipeline {
     agent any
     environment {
         APP_NAME="af-batches"
-        DEBUG_BLD=sh(script: "git log -1 | grep '[debug]'", returnStatus: true)
     }
 
     stages {
@@ -13,8 +12,10 @@ pipeline {
                     sh 'echo "run mvn test"'
                     sh "mvn test"
                     script {
-                        if(DEBUG_BLD == '0') {
+                        result = sh(script: "git log -1 | grep '[debug]'", returnStatus: true)
+                        if(result == 0 ) {
                             sh 'echo running debug build'
+                            env.DEBUG_BLD=result
                         }
                     }
                   }
