@@ -3,7 +3,7 @@ pipeline {
     environment {
         APP_NAME="af-batches"
         DEBUG_BLD=sh(script: "git log --oneline -1 | grep -co '[debug]'", returnStatus: true)
-        DK_U=sh(script: "${cat /opt/dk_auth | cut -d':' -f1}")
+        DK_U=sh "$(cat /opt/dk_auth | cut -d':' -f1)"
     }
 
     stages {
@@ -11,7 +11,6 @@ pipeline {
             parallel {
                 stage('Unit Tests') {
                   steps {
-                    sh "echo $DK_U"
                     sh 'echo "run ng test"'
                     script {
                         if(DEBUG_BLD == '0') {
@@ -52,6 +51,7 @@ pipeline {
             }
             steps {
                 script {
+                    env.DK_U=readFile("/opt/dk_auth").trim().split(':')[0]
                     env.DK_TAG_GOAL='tag-latest'
                     env.DK_TAG='latest'
 
@@ -103,7 +103,7 @@ docker rmi $DK_U/$APP_NAME:$DK_TAG'''
                 }
 
                 sh 'cf target -s $SPACE'
-                sh 'cf push -o $IMG --docker-username $DK_U'
+                sh '''cf push -o $IMG --docker-username $DK_U'''
             }
         }
 
