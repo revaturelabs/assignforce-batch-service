@@ -1,7 +1,8 @@
 ---
 applications:
   - name: af-batches
-    memory: 1024M
+    memory: 2048M
+    timeout: 120
     services:
       - rabbit-mq-rev
       - discovery-rev
