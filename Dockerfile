@@ -1,6 +1,4 @@
-FROM openjdk:8-jdk-alpine
-VOLUME /tmp
-ARG JAR_FILE
+FROM java:8
+ADD target/batch-service.jar .
 EXPOSE 8675
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/urandom", "-jar", "/app.jar"]
+CMD java -jar -Xmx512M batch-service.jar
