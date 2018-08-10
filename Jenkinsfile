@@ -58,8 +58,7 @@ pipeline {
                 }
                 sh '''DK_U=$(cat /opt/dk_auth | cut -d\':\' -f1)
 echo "run docker build"
-mvn dockerfile:build
-mvn dockerfile:tag@$DK_TAG'''
+mvn dockerfile:build@$DK_TAG'''
             }
         }
 
@@ -77,7 +76,7 @@ mvn dockerfile:tag@$DK_TAG'''
 echo "push"
 mvn dockerfile:push
 echo "remove local image"
-docker rmi $DK_U/$APP_NAME:latest'''
+docker rmi $DK_U/$APP_NAME:$DK_TAG'''
             }
         }
 

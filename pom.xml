@@ -176,6 +176,7 @@
                     <execution>
                         <id>tag-latest</id>
                         <goals>
+                            <goal>build</goal>
                             <goal>tag</goal>
                         </goals>
                         <configuration>
@@ -185,6 +186,7 @@
                     <execution>
                         <id>tag-dev</id>
                         <goals>
+                            <goal>build</goal>
                             <goal>tag</goal>
                         </goals>
                         <configuration>
