@@ -3,6 +3,7 @@ pipeline {
     environment {
         APP_NAME="af-batches"
         DEBUG_BLD=sh(script: "git log --oneline -1 | grep -co '[debug]'", returnStatus: true)
+        DK_U=sh "$(cat /opt/dk_auth | cut -d':' -f1)"
     }
 
     stages {
@@ -58,8 +59,7 @@ pipeline {
                         env.DK_TAG='dev-latest'
                     }
                 }
-                sh '''DK_U=$(cat /opt/dk_auth | cut -d\':\' -f1)
-echo "run docker build"
+                sh '''echo "run docker build"
 mvn dockerfile:tag@$DK_TAG_GOAL'''
             }
         }
@@ -74,8 +74,7 @@ mvn dockerfile:tag@$DK_TAG_GOAL'''
                 }
             }
             steps {
-                sh '''DK_U=$(cat /opt/dk_auth | cut -d\':\' -f1)
-echo "push"
+                sh '''echo "push"
 mvn dockerfile:push
 echo "remove local image"
 docker rmi $DK_U/$APP_NAME:$DK_TAG'''
