@@ -77,7 +77,7 @@ mvn dockerfile:tag@$DK_TAG_GOAL'''
                 sh '''echo "push"
 mvn dockerfile:push
 echo "remove local image"
-docker rmi $DK_U/$APP_NAME:$DK_TAG'''
+docker image rm $DK_U/$APP_NAME:$DK_TAG'''
             }
         }
 
