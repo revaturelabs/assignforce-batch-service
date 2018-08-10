@@ -12,7 +12,7 @@ pipeline {
                     sh 'echo "run mvn test"'
                     sh "mvn test"
                     script {
-                        sh "git log -1 | grep -co '[debug]' > debug_status"
+                        sh "git log -1 | grep -co '\\[debug\\]' > debug_status"
                         sh "cat debug_status"
                         result = readFile("debug_status").trim()
                         if(result != '0' ) {
