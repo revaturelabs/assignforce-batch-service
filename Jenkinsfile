@@ -50,15 +50,17 @@ pipeline {
             }
             steps {
                 script {
-                    env.DK_TAG='tag-latest'
+                    env.DK_TAG_GOAL='tag-latest'
+                    evn.DK_TAG='latest'
 
                     if(env.BRANCH_NAME == 'development' || env.DEBUG_BLD == '0') {
-                        env.DK_TAG='tag-dev'
+                        env.DK_TAG_GOAL='tag-dev'
+                        env.DK_TAG='dev-latest'
                     }
                 }
                 sh '''DK_U=$(cat /opt/dk_auth | cut -d\':\' -f1)
 echo "run docker build"
-mvn dockerfile:build@$DK_TAG'''
+mvn dockerfile:build@$DK_TAG_GOAL'''
             }
         }
 
