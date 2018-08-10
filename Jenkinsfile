@@ -3,7 +3,7 @@ pipeline {
     environment {
         APP_NAME="af-batches"
         DEBUG_BLD=sh(script: "git log --oneline -1 | grep -co '[debug]'", returnStatus: true)
-        DK_U=(sh$(cat /opt/dk_auth | cut -d':' -f1))
+        DK_U=sh$("cat /opt/dk_auth | cut -d':' -f1")
     }
 
     stages {
