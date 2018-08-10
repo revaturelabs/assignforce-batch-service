@@ -13,14 +13,14 @@ pipeline {
                     sh "mvn test"
                     script {
 
-                        sh "git log -1 | grep -c '\\[debug\\]' > debug_status"
-                        sh "cat debug_status"
-                        result = readFile("debug_status").trim()
-                        if(result != '0' ) {
+                        result = sh(script: "git log -1 | grep -c '\\[debug\\]'", returnStatus: true)
+                        if(result == 0 ) {
                             sh 'echo running debug build'
                             env.DEBUG_BLD=1
+                        } else {
+                            sh 'echo not running debug build'
                         }
-                        
+
                     }
                   }
                 }
