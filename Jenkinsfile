@@ -49,9 +49,17 @@ pipeline {
                 }
             }
             steps {
+                script {
+                    env.DK_TAG='tag-latest'
+
+                    if(env.BRANCH_NAME == 'development' || env.DEBUG_BLD == '0') {
+                        env.DK_TAG='tag-dev'
+                    }
+                }
                 sh '''DK_U=$(cat /opt/dk_auth | cut -d\':\' -f1)
 echo "run docker build"
-mvn dockerfile:build'''
+mvn dockerfile:build
+mvn dockerfile:tag@$DK_TAG'''
             }
         }
 
@@ -85,14 +93,16 @@ docker rmi $DK_U/$APP_NAME:latest'''
                 script {
                     if(env.BRANCH_NAME == 'master') {
                         env.SPACE = "production"
+                        env.IMG="${env.DK_U}/${env.APP_NAME}:latest"
                     } else if(env.BRANCH_NAME == 'development' || DEBUG_BLD == '0') {
                         env.SPACE = "development"
+                        env.IMG="${env.DK_U}/${env.APP_NAME}:dev-latest"
                     }
                     env.CF_DOCKER_PASSWORD=readFile("/run/secrets/CF_DOCKER_PASSWORD").trim()
                 }
 
                 sh 'cf target -s $SPACE'
-                sh 'cf push'
+                sh 'cf push -o $IMG -u $DK_U'
             }
         }
 
