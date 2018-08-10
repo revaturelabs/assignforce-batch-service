@@ -17,7 +17,7 @@ pipeline {
                         result = readFile("debug_status").trim()
                         if(result != '0' ) {
                             sh 'echo running debug build'
-                            env.DEBUG_BLD=result
+                            env.DEBUG_BLD=1
                         }
                     }
                   }
@@ -35,7 +35,7 @@ pipeline {
                 anyOf {
                     branch 'master'
                     branch 'development'
-                    environment name: 'DEBUG_BLD', value: '0'
+                    environment name: 'DEBUG_BLD', value: '1'
                 }
             }
             steps {
@@ -49,7 +49,7 @@ pipeline {
                 anyOf{
                     branch 'master'
                     branch 'development'
-                    environment name: 'DEBUG_BLD', value: '0'
+                    environment name: 'DEBUG_BLD', value: '1'
                 }
             }
             steps {
@@ -58,7 +58,7 @@ pipeline {
                     env.DK_TAG_GOAL='tag-latest'
                     env.DK_TAG='latest'
 
-                    if(env.BRANCH_NAME == 'development' || env.DEBUG_BLD == '0') {
+                    if(env.BRANCH_NAME == 'development' || env.DEBUG_BLD == '1') {
                         env.DK_TAG_GOAL='tag-dev'
                         env.DK_TAG='dev-latest'
                     }
@@ -74,7 +74,7 @@ mvn dockerfile:tag@$DK_TAG_GOAL'''
                 anyOf {
                     branch 'master'
                     branch 'development'
-                    environment name: 'DEBUG_BLD', value: '0'
+                    environment name: 'DEBUG_BLD', value: '1'
                 }
             }
             steps {
@@ -90,7 +90,7 @@ docker image rm $DK_U/$APP_NAME:$DK_TAG'''
                 anyOf {
                     branch 'master'
                     branch 'development'
-                    environment name: 'DEBUG_BLD', value: '0'
+                    environment name: 'DEBUG_BLD', value: '1'
                 }
             }
             steps {
@@ -98,7 +98,7 @@ docker image rm $DK_U/$APP_NAME:$DK_TAG'''
                     if(env.BRANCH_NAME == 'master') {
                         env.SPACE = "production"
                         env.IMG="${env.DK_U}/${env.APP_NAME}:latest"
-                    } else if(env.BRANCH_NAME == 'development' || DEBUG_BLD == '0') {
+                    } else if(env.BRANCH_NAME == 'development' || env.DEBUG_BLD == '1') {
                         env.SPACE = "development"
                         env.IMG="${env.DK_U}/${env.APP_NAME}:dev-latest"
                     }
