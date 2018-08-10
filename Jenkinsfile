@@ -10,7 +10,8 @@ pipeline {
             parallel {
                 stage('Unit Tests') {
                   steps {
-                    sh 'echo "run ng test"'
+                    sh 'echo "run mvn test"'
+                    sh "mvn test"
                     script {
                         if(DEBUG_BLD == '0') {
                             sh 'echo running debug build'
@@ -20,7 +21,7 @@ pipeline {
                 }
                 stage('Code Scan') {
                   steps {
-                    sh 'echo "run ng lint"'
+                    sh 'echo "run quality gate"'
                   }
                 }
             }
