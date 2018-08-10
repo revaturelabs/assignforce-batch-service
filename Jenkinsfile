@@ -14,7 +14,7 @@ pipeline {
                     script {
                         sh "git log -1 | grep -co '[debug]' > debug_status"
                         result = readFile("debug_status").trim()
-                        if(result == '1' ) {
+                        if(result != '0' ) {
                             sh 'echo running debug build'
                             env.DEBUG_BLD=result
                         }
