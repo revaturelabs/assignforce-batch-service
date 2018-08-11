@@ -23,6 +23,7 @@ pipeline {
                             sh "mvn test"
                         } catch(Exception e) {
                             env.FAIL_STG="unit tests"
+                            currentBuild.result='FAILURE'
                         }
                     }
                   }
@@ -35,6 +36,7 @@ pipeline {
                             sh 'echo "run quality gate"'
                         } catch(Exception e) {
                             env.FAIL_STG='Code Scan'
+                            currentBuild.result='FAILURE'
                         }
                     }
                   }
@@ -57,6 +59,7 @@ pipeline {
                         sh "mvn install -DskipTests"
                     } catch(Exception e) {
                         env.FAIL_STG='Maven Build'
+                        currentBuild.result='FAILURE'
                     }
                 }
             }
@@ -85,6 +88,7 @@ pipeline {
                         mvn dockerfile:tag@${env.DK_TAG_GOAL}'''
                     } catch(Exception e) {
                         env.FAIL_STG='Docker Build'
+                        currentBuild.result='FAILURE'
                     }
                 }
             }
@@ -108,6 +112,7 @@ pipeline {
                         docker image rm ${env.DK_U}/${env.APP_NAME}:${env.DK_TAG}'''
                     } catch(Exception e) {
                         env.FAIL_STG='Docker Archive'
+                        currentBuild.result='FAILURE'
                     }
                 }
             }
@@ -136,6 +141,7 @@ pipeline {
                         sh 'cf push -o ${env.IMG} --docker-username ${env.DK_U}'
                     } catch(Exception e) {
                         env.FAIL_STG="PCF Deploy"
+                        currentBuild.result='FAILURE'
                     }
                 }
             }
