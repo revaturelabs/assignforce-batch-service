@@ -9,15 +9,20 @@ pipeline {
             parallel {
                 stage('Unit Tests') {
                   steps {
-                    sh 'echo "run mvn test"'
-                    sh "mvn test"
                     script {
-                        result = sh(script: "git log -1 | grep -c '\\[debug\\]'", returnStatus: true)
-                        if(result == 0 ) {
-                            sh 'echo running debug build'
-                            env.DEBUG_BLD=1
-                        } else {
-                            sh 'echo not running debug build'
+                        try {
+                            result = sh(script: "git log -1 | grep -c '\\[debug\\]'", returnStatus: true)
+                            if(result == 0 ) {
+                                sh 'echo running debug build'
+                                env.DEBUG_BLD=1
+                            } else {
+                                sh 'echo not running debug build'
+                            }
+
+                            sh 'echo "run mvn test"'
+                            sh "mvn test"
+                        } catch(Exception e) {
+                            env.FAIL_STG="unit tests"
                         }
                     }
                   }
@@ -25,9 +30,13 @@ pipeline {
                 stage('Code Scan') {
                   steps {
                     script {
-                        slackSend "Started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+                        try {
+                            slackSend "Started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+                            sh 'echo "run quality gate"'
+                        } catch(Exception e) {
+                            env.FAIL_STG='Code Scan'
+                        }
                     }
-                    sh 'echo "run quality gate"'
                   }
                 }
             }
@@ -42,8 +51,14 @@ pipeline {
                 }
             }
             steps {
-                sh "echo run mvn package -DskipTests"
-                sh "mvn install -DskipTests"
+                script {
+                    try {
+                        sh "echo run mvn package -DskipTests"
+                        sh "mvn install -DskipTests"
+                    } catch(Exception e) {
+                        env.FAIL_STG='Maven Build'
+                    }
+                }
             }
         }
 
@@ -57,17 +72,21 @@ pipeline {
             }
             steps {
                 script {
-                    env.DK_U=readFile("/opt/dk_auth").trim().split(':')[0]
-                    env.DK_TAG_GOAL='tag-latest'
-                    env.DK_TAG='latest'
+                    try {
+                        env.DK_U=readFile("/opt/dk_auth").trim().split(':')[0]
+                        env.DK_TAG_GOAL='tag-latest'
+                        env.DK_TAG='latest'
 
-                    if(env.BRANCH_NAME == 'development' || env.DEBUG_BLD == '1') {
-                        env.DK_TAG_GOAL='tag-dev'
-                        env.DK_TAG='dev-latest'
+                        if(env.BRANCH_NAME == 'development' || env.DEBUG_BLD == '1') {
+                            env.DK_TAG_GOAL='tag-dev'
+                            env.DK_TAG='dev-latest'
+                        }
+                        sh '''echo "run docker build"
+                        mvn dockerfile:tag@${env.DK_TAG_GOAL}'''
+                    } catch(Exception e) {
+                        env.FAIL_STG='Docker Build'
                     }
                 }
-                sh '''echo "run docker build"
-mvn dockerfile:tag@$DK_TAG_GOAL'''
             }
         }
 
@@ -81,10 +100,16 @@ mvn dockerfile:tag@$DK_TAG_GOAL'''
                 }
             }
             steps {
-                sh '''echo "push"
-mvn dockerfile:push
-echo "remove local image"
-docker image rm $DK_U/$APP_NAME:$DK_TAG'''
+                script {
+                    try {
+                        sh '''echo "push"
+                        mvn dockerfile:push
+                        echo "remove local image"
+                        docker image rm ${env.DK_U}/${env.APP_NAME}:${env.DK_TAG}'''
+                    } catch(Exception e) {
+                        env.FAIL_STG='Docker Archive'
+                    }
+                }
             }
         }
 
@@ -98,18 +123,21 @@ docker image rm $DK_U/$APP_NAME:$DK_TAG'''
             }
             steps {
                 script {
-                    if(env.BRANCH_NAME == 'master') {
-                        env.SPACE = "production"
-                        env.IMG="${env.DK_U}/${env.APP_NAME}:latest"
-                    } else if(env.BRANCH_NAME == 'development' || env.DEBUG_BLD == '1') {
-                        env.SPACE = "development"
-                        env.IMG="${env.DK_U}/${env.APP_NAME}:dev-latest"
+                    try {
+                        if(env.BRANCH_NAME == 'master') {
+                            env.SPACE = "production"
+                            env.IMG="${env.DK_U}/${env.APP_NAME}:latest"
+                        } else if(env.BRANCH_NAME == 'development' || env.DEBUG_BLD == '1') {
+                            env.SPACE = "development"
+                            env.IMG="${env.DK_U}/${env.APP_NAME}:dev-latest"
+                        }
+                        env.CF_DOCKER_PASSWORD=readFile("/run/secrets/CF_DOCKER_PASSWORD").trim()
+                        sh 'cf target -s ${env.SPACE}'
+                        sh 'cf push -o ${env.IMG} --docker-username ${env.DK_U}'
+                    } catch(Exception e) {
+                        env.FAIL_STG="PCF Deploy"
                     }
-                    env.CF_DOCKER_PASSWORD=readFile("/run/secrets/CF_DOCKER_PASSWORD").trim()
                 }
-
-                sh 'cf target -s $SPACE'
-                sh '''cf push -o $IMG --docker-username $DK_U'''
             }
         }
 
@@ -127,7 +155,7 @@ docker image rm $DK_U/$APP_NAME:$DK_TAG'''
         }
         failure {
             script {
-                slackSend color: "danger", message: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                slackSend color: "danger", message: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER} - Stage ${env.FAIL_STG}"
             }
         }
     }
