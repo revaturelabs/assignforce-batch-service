@@ -24,6 +24,9 @@ pipeline {
                 }
                 stage('Code Scan') {
                   steps {
+                    script {
+                        slackSend "Started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+                    }
                     sh 'echo "run quality gate"'
                   }
                 }
@@ -113,6 +116,18 @@ docker image rm $DK_U/$APP_NAME:$DK_TAG'''
         stage('Clean') {
             steps {
                 cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true, deleteDirs: true)
+            }
+        }
+    }
+    post {
+        success {
+            script {
+                slackSend color: "good", message: "Build Succeeded: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+            }
+        }
+        failure {
+            script {
+                slackSend color: "danger", message: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
             }
         }
     }
