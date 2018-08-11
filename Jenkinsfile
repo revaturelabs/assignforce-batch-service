@@ -87,8 +87,8 @@ pipeline {
                             env.DK_TAG_GOAL='tag-dev'
                             env.DK_TAG='dev-latest'
                         }
-                        sh '''echo "run docker build"
-                        mvn dockerfile:tag@${env.DK_TAG_GOAL}'''
+                        sh "echo run docker build"
+                        sh "mvn dockerfile:tag@${env.DK_TAG_GOAL}"
                     } catch(Exception e) {
                         env.FAIL_STG='Docker Build'
                         currentBuild.result='FAILURE'
@@ -110,10 +110,8 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh '''echo "push"
-                        mvn dockerfile:push
-                        echo "remove local image"
-                        docker image rm ${env.DK_U}/${env.APP_NAME}:${env.DK_TAG}'''
+                        sh "echo push; mvn dockerfile:push"
+                        sh "echo remove local image; docker image rm ${env.DK_U}/${env.APP_NAME}:${env.DK_TAG}"
                     } catch(Exception e) {
                         env.FAIL_STG='Docker Archive'
                         currentBuild.result='FAILURE'
@@ -142,8 +140,8 @@ pipeline {
                             env.IMG="${env.DK_U}/${env.APP_NAME}:dev-latest"
                         }
                         env.CF_DOCKER_PASSWORD=readFile("/run/secrets/CF_DOCKER_PASSWORD").trim()
-                        sh 'cf target -s ${env.SPACE}'
-                        sh 'cf push -o ${env.IMG} --docker-username ${env.DK_U}'
+                        sh "cf target -s ${env.SPACE}"
+                        sh "cf push -o ${env.IMG} --docker-username ${env.DK_U}"
                     } catch(Exception e) {
                         env.FAIL_STG="PCF Deploy"
                         currentBuild.result='FAILURE'
