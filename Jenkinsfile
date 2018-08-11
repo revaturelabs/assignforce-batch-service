@@ -24,6 +24,7 @@ pipeline {
                         } catch(Exception e) {
                             env.FAIL_STG="unit tests"
                             currentBuild.result='FAILURE'
+                            throw e
                         }
                     }
                   }
@@ -37,6 +38,7 @@ pipeline {
                         } catch(Exception e) {
                             env.FAIL_STG='Code Scan'
                             currentBuild.result='FAILURE'
+                            throw e
                         }
                     }
                   }
@@ -60,6 +62,7 @@ pipeline {
                     } catch(Exception e) {
                         env.FAIL_STG='Maven Build'
                         currentBuild.result='FAILURE'
+                        throw e
                     }
                 }
             }
@@ -89,6 +92,7 @@ pipeline {
                     } catch(Exception e) {
                         env.FAIL_STG='Docker Build'
                         currentBuild.result='FAILURE'
+                        throw e
                     }
                 }
             }
@@ -113,6 +117,7 @@ pipeline {
                     } catch(Exception e) {
                         env.FAIL_STG='Docker Archive'
                         currentBuild.result='FAILURE'
+                        throw e
                     }
                 }
             }
@@ -142,6 +147,7 @@ pipeline {
                     } catch(Exception e) {
                         env.FAIL_STG="PCF Deploy"
                         currentBuild.result='FAILURE'
+                        throw e
                     }
                 }
             }
