@@ -2,6 +2,9 @@
 *~
 \#*\#
 
+.vscode/
+*.iml
+
 # compiled output
 /dist
 /tmp
@@ -88,10 +91,7 @@ local.properties
 .recommenders 
 
 # Eclipse Core 
-.project
-
-# IntelliJ
-*.iml
+.project 
 
 Servers/
 

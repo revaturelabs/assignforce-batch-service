@@ -221,6 +221,30 @@
 
     <repositories>
         <repository>
+			<id>spring-libs-release</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/libs-release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/libs-milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+	        <id>spring-snapshots</id>
+	        <name>Spring Snapshots</name>
+	        <url>https://repo.spring.io/libs-snapshot</url>
+	        <snapshots>
+	            <enabled>true</enabled>
+	        </snapshots>
+	    </repository>
+        <repository>
             <id>local-rep</id>
             <url>file://${user.home}/.m2/repository</url>
         </repository>
@@ -244,7 +268,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-
-
 </project>
