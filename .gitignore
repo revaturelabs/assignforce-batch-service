@@ -2,6 +2,9 @@
 *~
 \#*\#
 
+.vscode/
+*.iml
+
 # compiled output
 /dist
 /tmp
