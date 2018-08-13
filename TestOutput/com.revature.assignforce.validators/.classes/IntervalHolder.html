@@ -1,0 +1,125 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IntervalHolder</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.revature.assignforce.validators</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IntervalHolder (com.revature.assignforce.validators)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">IntervalHolder$List</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.revature.assignforce.validators;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.lang.annotation.ElementType;
+<i>4</i>&nbsp;import static java.lang.annotation.ElementType.TYPE;
+<i>5</i>&nbsp;import java.lang.annotation.Repeatable;
+<i>6</i>&nbsp;import java.lang.annotation.Retention;
+<i>7</i>&nbsp;import java.lang.annotation.RetentionPolicy;
+<i>8</i>&nbsp;import static java.lang.annotation.RetentionPolicy.RUNTIME;
+<i>9</i>&nbsp;import java.lang.annotation.Target;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import javax.validation.Constraint;
+<i>12</i>&nbsp;import javax.validation.Payload;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;/**
+<i>15</i>&nbsp; * @author Hayden Fields
+<i>16</i>&nbsp; Annotation to be applied to a class, is repeatable if class must validate 
+<i>17</i>&nbsp; multiple intervals and is validated by IntervalHolderValidator.
+<i>18</i>&nbsp; * @see IntervalHolderValidator
+<i>19</i>&nbsp; */
+<i>20</i>&nbsp;@Repeatable(IntervalHolder.List.class)
+<i>21</i>&nbsp;@Target({TYPE})
+<i>22</i>&nbsp;@Retention(RUNTIME)
+<i>23</i>&nbsp;@Constraint(validatedBy = IntervalHolderValidator.class)
+<i>24</i>&nbsp;public @interface IntervalHolder
+<i>25</i>&nbsp;{
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * List for repeated annotations.
+<i>28</i>&nbsp;     */
+<i>29</i>&nbsp;    @Retention(RetentionPolicy.RUNTIME)
+<i>30</i>&nbsp;    @Target({ElementType.TYPE})
+<i>31</i>&nbsp;    @interface List 
+<i>32</i>&nbsp;    {
+<i>33</i>&nbsp;        /**
+<i>34</i>&nbsp;         * @return An array of the interval constraints.
+<i>35</i>&nbsp;         */
+<i>36</i>&nbsp;        IntervalHolder[] value();
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;    
+<i>39</i>&nbsp;    /**
+<i>40</i>&nbsp;     * https://docs.jboss.org/hibernate/validator/5.0/reference/en-US/html/validator-customconstraints.html
+<i>41</i>&nbsp;     * @return Setting groupings for this constraint annotation.
+<i>42</i>&nbsp;     */
+<i>43</i>&nbsp;    Class&lt;?&gt;[] groups() default {};
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    /**
+<i>46</i>&nbsp;     * https://docs.jboss.org/hibernate/validator/5.0/reference/en-US/html/validator-customconstraints.html
+<i>47</i>&nbsp;     * @return Setting custom payloads for this constraint annotation.
+<i>48</i>&nbsp;     */
+<i>49</i>&nbsp;    Class&lt;? extends Payload&gt;[] payload() default {};
+<i>50</i>&nbsp;    
+<i>51</i>&nbsp;    /**
+<i>52</i>&nbsp;     * @return The field name of the start of the interval.
+<i>53</i>&nbsp;     */
+<i>54</i>&nbsp;    String startInterval() default &quot;startInterval&quot;;
+<i>55</i>&nbsp;    /**
+<i>56</i>&nbsp;     * @return The field name of the end of the interval.
+<i>57</i>&nbsp;     */
+<i>58</i>&nbsp;    String endInterval() default &quot;endInterval&quot;;
+<i>59</i>&nbsp;    
+<i>60</i>&nbsp;    /**
+<i>61</i>&nbsp;     * @return True if it is valid that the start bound and end bound can be 
+<i>62</i>&nbsp;     * the same value and false otherwise.
+<i>63</i>&nbsp;     */
+<i>64</i>&nbsp;    boolean inclusive() default false;
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    /**
+<i>67</i>&nbsp;     * @return Result of validation if one of the bounds are null.
+<i>68</i>&nbsp;     */
+<i>69</i>&nbsp;    boolean ifNull() default false;
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    /**
+<i>72</i>&nbsp;     * @return The message if the object is not valid.
+<i>73</i>&nbsp;     */
+<i>74</i>&nbsp;    String message() default &quot;{Interval is invalid}&quot;;   
+<i>75</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-08-13 13:56</div>
+</div>
+</body>
+</html>

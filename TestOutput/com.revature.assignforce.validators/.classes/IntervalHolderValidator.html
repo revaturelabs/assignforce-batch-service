@@ -1,0 +1,194 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IntervalHolderValidator</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.revature.assignforce.validators</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IntervalHolderValidator (com.revature.assignforce.validators)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">IntervalHolderValidator</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (27/ 36)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.revature.assignforce.validators;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.lang.reflect.Field;
+<i>4</i>&nbsp;import javax.validation.ConstraintValidator;
+<i>5</i>&nbsp;import javax.validation.ConstraintValidatorContext;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * Validator that is used along with IntervalHolder annotation to validate
+<i>9</i>&nbsp; that the start of an interval is before the end of an interval.
+<i>10</i>&nbsp; * @author Hayden Fields
+<i>11</i>&nbsp; * @see IntervalHolder
+<i>12</i>&nbsp; */
+<b class="fc"><i>13</i>&nbsp;public class IntervalHolderValidator implements ConstraintValidator&lt;IntervalHolder, Object&gt;</b>
+<i>14</i>&nbsp;{
+<i>15</i>&nbsp;    // start and end of the interval
+<i>16</i>&nbsp;    private String start;
+<i>17</i>&nbsp;    private String end;
+<i>18</i>&nbsp;    // if true then &lt;= is used for validation else &lt;
+<i>19</i>&nbsp;    private boolean inclusive;
+<i>20</i>&nbsp;    // is the value that is returned if either bound is null
+<i>21</i>&nbsp;    private boolean ifNull;
+<i>22</i>&nbsp;    
+<i>23</i>&nbsp;    /**
+<i>24</i>&nbsp;     * Extract the parameters from the annotation.
+<i>25</i>&nbsp;     * @param constraintAnnotation an instance of the annotation 
+<i>26</i>&nbsp;     */
+<i>27</i>&nbsp;    @Override
+<i>28</i>&nbsp;    public void initialize(IntervalHolder constraintAnnotation) 
+<i>29</i>&nbsp;    {
+<b class="fc"><i>30</i>&nbsp;        this.start = constraintAnnotation.startInterval();</b>
+<b class="fc"><i>31</i>&nbsp;        this.end = constraintAnnotation.endInterval();</b>
+<b class="fc"><i>32</i>&nbsp;        this.inclusive = constraintAnnotation.inclusive();</b>
+<b class="fc"><i>33</i>&nbsp;        this.ifNull = constraintAnnotation.ifNull();</b>
+<b class="fc"><i>34</i>&nbsp;    }    </b>
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    /**
+<i>37</i>&nbsp;     * Determines If the object contains the specified valid interval.
+<i>38</i>&nbsp;     * @param obj An instance of the class that the annotation was bound to.
+<i>39</i>&nbsp;     * @param context Currently not explicitly used.
+<i>40</i>&nbsp;     * @return True if the start of the interval is before the end of the 
+<i>41</i>&nbsp;     * interval if either bound is null returns ifNull.
+<i>42</i>&nbsp;     * @throws IllegalArgumentException If either of the field names specified
+<i>43</i>&nbsp;     * are not on obj.
+<i>44</i>&nbsp;     */
+<i>45</i>&nbsp;    @Override
+<i>46</i>&nbsp;    public boolean isValid(Object obj, ConstraintValidatorContext context) throws IllegalArgumentException
+<i>47</i>&nbsp;    {
+<i>48</i>&nbsp;        // variables for start and end of the interval
+<b class="fc"><i>49</i>&nbsp;        Comparable startObj = null;</b>
+<b class="fc"><i>50</i>&nbsp;        Comparable endObj = null;</b>
+<i>51</i>&nbsp;        
+<i>52</i>&nbsp;        // flahs for detecting if the given object has the required fields
+<b class="fc"><i>53</i>&nbsp;        boolean startGotten = false;</b>
+<b class="fc"><i>54</i>&nbsp;        boolean endGotten = false;</b>
+<i>55</i>&nbsp;        
+<b class="fc"><i>56</i>&nbsp;        final Class&lt;?&gt; clazz = obj.getClass();</b>
+<b class="fc"><i>57</i>&nbsp;        final Field[] fields = clazz.getDeclaredFields();</b>
+<i>58</i>&nbsp;        try // neither exception should ever happen
+<i>59</i>&nbsp;        {
+<i>60</i>&nbsp;            // cheack each field
+<b class="fc"><i>61</i>&nbsp;            for (Field field : fields)</b>
+<i>62</i>&nbsp;            {
+<b class="fc"><i>63</i>&nbsp;                boolean accessibility = field.isAccessible();</b>
+<b class="fc"><i>64</i>&nbsp;                field.setAccessible(true);</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;                // reflect out the fields in the object
+<b class="fc"><i>67</i>&nbsp;                if (field.getName().equals(start))</b>
+<i>68</i>&nbsp;                {
+<b class="fc"><i>69</i>&nbsp;                    startObj = (Comparable)field.get(obj);</b>
+<b class="fc"><i>70</i>&nbsp;                    startGotten = true;</b>
+<i>71</i>&nbsp;                }
+<b class="fc"><i>72</i>&nbsp;                else if (field.getName().equals(end))</b>
+<i>73</i>&nbsp;                {
+<b class="fc"><i>74</i>&nbsp;                    endObj = (Comparable)field.get(obj);</b>
+<b class="fc"><i>75</i>&nbsp;                    endGotten = true;</b>
+<i>76</i>&nbsp;                }
+<i>77</i>&nbsp;
+<b class="fc"><i>78</i>&nbsp;                field.setAccessible(accessibility);</b>
+<i>79</i>&nbsp;            }
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;            // error one of the specified fields was not in the object
+<b class="fc"><i>82</i>&nbsp;            if (!startGotten || !endGotten)</b>
+<i>83</i>&nbsp;            {
+<b class="nc"><i>84</i>&nbsp;                String errorMessage = </b>
+<b class="nc"><i>85</i>&nbsp;                    String.format(&quot;In %s @isValidInterval, is given a&quot;</b>
+<i>86</i>&nbsp;                                + &quot; field name that does not exist in %s.%s%s&quot;, 
+<b class="nc"><i>87</i>&nbsp;                                    obj.getClass(), obj.getClass(),</b>
+<b class="nc"><i>88</i>&nbsp;                                    startGotten?&quot;&quot;:String.format(&quot; Field %s does exist for start.&quot;, start),</b>
+<b class="nc"><i>89</i>&nbsp;                                    endGotten?&quot;&quot;:String.format(&quot; Field %s does exist. for end&quot;, end));</b>
+<b class="nc"><i>90</i>&nbsp;                throw new IllegalArgumentException(errorMessage);</b>
+<i>91</i>&nbsp;            }
+<i>92</i>&nbsp;        } 
+<b class="nc"><i>93</i>&nbsp;        catch (IllegalArgumentException | IllegalAccessException ex)</b>
+<i>94</i>&nbsp;        {
+<i>95</i>&nbsp;            // illegal argument when object does not have field 
+<i>96</i>&nbsp;            // will never happen since we get the Class and Field objects
+<i>97</i>&nbsp;            // from the same object
+<i>98</i>&nbsp;            
+<i>99</i>&nbsp;            // illegal access when access is more restrictive then private
+<b class="nc"><i>100</i>&nbsp;            throw new IllegalArgumentException(ex);</b>
+<b class="fc"><i>101</i>&nbsp;        }</b>
+<i>102</i>&nbsp;        
+<i>103</i>&nbsp;        // both objects exist but one of them is null behavior is specified by 
+<i>104</i>&nbsp;        // the annotation since could be caught by a not null constraint
+<b class="fc"><i>105</i>&nbsp;        if (startObj == null || endObj == null) return ifNull;</b>
+<i>106</i>&nbsp;        
+<b class="fc"><i>107</i>&nbsp;        if (inclusive)</b>
+<b class="nc"><i>108</i>&nbsp;            return startObj.compareTo(endObj) &lt;= 0;</b>
+<b class="fc"><i>109</i>&nbsp;        return startObj.compareTo(endObj) &lt; 0;</b>
+<i>110</i>&nbsp;    }
+<i>111</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-08-13 13:56</div>
+</div>
+</body>
+</html>

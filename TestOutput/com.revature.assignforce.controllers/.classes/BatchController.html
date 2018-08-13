@@ -1,0 +1,155 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: BatchController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.revature.assignforce.controllers</a> ]
+</div>
+
+<h1>Coverage Summary for Class: BatchController (com.revature.assignforce.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BatchController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (16/ 16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.revature.assignforce.controllers;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.List;
+<i>4</i>&nbsp;import java.util.Optional;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>7</i>&nbsp;import org.springframework.cloud.openfeign.EnableFeignClients;
+<i>8</i>&nbsp;import org.springframework.http.HttpStatus;
+<i>9</i>&nbsp;import org.springframework.http.MediaType;
+<i>10</i>&nbsp;import org.springframework.http.ResponseEntity;
+<i>11</i>&nbsp;import org.springframework.web.bind.annotation.CrossOrigin;
+<i>12</i>&nbsp;import org.springframework.web.bind.annotation.DeleteMapping;
+<i>13</i>&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+<i>14</i>&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+<i>15</i>&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+<i>16</i>&nbsp;import org.springframework.web.bind.annotation.PutMapping;
+<i>17</i>&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+<i>18</i>&nbsp;import org.springframework.web.bind.annotation.RestController;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;import com.revature.assignforce.beans.Batch;
+<i>21</i>&nbsp;import com.revature.assignforce.service.BatchService;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;@CrossOrigin
+<i>24</i>&nbsp;@RestController
+<b class="fc"><i>25</i>&nbsp;public class BatchController {</b>
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;	@Autowired
+<i>28</i>&nbsp;	BatchService batchService;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;	// findAll
+<i>31</i>&nbsp;	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+<i>32</i>&nbsp;	public List&lt;Batch&gt; getAll() {
+<b class="fc"><i>33</i>&nbsp;		return batchService.getAll();</b>
+<i>34</i>&nbsp;	}
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;	// findOne
+<i>37</i>&nbsp;	@GetMapping(value = &quot;{id}&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+<i>38</i>&nbsp;	public ResponseEntity&lt;Batch&gt; getById(@PathVariable int id) {
+<b class="fc"><i>39</i>&nbsp;		Optional&lt;Batch&gt; b = batchService.findById(id);</b>
+<b class="fc"><i>40</i>&nbsp;		if (!b.isPresent())</b>
+<b class="fc"><i>41</i>&nbsp;			return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</b>
+<b class="fc"><i>42</i>&nbsp;		return new ResponseEntity&lt;&gt;(b.get(), HttpStatus.OK);</b>
+<i>43</i>&nbsp;	}
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;	// create
+<i>46</i>&nbsp;	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
+<i>47</i>&nbsp;			produces = MediaType.APPLICATION_JSON_VALUE)
+<i>48</i>&nbsp;	public ResponseEntity&lt;Batch&gt; add(@RequestBody Batch a) {
+<b class="fc"><i>49</i>&nbsp;		a = batchService.create(a);</b>
+<b class="fc"><i>50</i>&nbsp;		if (a == null)</b>
+<b class="fc"><i>51</i>&nbsp;			return new ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST);</b>
+<b class="fc"><i>52</i>&nbsp;		return new ResponseEntity&lt;&gt;(a, HttpStatus.CREATED);</b>
+<i>53</i>&nbsp;	}
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;	// update
+<i>56</i>&nbsp;	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
+<i>57</i>&nbsp;			produces = MediaType.APPLICATION_JSON_VALUE)
+<i>58</i>&nbsp;	public ResponseEntity&lt;Batch&gt; update(@RequestBody Batch a) {
+<b class="fc"><i>59</i>&nbsp;		a = batchService.update(a);</b>
+<b class="fc"><i>60</i>&nbsp;		if (a == null)</b>
+<b class="fc"><i>61</i>&nbsp;			return new ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST);</b>
+<b class="fc"><i>62</i>&nbsp;		return new ResponseEntity&lt;&gt;(a, HttpStatus.OK);</b>
+<i>63</i>&nbsp;	}
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;	// delete
+<i>66</i>&nbsp;	@DeleteMapping(value = &quot;{id}&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+<i>67</i>&nbsp;	public ResponseEntity&lt;Batch&gt; delete(@PathVariable int id) {
+<b class="fc"><i>68</i>&nbsp;		batchService.delete(id);</b>
+<b class="fc"><i>69</i>&nbsp;		return new ResponseEntity&lt;&gt;(HttpStatus.OK);</b>
+<i>70</i>&nbsp;	}
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-08-13 13:56</div>
+</div>
+</body>
+</html>

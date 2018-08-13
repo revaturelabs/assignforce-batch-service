@@ -1,0 +1,106 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: BatchServiceApplication</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.revature.assignforce</a> ]
+</div>
+
+<h1>Coverage Summary for Class: BatchServiceApplication (com.revature.assignforce)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BatchServiceApplication</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.revature.assignforce;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+<i>4</i>&nbsp;import org.springframework.boot.autoconfigure.SpringBootApplication;
+<i>5</i>&nbsp;import org.springframework.boot.builder.SpringApplicationBuilder;
+<i>6</i>&nbsp;import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+<i>7</i>&nbsp;import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+<i>8</i>&nbsp;import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+<i>9</i>&nbsp;import org.springframework.cloud.openfeign.EnableFeignClients;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;@EnableDiscoveryClient
+<i>13</i>&nbsp;@SpringBootApplication
+<i>14</i>&nbsp;@EnableFeignClients
+<i>15</i>&nbsp;@EnableCircuitBreaker
+<i>16</i>&nbsp;@EnableHystrix
+<i>17</i>&nbsp;@EnableRabbit
+<b class="nc"><i>18</i>&nbsp;public class BatchServiceApplication {</b>
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;	public static void main(String[] args) {
+<b class="nc"><i>21</i>&nbsp;		new SpringApplicationBuilder(BatchServiceApplication.class).run(args);</b>
+<i>22</i>&nbsp;	}
+<i>23</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-08-13 13:56</div>
+</div>
+</body>
+</html>

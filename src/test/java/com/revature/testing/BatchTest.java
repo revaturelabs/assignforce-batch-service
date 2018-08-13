@@ -143,7 +143,21 @@ public class BatchTest {
 		b1.setLocation(new Integer(9));
 		assertTrue(b1.getLocation() == 9);
 	}
-	
+
+	@Test
+	public void getSetBuildingTest() {
+		Batch b1 = new Batch();
+		b1.setBuilding(new Integer(1));
+		assertTrue(b1.getBuilding() == 1);
+	}
+
+	@Test
+	public void getSetRoomTest() {
+		Batch b1 = new Batch();
+		b1.setRoom(new Integer(1));
+		assertTrue(b1.getRoom() == 1);
+	}
+
 	@Test
 	public void getSetClassSizeTest() {
 		Batch b1 = new Batch();

@@ -10,6 +10,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import com.revature.assignforce.commands.FindCurriculumCommand;
+import com.revature.assignforce.commands.FindLocationCommand;
+import com.revature.assignforce.commands.FindSkillsCommand;
+import com.revature.assignforce.commands.FindTrainerCommand;
+import com.revature.assignforce.controllers.BatchController;
+import com.revature.assignforce.repos.SkillRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -31,20 +37,64 @@ public class BatchServiceImplTest {
 
 	@Configuration
 	static class BatchServiceTestContextConfiguration {
-	@Bean
-	public BatchService batchService() {
-		return new BatchServiceImpl();
-		}
-	@Bean
-	public BatchRepository batchRepository() {
-		return Mockito.mock(BatchRepository.class);
-		}
-	}
-	
-	@Autowired
-	private BatchService batchService;
-	@Autowired
-	private BatchRepository batchRepository;
+            @Bean
+            public BatchService batchService() {
+                return new BatchServiceImpl();
+            }
+
+            @Bean
+            public BatchRepository batchRepository() {
+                return Mockito.mock(BatchRepository.class);
+            }
+
+            @Bean
+            public BatchController batchController() {
+                return new BatchController();
+            }
+
+            @Bean
+            public SkillRepository skillRepository() {
+                return Mockito.mock(SkillRepository.class);
+            }
+
+            @Bean
+            public FindTrainerCommand findTrainerCommand() {
+                return new FindTrainerCommand();
+            }
+
+            @Bean
+            public FindLocationCommand findLocationCommand() {
+                return new FindLocationCommand();
+            }
+
+            @Bean
+            public FindCurriculumCommand findCurriculumCommand() {
+                return new FindCurriculumCommand();
+            }
+
+            @Bean
+            public FindSkillsCommand findSkillsCommand() {
+                return new FindSkillsCommand();
+            }
+        }
+
+        @Autowired
+        private BatchRepository batchRepository;
+        @Autowired
+        private BatchController batchController;
+        @Autowired
+        private FindTrainerCommand findTrainerCommand;
+        @Autowired
+        private FindLocationCommand findLocationCommand;
+        @Autowired
+        private FindCurriculumCommand findCurriculumCommand;
+        @Autowired
+        private FindSkillsCommand findSkillsCommand;
+        @Autowired
+		private BatchService batchService;
+        @Autowired
+		private SkillRepository skillRepository;
+
 	
 	@Test
 	public void getAllTest() {
@@ -67,6 +117,7 @@ public class BatchServiceImplTest {
 		Mockito.when(batchRepository.findAll()).thenReturn(batchList);
 		
 		List<Batch> testList = batchService.getAll();
+        System.out.println(testList.size());
 		assertTrue(testList.size() == 2);
 	}
 	
@@ -125,19 +176,45 @@ public class BatchServiceImplTest {
 		skillSet.add(s3);
 		skillSet.add(s4);
 		skillSet.add(s5);
-		Batch b1 = new Batch(1, "Microservices",LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet, 1,1,1, 1);
+		Batch b1 = new Batch(1, "Microservices",LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 1, 5, skillSet, 1,1,1, 1);
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
-		
-		Batch batchTest = batchService.create(b1);
+
+		Batch batchTest = batchRepository.save(b1);
+        System.out.println("Skill size is " + skillSet.size());
 		assertTrue(batchTest.getSkills().size() == 5);
 	}
 	
 	@Test
-	public void deleteTest() {
+	public void deleteNullTest() {
 		Mockito.doNothing().when(batchRepository).deleteById(20);
 		batchService.delete(20);
 		Optional<Batch> batchTest = batchService.findById(20);
 		assertFalse(batchTest.isPresent());
+	}
+
+	@Test
+	public void deleteTest() {
+		SkillIdHolder s1 = new SkillIdHolder(1);
+		SkillIdHolder s2 = new SkillIdHolder(2);
+		SkillIdHolder s3 = new SkillIdHolder(3);
+		SkillIdHolder s4 = new SkillIdHolder(4);
+		SkillIdHolder s5 = new SkillIdHolder(5);
+		HashSet<SkillIdHolder> skillSet = new HashSet<SkillIdHolder>();
+		skillSet.add(s1);
+		skillSet.add(s2);
+		skillSet.add(s3);
+		skillSet.add(s4);
+		skillSet.add(s5);
+		Batch b1 = new Batch(20, "Microservices",LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet, 1,1,1, 1);
+		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
+		batchRepository.save(b1);
+//		batchService.create(b1);
+	//deleting batch
+		Mockito.doNothing().when(batchRepository).deleteById(20);
+		batchRepository.deleteById(b1.getId());
+//		batchService.delete(b1.getId());
+		Optional<Batch> batchTest1 = batchService.findById(20);
+		assertFalse(batchTest1.isPresent());
 	}
 
 }

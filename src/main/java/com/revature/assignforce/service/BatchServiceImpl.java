@@ -26,6 +26,9 @@ public class BatchServiceImpl implements BatchService {
 
 	@Autowired
 	private BatchRepository batchRepository;
+
+	@Autowired
+	private BatchService batchService;
 	
 	@Autowired
 	private SkillRepository skillRepository;

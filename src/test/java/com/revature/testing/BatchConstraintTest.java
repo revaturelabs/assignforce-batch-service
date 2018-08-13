@@ -200,7 +200,7 @@ public class BatchConstraintTest {
 			skillSet.add(s3);
 			skillSet.add(s4);
 			skillSet.add(s5);
-			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 1, 1, 5, skillSet,1,1, 0, 6);
+			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 1, 1, 5, skillSet,0,1, 0, 6);
 
 	      Set<ConstraintViolation<Batch>> constraintViolations =
 	      validator.validate( b1 );
