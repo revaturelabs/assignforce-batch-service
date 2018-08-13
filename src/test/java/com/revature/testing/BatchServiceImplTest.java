@@ -120,7 +120,83 @@ public class BatchServiceImplTest {
         System.out.println(testList.size());
 		assertTrue(testList.size() == 2);
 	}
-	
+
+	@Test
+	public void getAllByCurriculumTest() {
+		SkillIdHolder s1 = new SkillIdHolder(1);
+		SkillIdHolder s2 = new SkillIdHolder(2);
+		SkillIdHolder s3 = new SkillIdHolder(3);
+		SkillIdHolder s4 = new SkillIdHolder(4);
+		SkillIdHolder s5 = new SkillIdHolder(5);
+		HashSet<SkillIdHolder> skillSet = new HashSet<SkillIdHolder>();
+		skillSet.add(s1);
+		skillSet.add(s2);
+		skillSet.add(s3);
+		skillSet.add(s4);
+		skillSet.add(s5);
+		Batch b1 = new Batch(1, "Microservices", LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet,1,1, 1, 1);
+		Batch b2 = new Batch(2, "Salesforce",LocalDate.of(2019, 5, 10), LocalDate.of(2019, 6, 10), 3, 7, 3, skillSet, 1,1,2,3);
+		List<Batch> batchList = new ArrayList<Batch>();
+		batchList.add(b1);
+		batchList.add(b2);
+		Mockito.when(batchRepository.findByCurriculum(3)).thenReturn(batchList);
+
+		List<Batch> testList = batchService.getAllByCurriculum(3);
+		System.out.println(testList.size());
+		assertTrue(testList.size() == 2);
+	}
+
+	@Test
+	public void getAllByTrainerTest() {
+		SkillIdHolder s1 = new SkillIdHolder(1);
+		SkillIdHolder s2 = new SkillIdHolder(2);
+		SkillIdHolder s3 = new SkillIdHolder(3);
+		SkillIdHolder s4 = new SkillIdHolder(4);
+		SkillIdHolder s5 = new SkillIdHolder(5);
+		HashSet<SkillIdHolder> skillSet = new HashSet<SkillIdHolder>();
+		skillSet.add(s1);
+		skillSet.add(s2);
+		skillSet.add(s3);
+		skillSet.add(s4);
+		skillSet.add(s5);
+		Batch b1 = new Batch(1, "Microservices", LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet,1,1, 1, 1);
+		Batch b2 = new Batch(2, "Salesforce",LocalDate.of(2019, 5, 10), LocalDate.of(2019, 6, 10), 3, 7, 3, skillSet, 1,1,2,3);
+		List<Batch> batchList = new ArrayList<Batch>();
+		batchList.add(b1);
+		batchList.add(b2);
+		Mockito.when(batchRepository.findByTrainer(6)).thenReturn(batchList);
+
+		List<Batch> testList = batchService.getAllByTrainer(6);
+		testList.remove(1);
+		System.out.println(testList.size());
+		assertTrue(testList.size() == 1);
+	}
+
+	@Test
+	public void getAllByLocationTest() {
+		SkillIdHolder s1 = new SkillIdHolder(1);
+		SkillIdHolder s2 = new SkillIdHolder(2);
+		SkillIdHolder s3 = new SkillIdHolder(3);
+		SkillIdHolder s4 = new SkillIdHolder(4);
+		SkillIdHolder s5 = new SkillIdHolder(5);
+		HashSet<SkillIdHolder> skillSet = new HashSet<SkillIdHolder>();
+		skillSet.add(s1);
+		skillSet.add(s2);
+		skillSet.add(s3);
+		skillSet.add(s4);
+		skillSet.add(s5);
+		Batch b1 = new Batch(1, "Microservices", LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet,1,1, 1, 1);
+		Batch b2 = new Batch(2, "Salesforce",LocalDate.of(2019, 5, 10), LocalDate.of(2019, 6, 10), 3, 7, 3, skillSet, 1,1,2,3);
+		List<Batch> batchList = new ArrayList<Batch>();
+		batchList.add(b1);
+		batchList.add(b2);
+		Mockito.when(batchRepository.findByLocation(1)).thenReturn(batchList);
+
+		List<Batch> testList = batchService.getAllByLocation(1);
+		System.out.println(testList.size());
+		assertTrue(testList.size() == 2);
+	}
+
 	@Test
 	public void findByIdTest() {
 		SkillIdHolder s1 = new SkillIdHolder(1);
