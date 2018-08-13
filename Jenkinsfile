@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        APP_NAME="af-settings"
+        APP_NAME="af-batches"
     }
 
     stages {
