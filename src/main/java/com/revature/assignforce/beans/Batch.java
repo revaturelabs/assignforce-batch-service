@@ -1,5 +1,6 @@
 package com.revature.assignforce.beans;
 
+import com.revature.assignforce.builders.DisplayBuilder;
 import com.revature.assignforce.validators.IntervalHolder;
 import java.time.LocalDate;
 import java.util.Set;
@@ -26,7 +27,7 @@ import org.springframework.stereotype.Component;
 @Entity
 @Table(name = "Batch")
 @IntervalHolder(startInterval ="startDate", endInterval="endDate", message="Start date is not before end date")
-public class Batch {
+public class Batch implements DisplayBuilder {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Batch_ID")
@@ -49,6 +50,7 @@ public class Batch {
 
 	@Column(name = "Curriculum_Id")
 	@Min(1)
+	@NotNull(message="Curriculum cannot be null")
 	private Integer curriculum;
 
 	@Column(name = "Trainer_Id")
@@ -76,16 +78,10 @@ public class Batch {
 	@Column(name = "Class_Size")
 	@Min(5)
 	@Max(35)
-	@NotNull(message="classSize cannot be null")
 	private Integer classSize;
 
-	public Batch() {
-		super();
-	}
-
-
 	public Batch(int id, String name, LocalDate startDate, LocalDate endDate, Integer curriculum, Integer trainer,
-			Integer cotrainer, Set<SkillIdHolder> skills, Integer location,Integer building, Integer room, Integer classSize) {
+				 Integer cotrainer, Set<SkillIdHolder> skills, Integer location,Integer building, Integer room, Integer classSize) {
 		this.id = id;
 		this.name = name;
 		this.startDate = startDate;
@@ -195,5 +191,71 @@ public class Batch {
 	public void setClassSize(Integer classSize) {
 		this.classSize = classSize;
 	}
+
+
+//	public static class AdapterBuilder {
+////		Required fields
+//		private final String name;
+//		private final LocalDate startDate;
+//		private final LocalDate endDate;
+//		private final Integer curriculum;
+//
+////		optional fields
+//		private Integer trainer;
+//		private Integer cotrainer;
+//		private Set<SkillIdHolder> skills;
+//		private Integer location;
+//		private Integer building;
+//		private Integer room;
+//		private Integer classSize;
+//
+//		public AdapterBuilder(String name, LocalDate startDate,
+//							  LocalDate endDate, Integer curriculum){
+//			this.name = name;
+//			this.startDate = startDate;
+//			this.endDate = endDate;
+//			this.curriculum = curriculum;
+//		}
+//
+//		public AdapterBuilder trainer(Integer trainer){
+//			this.trainer = trainer;
+//			return this;
+//		}
+//
+//		public AdapterBuilder cotrainer(Integer cotrainer){
+//			this.cotrainer = cotrainer;
+//			return this;
+//		}
+//
+//		public AdapterBuilder skills(Set<SkillIdHolder> skills){
+//			this.skills = skills;
+//			return this;
+//		}
+//
+//		public AdapterBuilder location(Integer location){
+//			this.location = location;
+//			return this;
+//		}
+//
+//		public AdapterBuilder building(Integer building){
+//			this.building = building;
+//			return this;
+//		}
+//
+//		public AdapterBuilder room(Integer room){
+//			this.room = room;
+//			return this;
+//		}
+//
+//		public AdapterBuilder classSize(Integer classSize){
+//			this.classSize = classSize;
+//			return this;
+//		}
+//
+//		public Batch build() {
+//			return new Batch(this)
+//		}
+//	}
+
 
 }
