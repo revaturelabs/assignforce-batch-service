@@ -15,6 +15,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableCircuitBreaker
 @EnableHystrix
 @EnableRabbit
+@EnableWebSecurity
 public class BatchServiceApplication {
 
 	public static void main(String[] args) {
