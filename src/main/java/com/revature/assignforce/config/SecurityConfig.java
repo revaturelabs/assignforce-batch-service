@@ -12,6 +12,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         System.out.println("USING SECURITY CONFIG");
         http
             .authorizeRequests()
-            .anyRequest().permitAll();
+            .antMatchers("/").permitAll();
     }
 }
