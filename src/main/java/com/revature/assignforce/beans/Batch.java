@@ -85,7 +85,8 @@ public class Batch {
 
 
 	public Batch(int id, String name, LocalDate startDate, LocalDate endDate, Integer curriculum, Integer trainer,
-			Integer cotrainer, Set<SkillIdHolder> skills, Integer location,Integer building, Integer room, Integer classSize) {
+				 Integer cotrainer, Set<SkillIdHolder> skills, Integer location,Integer building, Integer room, Integer classSize) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.startDate = startDate;
@@ -97,7 +98,6 @@ public class Batch {
 		this.location = location;
 		this.room = room;
 		this.classSize = classSize;
-		System.out.println(this.location);
 	}
 
 	public int getId() {
