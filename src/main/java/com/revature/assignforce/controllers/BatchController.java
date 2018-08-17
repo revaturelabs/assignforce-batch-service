@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.service.BatchService;
 
-@CrossOrigin
+//@CrossOrigin
 @RestController
 public class BatchController {
 
