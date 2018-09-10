@@ -157,6 +157,7 @@ pipeline {
                         sh "cf push -o ${env.IMG} --docker-username ${env.DK_U} --no-start -d ${env.DOMAIN}"
                         sh "cf set-env ${env.APP_NAME} SPRING_PROFILES_ACTIVE ${env.PROFILE}"
                         sh "cf start ${env.APP_NAME}"
+                        sh "cf logout"
                     } catch(Exception e) {
                         env.FAIL_STG="PCF Deploy"
                         currentBuild.result='FAILURE'
