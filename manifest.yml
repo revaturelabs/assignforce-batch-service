@@ -1,6 +1,6 @@
 ---
 applications:
-  - name: settings-service
+  - name: batch-service
     memory: 2048M
     timeout: 120
     services:
