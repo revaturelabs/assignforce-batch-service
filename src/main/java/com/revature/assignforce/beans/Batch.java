@@ -48,11 +48,11 @@ public class Batch {
 	private LocalDate endDate;
 
 	@Column(name = "Curriculum_Id")
-	@Min(1)
+//	@Min(1)
 	private Integer curriculum;
 
 	@Column(name = "Trainer_Id")
-	@Min(1)
+//	@Min(1)
 	private Integer trainer;
 
 	@Column(name = "Cotrainer_Id")
@@ -63,7 +63,7 @@ public class Batch {
 	private Set<SkillIdHolder> skills;
 
 
-	@Min(1)
+//	@Min(1)
 	@Column(name = "LOCATION_ID")
 	private Integer location;
 
