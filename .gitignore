@@ -146,3 +146,4 @@ target/*
 #two files really don't want to cooperate 
 
 JDBC/target/
+/target/
