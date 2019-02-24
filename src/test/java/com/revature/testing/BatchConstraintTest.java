@@ -187,37 +187,39 @@ public class BatchConstraintTest {
 	  
 	 
 	  /**
-	   * This is the locationMinimumTest method which tests that the location id cannot be 0 or a negative number
+	   * This is the locationMinimumTest method which tests that the location id cannot be a negative number
+	  can still be 0
+	  added by Adam and Eric 
 	   */
-//	  @Test
-//	   public void locationMinimumTest() {
-//
-//	      SkillIdHolder s1 = new SkillIdHolder(1);
-//			SkillIdHolder s2 = new SkillIdHolder(2);
-//			SkillIdHolder s3 = new SkillIdHolder(3);
-//			SkillIdHolder s4 = new SkillIdHolder(4);
-//			SkillIdHolder s5 = new SkillIdHolder(5);
-//			HashSet<SkillIdHolder> skillSet = new HashSet<SkillIdHolder>();
-//			skillSet.add(s1);
-//			skillSet.add(s2);
-//			skillSet.add(s3);
-//			skillSet.add(s4);
-//			skillSet.add(s5);
-//			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 1, 1, 5, skillSet,0,1, 0, 6);
-//
-//	      Set<ConstraintViolation<Batch>> constraintViolations =
-//	      validator.validate( b1 );
-//
-//
-//
-//
-//	      assertEquals( 1, constraintViolations.size() );
-//	      assertEquals(
-//	 	         "must be greater than or equal to 1",
-//	 	         constraintViolations.iterator().next().getMessage()
-//	 	      );
-//
-//	   }
+	  @Test
+	   public void locationMinimumTest() {
+
+	      SkillIdHolder s1 = new SkillIdHolder(1);
+			SkillIdHolder s2 = new SkillIdHolder(2);
+			SkillIdHolder s3 = new SkillIdHolder(3);
+			SkillIdHolder s4 = new SkillIdHolder(4);
+			SkillIdHolder s5 = new SkillIdHolder(5);
+			HashSet<SkillIdHolder> skillSet = new HashSet<SkillIdHolder>();
+			skillSet.add(s1);
+			skillSet.add(s2);
+			skillSet.add(s3);
+			skillSet.add(s4);
+			skillSet.add(s5);
+			Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2019,1,1), LocalDate.of(2019,2,2), 1, 1, 5, skillSet,-10,1, 0, 6);
+
+	      Set<ConstraintViolation<Batch>> constraintViolations =
+	      validator.validate( b1 );
+
+
+
+
+	      assertEquals( 1, constraintViolations.size() );
+	      assertEquals(
+	 	         "must be greater than or equal to 1",
+	 	         constraintViolations.iterator().next().getMessage()
+	 	      );
+
+	   }
 	  
 	  
 
