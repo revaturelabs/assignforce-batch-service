@@ -168,22 +168,24 @@ public class BatchControllerTest {
 		assertTrue(reTest.getStatusCode() == HttpStatus.NOT_FOUND);
 	}
 
-//	@Test
-//	public void addTestCreated() {
-//		SkillIdHolder s1 = new SkillIdHolder(1);
-//		SkillIdHolder s2 = new SkillIdHolder(2);
-//		SkillIdHolder s3 = new SkillIdHolder(3);
-//		SkillIdHolder s4 = new SkillIdHolder(4);
-//		SkillIdHolder s5 = new SkillIdHolder(5);
-//		HashSet<SkillIdHolder> skillSet = new HashSet<SkillIdHolder>();
-//		skillSet.add(s1);
-//		skillSet.add(s2);
-//		skillSet.add(s3);
-//		skillSet.add(s4);
-//		skillSet.add(s5);
-//		Batch b1 = new Batch(5, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
-//				1, 1, 1, 1);
-//		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
+	
+	// updated by Eric and Adam.
+	@Test
+	public void addTestCreated() {
+		SkillIdHolder s1 = new SkillIdHolder(1);
+		SkillIdHolder s2 = new SkillIdHolder(2);
+		SkillIdHolder s3 = new SkillIdHolder(3);
+		SkillIdHolder s4 = new SkillIdHolder(4);
+		SkillIdHolder s5 = new SkillIdHolder(5);
+		HashSet<SkillIdHolder> skillSet = new HashSet<SkillIdHolder>();
+		skillSet.add(s1);
+		skillSet.add(s2);
+		skillSet.add(s3);
+		skillSet.add(s4);
+		skillSet.add(s5);
+		Batch b1 = new Batch(5, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
+		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 //		mockTrainerServer.expect(requestTo("http://localhost:8765/trainer-service/" + b1.getTrainer()))
 //		  .andRespond(withSuccess());
 //		mockCurriculumServer.expect(requestTo("http://localhost:8765/curriculum-service/" + b1.getCurriculum()))
@@ -193,29 +195,33 @@ public class BatchControllerTest {
 //		b1.getSkills().forEach((skillIdHolder) ->
 //		mockSkillsServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getSkillId()))
 //			  .andRespond(withSuccess()));
-//		ResponseEntity<Batch> reTest = batchController.add(b1);
+		ResponseEntity<Batch> reTest = batchController.add(b1);
 //		mockTrainerServer.verify();
 //		mockLocationServer.verify();
 //		mockCurriculumServer.verify();
 //		mockSkillsServer.verify();
-//		assertTrue(reTest.getBody().getId() == 5 && reTest.getStatusCode() == HttpStatus.CREATED);
-//	}
+		assertTrue(reTest.getBody().getId() == 5 && reTest.getStatusCode() == HttpStatus.CREATED);
+	}
 
-//	@Test
-//	public void addTestBadRequest() {
-//		SkillIdHolder s1 = new SkillIdHolder(1);
-//		SkillIdHolder s2 = new SkillIdHolder(2);
-//		SkillIdHolder s3 = new SkillIdHolder(3);
-//		SkillIdHolder s4 = new SkillIdHolder(4);
-//		SkillIdHolder s5 = new SkillIdHolder(5);
-//		HashSet<SkillIdHolder> skillSet = new HashSet<SkillIdHolder>();
-//		skillSet.add(s1);
-//		skillSet.add(s2);
-//		skillSet.add(s3);
-//		skillSet.add(s4);
-//		skillSet.add(s5);
-//		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
-//				1, 1, 1, 1);
+	
+	
+	// updated by Eric and Adam.
+
+	@Test
+	public void addTestBadRequest() {
+		SkillIdHolder s1 = new SkillIdHolder(1);
+		SkillIdHolder s2 = new SkillIdHolder(2);
+		SkillIdHolder s3 = new SkillIdHolder(3);
+		SkillIdHolder s4 = new SkillIdHolder(4);
+		SkillIdHolder s5 = new SkillIdHolder(5);
+		HashSet<SkillIdHolder> skillSet = new HashSet<SkillIdHolder>();
+		skillSet.add(s1);
+		skillSet.add(s2);
+		skillSet.add(s3);
+		skillSet.add(s4);
+		skillSet.add(s5);
+		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
+				1, 1, 1, 1);
 //		mockTrainerServer.expect(requestTo("http://localhost:8765/trainer-service/" + b1.getTrainer()))
 //		  .andRespond(withSuccess());
 //		mockCurriculumServer.expect(requestTo("http://localhost:8765/curriculum-service/" + b1.getCurriculum()))
@@ -225,13 +231,13 @@ public class BatchControllerTest {
 //		b1.getSkills().forEach((skillIdHolder) ->
 //		mockSkillsServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getSkillId()))
 //			  .andRespond(withSuccess()));
-//		ResponseEntity<Batch> reTest = batchController.add(b1);
+		ResponseEntity<Batch> reTest = batchController.add(b1);
 //		mockTrainerServer.verify();
 //		mockLocationServer.verify();
 //		mockCurriculumServer.verify();
 //		mockSkillsServer.verify();
-//		assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
-//	}
+		assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
+	}
 
 	@Test
 	public void updateTestOk() {
