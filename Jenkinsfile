@@ -14,7 +14,7 @@ pipeline {
                                 env.DEBUG_BLD = 1;
                             }
 
-                            sh 'LOGIN=$(aws ecr get-login --no-include-email
+                            sh 'LOGIN=$(aws ecr get-login --no-include-email)
                                 $LOGIN'
                         }
                     }
