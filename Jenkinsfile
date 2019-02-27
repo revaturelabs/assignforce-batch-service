@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        IMG_NAME="/assignforce-batch"
-        REPO="ajduet"
+        IMG_NAME="assignforce/batch"
+        REPO="367484709954.dkr.ecr.us-east-1.amazonaws.com"
             }
 
             stages {
@@ -14,7 +14,8 @@ pipeline {
                                 env.DEBUG_BLD = 1;
                             }
 
-                            sh '/opt/login.sh'
+                            sh 'LOGIN=$(aws ecr get-login --no-include-email) && \
+                                $LOGIN'
                         }
                     }
                 }
@@ -89,19 +90,16 @@ pipeline {
                     steps {
                         script {
                             try {
-                                env.DK_U=readFile("/opt/dk_auth").trim().split(':')[0]
-                                env.DK_TAG_GOAL='tag-latest'
                                 env.DK_TAG='latest'
 
                                 if(env.BRANCH_NAME == 'development' || env.DEBUG_BLD == '1') {
-                                    env.DK_TAG_GOAL='tag-dev'
                                     env.DK_TAG='dev-latest'
                                 }
                                 sh "echo run docker build"
+
                                 //this may have to replace dockerfile:tag
-                                sh "docker build -t ${IMG_NAME} ."
-                                sh "docker tag ${env.IMG_NAME} ${env.REPO}/${env.IMG_NAME}:${env.DK_TAG}" 
-                               
+                                sh "docker build -t ${IMG_NAME} --build-arg JAR_FILE=target/*.jar ."
+                                sh "docker tag ${env.IMG_NAME} ${env.REPO}/${env.IMG_NAME}:${env.DK_TAG}"
                             } catch(Exception e) {
                                 env.FAIL_STG='Docker Build'
                                 currentBuild.result='FAILURE'
@@ -122,11 +120,6 @@ pipeline {
                     steps {
                        script {
                     try {
-                        env.DK_U=readFile("/opt/dk_auth").split(':')[0]
-                        env.DK_P=readFile("/opt/dk_auth").split(':')[1]
-
-                        sh "docker login -u ${env.DK_U} -p ${env.DK_P}"
-
                         sh "echo push"
                         sh "docker push ${REPO}/${IMG_NAME}:${env.DK_TAG}"
                         sh "echo remove local image; docker image rm ${env.REPO}/${env.IMG_NAME}:${env.DK_TAG}"
@@ -148,11 +141,6 @@ pipeline {
                 }
             }
             post {
-                always {
-                    script {
-                        sh 'cf logout'
-                    }
-                }
                 success {
                     script {
                         slackSend color: "good", message: "Build Succeeded: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
