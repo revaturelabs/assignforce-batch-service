@@ -7,7 +7,7 @@
 #         enabled: true
 spring:
   profiles:
-    active: ${ACTIVE_PROFILES}
+    active: ${ACTIVE_PROFILES:default}
   cloud:
     config:
       uri: ${CONFIG_URL}
