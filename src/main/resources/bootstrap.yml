@@ -8,6 +8,6 @@
 spring:
   cloud:
     config:
-      uri: ${CONFIG_URL}
-      username: ${CONFIG_USERNAME}
-      password: ${CONFIG_PASSWORD}
+      uri: http://${CONFIG_USERNAME}:${CONFIG_PASSWORD}@${CONFIG_URL}
+  profiles:
+    active: ${ACTIVE_PROFILES}
