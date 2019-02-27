@@ -5,3 +5,9 @@
 #       discovery:
 #         service-id: config-service
 #         enabled: true
+spring:
+  cloud:
+    config:
+      uri: ${CONFIG_URL}
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}
