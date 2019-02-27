@@ -76,10 +76,9 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.oracle/ojdbc7 -->
 		<dependency>
-			<groupId>com.github.noraui</groupId>
-			<artifactId>ojdbc7</artifactId>
+			<groupId>com.hynnet</groupId>
+			<artifactId>oracle-driver-ojdbc_g</artifactId>
 			<version>12.1.0.2</version>
 		</dependency>
 		<dependency>
