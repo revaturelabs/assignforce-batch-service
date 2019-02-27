@@ -251,6 +251,10 @@
 			<id>local-rep</id>
 			<url>file://${user.home}/.m2/repository</url>
 		</repository>
+		<repository>
+			<id>s3</id>
+			<url></url>
+		</repository>
 	</repositories>
 
 	<dependencyManagement>
