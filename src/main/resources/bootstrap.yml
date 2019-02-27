@@ -6,6 +6,8 @@
 #         service-id: config-service
 #         enabled: true
 spring:
+  profiles:
+    active: ${ACTIVE_PROFILES}
   cloud:
     config:
       uri: ${CONFIG_URL}
