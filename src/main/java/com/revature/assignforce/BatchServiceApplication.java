@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableFeignClients
 @EnableCircuitBreaker
 @EnableHystrix
-@EnableRabbit
 @EnableWebSecurity
 public class BatchServiceApplication {
 
