@@ -13,3 +13,8 @@ spring:
       uri: ${CONFIG_URL}
   application:
     name: batch-service
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
