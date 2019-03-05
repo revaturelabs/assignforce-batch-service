@@ -146,7 +146,9 @@ target/*
 #two files really don't want to cooperate 
 
 JDBC/target/
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
