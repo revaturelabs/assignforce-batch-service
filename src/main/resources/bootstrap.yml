@@ -1,7 +1,13 @@
-# spring:
-#   cloud:
-#     config:
-#       name: batch-service
-#       discovery:
-#         service-id: config-service
-#         enabled: true
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILES:default}
+  cloud:
+    config:
+      uri: ${CONFIG_URL}
+  application:
+    name: batch-service
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

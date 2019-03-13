@@ -78,7 +78,7 @@ public class BatchServiceImpl implements BatchService {
 			b.setSkills(skills);
 		}
 		
-		b = validateReferences(b);
+		// b = validateReferences(b);
 		
 		for(SkillIdHolder s : skills) {
 			skillRepository.save(s);
