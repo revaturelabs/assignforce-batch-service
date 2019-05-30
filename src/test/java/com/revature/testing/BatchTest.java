@@ -3,22 +3,13 @@ package com.revature.testing;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
-import org.junit.*;
 
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.beans.SkillIdHolder;
-import com.revature.assignforce.repos.BatchRepository;
-import com.revature.assignforce.service.BatchService;
-import com.revature.assignforce.service.BatchServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -161,8 +149,8 @@ public class BatchTest {
 	@Test
 	public void getSetClassSizeTest() {
 		Batch b1 = new Batch();
-		b1.setClassSize(new Integer(31));
-		assertTrue(b1.getClassSize() == 31);
+		b1.setSize(new Integer(31));
+		assertTrue(b1.getSize() == 31);
 	}
 	
 	

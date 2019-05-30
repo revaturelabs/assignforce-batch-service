@@ -78,8 +78,8 @@ public class Batch {
 	@Column(name = "Class_Size")
 	@Min(5)
 	@Max(35)
-	@NotNull(message="classSize cannot be null")
-	private Integer classSize;
+	@NotNull(message="size cannot be null")
+	private Integer size;
 
 	public Batch() {
 		super();
@@ -87,7 +87,7 @@ public class Batch {
 
 
 	public Batch(int id, String name, LocalDate startDate, LocalDate endDate, Integer curriculum, Integer trainer,
-				 Integer cotrainer, Set<SkillIdHolder> skills, Integer location,Integer building, Integer room, Integer classSize) {
+				 Integer cotrainer, Set<SkillIdHolder> skills, Integer location,Integer building, Integer room, Integer size) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -99,7 +99,7 @@ public class Batch {
 		this.skills = skills;
 		this.location = location;
 		this.room = room;
-		this.classSize = classSize;
+		this.size = size;
 	}
 
 	public int getId() {
@@ -190,12 +190,12 @@ public class Batch {
 		this.room = room;
 	}
 
-	public Integer getClassSize() {
-		return classSize;
+	public Integer getSize() {
+		return size;
 	}
 
-	public void setClassSize(Integer classSize) {
-		this.classSize = classSize;
+	public void setSize(Integer size) {
+		this.size = size;
 	}
 
 }
