@@ -193,7 +193,7 @@ public class BatchControllerTest {
 //		mockLocationServer.expect(requestTo("http://localhost:8765/location-service/" + b1.getLocation()))
 //		  .andRespond(withSuccess());
 //		b1.getSkills().forEach((skillIdHolder) ->
-//		mockSkillsServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getSkillId()))
+//		mockSkillsServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getId()))
 //			  .andRespond(withSuccess()));
 		ResponseEntity<Batch> reTest = batchController.add(b1);
 //		mockTrainerServer.verify();
@@ -229,7 +229,7 @@ public class BatchControllerTest {
 //		mockLocationServer.expect(requestTo("http://localhost:8765/location-service/" + b1.getLocation()))
 //		  .andRespond(withSuccess());
 //		b1.getSkills().forEach((skillIdHolder) ->
-//		mockSkillsServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getSkillId()))
+//		mockSkillsServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getId()))
 //			  .andRespond(withSuccess()));
 		ResponseEntity<Batch> reTest = batchController.add(b1);
 //		mockTrainerServer.verify();
