@@ -6,9 +6,6 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +18,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
 
-import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.beans.SkillIdHolder;
 import com.revature.assignforce.commands.FindSkillsCommand;
 
@@ -54,7 +50,7 @@ public class FindSkillsCommandTest {
 	@Test
 	public void SkillFound() {
 		SkillIdHolder skillIdHolder = new SkillIdHolder(1);
-		mockServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getSkillId()))
+		mockServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getId()))
 		  .andRespond(withSuccess());
 		boolean found = findSkillsCommand.findSkill(skillIdHolder);
 		mockServer.verify();
@@ -64,7 +60,7 @@ public class FindSkillsCommandTest {
 	@Test
 	public void skillNotFound() {
 		SkillIdHolder skillIdHolder = new SkillIdHolder(1);
-		mockServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getSkillId()))
+		mockServer.expect(requestTo("http://localhost:8765/skill-service/" + skillIdHolder.getId()))
 		  .andRespond(withBadRequest());
 		boolean found = findSkillsCommand.findSkill(skillIdHolder);
 		mockServer.verify();
