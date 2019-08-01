@@ -1,5 +1,6 @@
 package com.revature.assignforce.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,4 +17,8 @@ public interface BatchService {
 	List<Batch> getAllByCurriculum(int curriculumId);
 	List<Batch> getAllByTrainer(int trainerId);
 	List<Batch> getAllByLocation(int locationId);
+
+	List<Batch> getAllByLocationAndCurriculum(int locationId, int curriculumId);
+
+	List<Batch> getAllBatchesStartingBetween(LocalDate startDate, LocalDate endDate);
 }

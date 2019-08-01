@@ -3,7 +3,7 @@
 
 package com.revature.testing;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
@@ -290,5 +290,59 @@ public class BatchControllerTest {
 		assertTrue(reTest.getStatusCode() == HttpStatus.OK);
 	}
 
+	//added  8/1/19 by Caleb and Tayler
+	//tests for get all by Location and Curriculum
+	@Test
+	public void locationNotFound(){
+		ResponseEntity<List<Batch>> locTest = batchController.getByLocationAndCurriculum(-1,1);
+
+		assertEquals(true,locTest.getStatusCode() == HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	public void locationAndCurriculumFound(){
+
+		Batch b1 = new Batch(3,"1906",LocalDate.now(),LocalDate.of(2020,1,15),1,2,0,null,2,12,1304,25);
+		Batch b2 = new Batch(5,"1906",LocalDate.now(),LocalDate.of(2020,1,15),1,2,0,null,2,12,1304,25);
+
+		List<Batch> batches = new ArrayList<>();
+		batches.add(b1);
+		batches.add(b2);
+
+		Mockito.when(batchRepository.findByLocationAndCurriculum(2, 1)).thenReturn(batches);
+
+		ResponseEntity<List<Batch>> locTest = batchController.getByLocationAndCurriculum(2,1);
+		assertEquals(true, (locTest.getStatusCode() == HttpStatus.OK && locTest.getBody().size() == 2));
+	}
+
+	//added 8/1/19 by Tayler
+	//tests for the starting between dates
+
+	@Test
+	public void datesNotFound(){
+		LocalDate start = LocalDate.of(2019,4,20);
+		LocalDate end = LocalDate.of(2020,4, 25);
+		ResponseEntity<List<Batch>> batches = batchController.getByStartingDateBetween(start, end);
+		System.out.println("Response Batches: " + batches);
+
+		assertEquals(true, batches.getStatusCode() == HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	public void someDatesFound(){
+		Batch b1 = new Batch(3,"1906",LocalDate.now(),LocalDate.of(2020,4,15),1,2,0,null,2,12,1304,25);
+		Batch b2 = new Batch(5,"1906",LocalDate.now(),LocalDate.of(2019,9,15),1,4,0,null,2,7,2304,15);
+
+		List<Batch> batches = new ArrayList<>();
+		batches.add(b1);
+		batches.add(b2);
+		LocalDate start = LocalDate.of(2019,3,16);
+		LocalDate end = LocalDate.of(2020,4, 30);
+
+		Mockito.when(batchRepository.findByStartDateBetween(start,end)).thenReturn(batches);
+
+		ResponseEntity<List<Batch>> respBatches = batchController.getByStartingDateBetween(start,end);
+		assertEquals(true, (respBatches.getStatusCode()== HttpStatus.OK && respBatches.getBody().size() == 2));
+	}
 }
 

@@ -1,5 +1,6 @@
 package com.revature.assignforce.repos;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,8 @@ public interface BatchRepository extends JpaRepository<Batch, Integer>{
 	public List<Batch> findByTrainer(Integer id);
 	
 	public List<Batch> findByLocation(Integer id);
+
+	public List<Batch> findByLocationAndCurriculum(Integer locId, Integer curId);
+
+	public List<Batch> findByStartDateBetween(LocalDate start, LocalDate end);
 }

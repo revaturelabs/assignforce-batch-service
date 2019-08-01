@@ -1,5 +1,6 @@
 package com.revature.assignforce.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +41,38 @@ public class BatchController {
 		if (!b.isPresent())
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		return new ResponseEntity<>(b.get(), HttpStatus.OK);
+	}
+
+	// find all by location and curriculum
+
+	/**
+	 * <p>Used for getting all the batches given a particular location and Curriculum</p>
+	 * @param locationId The location Id int
+	 * @param curriculumId The curriculum Id int
+	 * @return either the found list of batches and an HttpStatus.OK, or if the list is null or empty, HttpStatus.Not_Found
+	 */
+	@GetMapping(path = "locAndCur/{locationId}/{curriculumId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Batch>> getByLocationAndCurriculum(@PathVariable("locationId") int locationId,
+															@PathVariable("curriculumId") int curriculumId){
+		List<Batch> locAndCurr = batchService.getAllByLocationAndCurriculum(locationId,curriculumId);
+		if(locAndCurr == null || locAndCurr.isEmpty()){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(locAndCurr, HttpStatus.OK);
+	}
+
+	@GetMapping(path = "starting/{startDate}/{endDate}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Batch>> getByStartingDateBetween(@PathVariable("startDate")LocalDate startDate,
+																@PathVariable("endDate") LocalDate endDate){
+
+		List<Batch> startingBetween = batchService.getAllBatchesStartingBetween(startDate,endDate);
+
+		if(startingBetween == null || startingBetween.isEmpty()){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(startingBetween, HttpStatus.OK);
+
 	}
 
 	// create
