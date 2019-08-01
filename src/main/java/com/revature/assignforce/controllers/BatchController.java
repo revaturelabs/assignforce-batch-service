@@ -61,6 +61,12 @@ public class BatchController {
 		return new ResponseEntity<>(locAndCurr, HttpStatus.OK);
 	}
 
+	/**
+	 * <p>Method returns all batches with a starting date between params</p>
+	 * @param startDate Starting date of the search
+	 * @param endDate the last possible date a batch could start and get included in the results
+	 * @return either the batches or a Not_Found HttpStatus
+	 */
 	@GetMapping(path = "starting/{startDate}/{endDate}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Batch>> getByStartingDateBetween(@PathVariable("startDate")LocalDate startDate,
 																@PathVariable("endDate") LocalDate endDate){
