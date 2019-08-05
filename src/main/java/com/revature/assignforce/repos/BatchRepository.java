@@ -20,4 +20,7 @@ public interface BatchRepository extends JpaRepository<Batch, Integer>{
 	public List<Batch> findByLocationAndCurriculum(Integer locId, Integer curId);
 
 	public List<Batch> findByStartDateBetween(LocalDate start, LocalDate end);
+
+	public List<Batch> findByTrainerAndStartDateBetween(Integer trainerId, LocalDate start, LocalDate end);
+	
 }

@@ -119,7 +119,20 @@ public class BatchServiceImpl implements BatchService {
 
 	@Override
 	public List<Batch> getAllBatchesStartingBetween(LocalDate startDate, LocalDate endDate) {
-		return batchRepository.findByStartDateBetween(startDate, endDate);
+		if(startDate.isBefore(endDate)){
+			return batchRepository.findByStartDateBetween(startDate, endDate);
+		}else{
+			return null;
+		}
+
+	}
+
+	public List<Batch> getAllBatchesByTrainerStartingBetween(Integer trainerID, LocalDate startDate, LocalDate endDate){
+		if(startDate.isBefore(endDate)){
+			return batchRepository.findByTrainerAndStartDateBetween(trainerID, startDate, endDate);
+		}else{
+			return null;
+		}
 	}
 
 	/**

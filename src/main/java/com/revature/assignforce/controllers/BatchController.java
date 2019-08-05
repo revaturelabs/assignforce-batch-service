@@ -81,6 +81,26 @@ public class BatchController {
 
 	}
 
+	/**
+	 * <p>Method returns all batches for a trainer with a starting date between the start and end dates</p>
+	 * @param trainerId
+	 * @param startDate
+	 * @param endDate
+	 * @return either the batches or a Not_Found HttpStatus Code.
+	 */
+	@GetMapping(path = "trainerAndStarting/{trainerId}/{startDate}/{endDate}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Batch>> getByTrainerWithStartingDateBetween(@PathVariable("trainerId")Integer trainerId,
+																		   @PathVariable("startDate") LocalDate startDate,
+																		   @PathVariable("endDate") LocalDate endDate){
+		List<Batch> batches = batchService.getAllBatchesByTrainerStartingBetween(trainerId, startDate,endDate);
+
+		if(batches == null || batches.isEmpty()){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(batches, HttpStatus.OK);
+
+	}
+
 	// create
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
