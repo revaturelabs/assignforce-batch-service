@@ -101,7 +101,48 @@ public class BatchController {
 
 	}
 
-	// create
+    /**
+     * <p>Method returns all batches for a given curriculum that have a starting date between startDate and endDate</p>
+     * @param curriculumId
+     * @param startDate
+     * @param endDate
+     * @return either the batches or a Not_Found HttpStatus Code.
+     */
+    @GetMapping(path = "curriculumAndStarting/{curId}/{startDate}/{endDate}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Batch>> getByCurriculumWithStartingDateBetween(@PathVariable("curId")Integer curriculumId,
+                                                                              @PathVariable("startDate") LocalDate startDate,
+                                                                              @PathVariable("endDate") LocalDate endDate){
+        List<Batch> batches = batchService.getAllBatchesByCurriculumStartingBetween(curriculumId, startDate,endDate);
+
+        if(batches == null || batches.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(batches, HttpStatus.OK);
+
+    }
+
+    /**
+     * <p>Method returns all batches for a given location that have a starting date between startDate and endDate</p>
+     * @param locationId
+     * @param startDate
+     * @param endDate
+     * @return either the batches or a Not_Found HttpStatus code.
+     */
+    @GetMapping(path = "locationAndStarting/{locId}/{startDate}/{endDate}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Batch>> getByLocationWithStartingDateBetween(@PathVariable("locId")Integer locationId,
+                                                                            @PathVariable("startDate") LocalDate startDate,
+                                                                            @PathVariable("endDate") LocalDate endDate){
+        List<Batch> batches = batchService.getAllBatchesByLocationStartingBetween(locationId, startDate,endDate);
+
+        if(batches == null || batches.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(batches, HttpStatus.OK);
+
+    }
+
+
+    // create
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Batch> add(@RequestBody Batch a) {

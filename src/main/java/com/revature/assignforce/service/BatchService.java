@@ -22,4 +22,8 @@ public interface BatchService {
 
 	List<Batch> getAllBatchesStartingBetween(LocalDate startDate, LocalDate endDate);
 	List<Batch> getAllBatchesByTrainerStartingBetween(Integer trainerID, LocalDate startDate, LocalDate endDate);
+    List<Batch> getAllBatchesByLocationStartingBetween(Integer locationId, LocalDate startDate, LocalDate endDate);
+    List<Batch> getAllBatchesByCurriculumStartingBetween(Integer curriculumId, LocalDate startDate, LocalDate endDate);
+
+
 }
