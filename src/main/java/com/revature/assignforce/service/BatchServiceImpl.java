@@ -1,5 +1,6 @@
 package com.revature.assignforce.service;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -109,7 +110,31 @@ public class BatchServiceImpl implements BatchService {
 	public List<Batch> getAllByLocation(int locationId){
 		return batchRepository.findByLocation(locationId);
 	}
-	
+
+	@Override
+	public List<Batch> getAllByLocationAndCurriculum(int locationId, int curriculumId) {
+		return batchRepository.findByLocationAndCurriculum(locationId,curriculumId);
+
+	}
+
+	@Override
+	public List<Batch> getAllBatchesStartingBetween(LocalDate startDate, LocalDate endDate) {
+		if(startDate.isBefore(endDate)){
+			return batchRepository.findByStartDateBetween(startDate, endDate);
+		}else{
+			return null;
+		}
+
+	}
+
+	public List<Batch> getAllBatchesByTrainerStartingBetween(Integer trainerID, LocalDate startDate, LocalDate endDate){
+		if(startDate.isBefore(endDate)){
+			return batchRepository.findByTrainerAndStartDateBetween(trainerID, startDate, endDate);
+		}else{
+			return null;
+		}
+	}
+
 	/**
 	 * Checks for referential integrity. The method will first call FindTrainer
 	 * Command and check if the trainer exists, then move on to Location and Curriculum
