@@ -135,6 +135,24 @@ public class BatchServiceImpl implements BatchService {
 		}
 	}
 
+    @Override
+    public List<Batch> getAllBatchesByLocationStartingBetween(Integer locationId, LocalDate startDate, LocalDate endDate) {
+        if(startDate.isBefore(endDate)){
+            return batchRepository.findByLocationAndStartDateBetween(locationId,startDate,endDate);
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    public List<Batch> getAllBatchesByCurriculumStartingBetween(Integer curriculumId, LocalDate startDate, LocalDate endDate) {
+        if(startDate.isBefore(endDate)){
+            return batchRepository.findByCurriculumAndStartDateBetween(curriculumId,startDate,endDate);
+        }else{
+            return null;
+        }
+    }
+
 	/**
 	 * Checks for referential integrity. The method will first call FindTrainer
 	 * Command and check if the trainer exists, then move on to Location and Curriculum
