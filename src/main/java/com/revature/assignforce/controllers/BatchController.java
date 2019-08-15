@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -61,8 +62,10 @@ public class BatchController {
 	 * @return either the batches or a Not_Found HttpStatus
 	 */
 	@GetMapping(path = "startingBetween/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Batch>> getByStartingDateBetween(@RequestParam("start")LocalDate startDate,
-																@RequestParam("end") LocalDate endDate){
+	public ResponseEntity<List<Batch>> getByStartingDateBetween(@RequestParam("start")
+																	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+																@RequestParam("end")
+																@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate){
 
 		List<Batch> startingBetween = batchService.getAllBatchesStartingBetween(startDate,endDate);
 
@@ -83,8 +86,10 @@ public class BatchController {
 	 */
 	@GetMapping(path = "trainerAndStartingBetween/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Batch>> getByTrainerWithStartingDateBetween(@RequestParam("Id")Integer trainerId,
-																		   @RequestParam("start") LocalDate startDate,
-																		   @RequestParam("end") LocalDate endDate){
+																		   @RequestParam("start")
+																		   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate startDate,
+																		   @RequestParam("end")
+																			   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate endDate){
 		List<Batch> batches = batchService.getAllBatchesByTrainerStartingBetween(trainerId, startDate,endDate);
 
 		if(batches == null || batches.isEmpty()){
@@ -103,8 +108,10 @@ public class BatchController {
      */
     @GetMapping(path = "curriculumAndStartingBetween/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Batch>> getByCurriculumWithStartingDateBetween(@RequestParam("Id")Integer curriculumId,
-                                                                              @RequestParam("start") LocalDate startDate,
-                                                                              @RequestParam("end") LocalDate endDate){
+                                                                              @RequestParam("start")
+																			  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate startDate,
+                                                                              @RequestParam("end")
+																				  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate endDate){
         List<Batch> batches = batchService.getAllBatchesByCurriculumStartingBetween(curriculumId, startDate,endDate);
 
         if(batches == null || batches.isEmpty()){
@@ -123,8 +130,10 @@ public class BatchController {
      */
     @GetMapping(path = "locationAndStartingBetween/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Batch>> getByLocationWithStartingDateBetween(@RequestParam(name = "Id")Integer locationId,
-                                                                            @RequestParam(name = "start") LocalDate startDate,
-                                                                            @RequestParam(name = "end") LocalDate endDate){
+                                                                            @RequestParam(name = "start")
+																			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate startDate,
+                                                                            @RequestParam(name = "end")
+																				@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate endDate){
         List<Batch> batches = batchService.getAllBatchesByLocationStartingBetween(locationId, startDate,endDate);
 
         if(batches == null || batches.isEmpty()){
