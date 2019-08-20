@@ -24,8 +24,8 @@ public class SprintController {
     private ProjectServiceProvider projectServiceProvider;
 
     @Autowired
-    public void setProjectServiceProvider(ProjectServiceProvider projectServiceProvider) {
-        this.projectServiceProvider = projectServiceProvider;
+    public void setProjectServiceProvider(ProjectServiceProvider projectServiceImpl) {
+        this.projectServiceProvider = projectServiceImpl;
     }
 
     public void setHostName(String hostName) {
@@ -68,6 +68,19 @@ public class SprintController {
         return responseEntity;
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity updateProject(@PathVariable int id, @RequestBody ProjectDTO d) {
+      Project p = this.projectServiceProvider.getProjectById(id);
+
+      if(p == null) {
+          return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+      } else {
+          this.projectServiceProvider.updateProject(mergeDTO(d));
+      }
+
+      return new ResponseEntity(null, HttpStatus.NO_CONTENT);
+    }
+
     private HttpHeaders getJsonHeader() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
@@ -80,8 +93,20 @@ public class SprintController {
         dto.setUrl(String.format("%s/batch-service/p/%s", hostName, p.getName()));
         dto.setDescription(p.getDescription());
         dto.setId(p.getId());
+        dto.setActive(p.isActive());
         dto.setOwner(p.getOwner());
 
         return dto;
+    }
+
+    private Project mergeDTO(ProjectDTO d) {
+        Project p = new Project();
+        p.setId(d.getId());
+        p.setOwner(d.getOwner());
+        p.setDescription(d.getDescription());
+        p.setName(d.getName());
+        p.setActive(d.isActive());
+
+        return p;
     }
 }
