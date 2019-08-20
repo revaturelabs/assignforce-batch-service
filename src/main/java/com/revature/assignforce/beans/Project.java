@@ -20,7 +20,7 @@ public class Project {
     private String owner;
 
     @Column(name="ACTIVE", columnDefinition="default true")
-    private boolean isActive;
+    private boolean active;
 
     public int getId() {
         return id;
@@ -47,11 +47,11 @@ public class Project {
     }
 
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(boolean active) {
-        isActive = active;
+        this.active = active;
     }
 
     public String getOwner() {
@@ -68,13 +68,13 @@ public class Project {
         if (o == null || getClass() != o.getClass()) return false;
         Project project = (Project) o;
         return id == project.id &&
-                isActive == project.isActive &&
+                active == project.active &&
                 name.equals(project.name) &&
                 description.equals(project.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, isActive);
+        return Objects.hash(id, name, description, active);
     }
 }
