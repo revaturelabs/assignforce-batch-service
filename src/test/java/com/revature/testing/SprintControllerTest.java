@@ -126,12 +126,35 @@ public class SprintControllerTest {
                 dtos.getBody().toArray());
     }
 
+    @Test
+    public void should404OnInvalidId() {
+        Mockito
+                .when(projectServiceProvider.getProjectById(1))
+                .thenReturn(null);
+        ResponseEntity ret = controller.updateProject(1, null);
+        Assert.assertEquals("Didn't receive a 404",
+                HttpStatus.NOT_FOUND,
+                ret.getStatusCode());
+    }
+
+    @Test
+    public void shouldNotFailOnGoodInput() {
+        Mockito
+                .when(projectServiceProvider.getProjectById(1))
+                .thenReturn(projectMocks.get(0));
+        ResponseEntity ret = controller.updateProject(1, toDTO(projectMocks.get(0)));
+        Assert.assertEquals("Unexpected status returned",
+                HttpStatus.NO_CONTENT,
+                ret.getStatusCode());
+    }
+
     private ProjectDTO toDTO(Project p) {
         ProjectDTO dto = new ProjectDTO();
         dto.setName(p.getName());
-        dto.setUrl(String.format("%s/batch-service/projects/%s", "localhost", p.getName()));
+        dto.setUrl(String.format("%s/batch-service/p/%s", "localhost", p.getName()));
         dto.setDescription(p.getDescription());
         dto.setId(p.getId());
+        dto.setActive(p.isActive());
         dto.setOwner(p.getOwner());
 
         return dto;

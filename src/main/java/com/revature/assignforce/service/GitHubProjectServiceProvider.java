@@ -35,6 +35,11 @@ public class GitHubProjectServiceProvider implements ProjectServiceProvider {
     }
 
     @Override
+    public Project getProjectById(int id) {
+        return null;
+    }
+
+    @Override
     public Project getProject(String name) {
         return projectRepository.findByName(name);
     }
@@ -52,5 +57,10 @@ public class GitHubProjectServiceProvider implements ProjectServiceProvider {
     @Override
     public List<Project> getProjectsWithOwner(String owner) {
         return projectRepository.findAllByOwner(owner);
+    }
+
+    @Override
+    public void updateProject(Project p) {
+
     }
 }

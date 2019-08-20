@@ -2,8 +2,8 @@ package com.revature.testing;
 
 import com.revature.assignforce.beans.Project;
 import com.revature.assignforce.repos.ProjectRepository;
-import com.revature.assignforce.service.GitHubProjectServiceProvider;
-import org.assertj.core.util.Arrays;
+import com.revature.assignforce.service.ProjectServiceImpl;
+import com.revature.assignforce.service.ProjectServiceProvider;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,18 +14,16 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 @Profile("local-dev")
-public class GitHubProjectServiceProviderTest {
+public class ProjectServiceImplTest {
 
     @Mock
     RestTemplate restTemplate;
@@ -34,15 +32,12 @@ public class GitHubProjectServiceProviderTest {
     ProjectRepository projectRepository;
 
     @InjectMocks
-    GitHubProjectServiceProvider projectServiceProvider;
+    ProjectServiceProvider projectServiceProvider = new ProjectServiceImpl();
 
     private List<Project> projectMocks;
 
-    private static final String TEST_TOKEN = "17TestToken37";
-
     @Before
     public void beforeEach() {
-        projectServiceProvider.setApiKey(TEST_TOKEN);
         projectMocks = new ArrayList<>();
         Project p = new Project();
         p.setId(1);
@@ -146,6 +141,24 @@ public class GitHubProjectServiceProviderTest {
         Assert.assertArrayEquals("Unexpected project list",
                 filterOwnerProjects("blake.kruppa@revature.com").toArray(),
                 projectServiceProvider.getProjectsWithOwner("blake.kruppa@revature.com").toArray());
+    }
+
+    @Test
+    public void shouldReturnNullOnNonExistentId() {
+        Mockito
+                .when(projectRepository.getOne(10))
+                .thenReturn(null);
+        Assert.assertNull("Should be null", projectServiceProvider.getProjectById(10));
+    }
+
+    @Test
+    public void shouldReturnProjectExistentId() {
+        Mockito
+                .when(projectRepository.getOne(1))
+                .thenReturn(projectMocks.get(0));
+        Assert.assertEquals("Unexpected Project",
+                projectMocks.get(0),
+                projectServiceProvider.getProjectById(1));
     }
 
     private List<Project> filterActiveProjects(boolean isActive) {

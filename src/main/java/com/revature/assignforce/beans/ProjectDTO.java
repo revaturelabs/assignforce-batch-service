@@ -10,6 +10,15 @@ public class ProjectDTO {
     private String url;
     private String description;
     private String[] sprints;
+    private boolean active;
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public int getId() {
         return id;

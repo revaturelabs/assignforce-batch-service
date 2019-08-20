@@ -5,9 +5,10 @@ import com.revature.assignforce.beans.Project;
 import java.util.List;
 
 public interface ProjectServiceProvider {
-    void setApiKey(String key);
+    Project getProjectById(int id);
     Project getProject(String name);
     List<Project> getAllProjects();
     List<Project> getProjectsWithStatus(boolean isActive);
     List<Project> getProjectsWithOwner(String owner);
+    void updateProject(Project p);
 }
