@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("p")
 public class SprintController {
 
-    @Value("${spring.cloud.inetutils.default-hostname")
+    @Value("${spring.cloud.inetutils.default-hostname}")
     private String hostName;
 
     private ProjectServiceProvider projectServiceProvider;
