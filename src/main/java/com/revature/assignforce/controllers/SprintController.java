@@ -77,7 +77,7 @@ public class SprintController {
     private ProjectDTO toDTO(Project p) {
         ProjectDTO dto = new ProjectDTO();
         dto.setName(p.getName());
-        dto.setUrl(String.format("%s/batch-service/projects/%s", hostName, p.getName()));
+        dto.setUrl(String.format("%s/batch-service/p/%s", hostName, p.getName()));
         dto.setDescription(p.getDescription());
         dto.setId(p.getId());
         dto.setOwner(p.getOwner());
