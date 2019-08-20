@@ -34,7 +34,7 @@ public class SprintController {
         this.hostName = hostName;
     }
 
-    @GetMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/p", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProjectDTO>> getAllProjects(@RequestParam(value = "status",required = false)String status) {
         List<ProjectDTO> projectDTOS = new ArrayList<>();
         List<Project> projects;
