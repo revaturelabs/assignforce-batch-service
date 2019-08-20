@@ -13,10 +13,10 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class ProjectServiceProviderConfig {
 
-    @Value("${client.issues.api-key")
+    @Value("${client.issues.api-key}")
     private String apiKey;
 
-    @Value("${client.issues.provider")
+    @Value("${client.issues.provider}")
     private String issuesProvider;
 
     @Bean(autowire= Autowire.BY_TYPE)

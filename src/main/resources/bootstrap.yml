@@ -1,13 +1,21 @@
+---
 spring:
   profiles:
     active: ${ACTIVE_PROFILES:default}
+  application:
+    name: batch-service
   cloud:
     config:
       uri: ${CONFIG_URL}
-  application:
-    name: batch-service
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health
+    inetutils:
+      default-hostname: ${HOST_NAME:localhost}
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health
+client:
+  issues:
+    api-key: ${SPRINTREPOAUTHTOKEN}
+    provider: ${ISSUES_PROVIDER}
+
