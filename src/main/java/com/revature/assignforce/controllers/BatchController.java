@@ -16,7 +16,7 @@ import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.service.BatchService;
 
 //@CrossOrigin
-@RestController("batches")
+@RestController("/batches")
 public class BatchController {
 
 	@Autowired

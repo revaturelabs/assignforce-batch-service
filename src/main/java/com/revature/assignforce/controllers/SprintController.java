@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController("projects")
+@RestController("/projects")
 public class SprintController {
 
     @Value("${spring.cloud.inetutils.default-hostname")
