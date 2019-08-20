@@ -56,7 +56,7 @@ public class SprintController {
         return new ResponseEntity<>(projectDTOS, getJsonHeader(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "p/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProjectDTO> getProjectByName(@PathVariable String name) {
         Project p = projectServiceProvider.getProject(name);
         ResponseEntity<ProjectDTO> responseEntity;
