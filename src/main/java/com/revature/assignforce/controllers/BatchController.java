@@ -23,7 +23,7 @@ public class BatchController {
 	BatchService batchService;
 
 	// findAll
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Batch> getAll() {
 		return batchService.getAll();
 	}
