@@ -9,15 +9,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController("/projects")
+@RestController
+@RequestMapping("p")
 public class SprintController {
 
     @Value("${spring.cloud.inetutils.default-hostname")
@@ -34,7 +32,7 @@ public class SprintController {
         this.hostName = hostName;
     }
 
-    @GetMapping(value="/p", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProjectDTO>> getAllProjects(@RequestParam(value = "status",required = false)String status) {
         List<ProjectDTO> projectDTOS = new ArrayList<>();
         List<Project> projects;
@@ -56,7 +54,7 @@ public class SprintController {
         return new ResponseEntity<>(projectDTOS, getJsonHeader(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "p/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProjectDTO> getProjectByName(@PathVariable String name) {
         Project p = projectServiceProvider.getProject(name);
         ResponseEntity<ProjectDTO> responseEntity;
