@@ -1,8 +1,13 @@
 package com.revature.assignforce.service;
 
 import com.revature.assignforce.beans.Project;
+import com.revature.assignforce.beans.SprintDTO;
 import com.revature.assignforce.repos.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -11,12 +16,11 @@ import java.util.List;
 
 @Service
 @Transactional
-public class GitHubProjectServiceProvider implements ProjectServiceProvider {
+public class GitHubProjectServiceProvider implements IssuesServiceProvider {
 
     private String apiKey;
-    private ProjectRepository projectRepository;
     private RestTemplate restTemplate;
-    private String apiUrl = "https://api.github.com/repos/revaturelabs/";
+    private String apiUrl = "https://api.github.com/repos/revaturelabs/{repo}/projects";
 
     public GitHubProjectServiceProvider() {}
 
@@ -25,42 +29,26 @@ public class GitHubProjectServiceProvider implements ProjectServiceProvider {
     }
 
     @Autowired
-    public void setProjectRepository(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
-    }
-
-    @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
     @Override
-    public Project getProjectById(int id) {
-        return null;
+    public List<SprintDTO> getNativeApiSprints(String name) {
+        String url = apiUrl.replace("{repo}", name);
+        return restTemplate.exchange(url,
+                HttpMethod.GET,
+                requestEntity(),
+                new ParameterizedTypeReference<List<SprintDTO>>() {
+                }).getBody();
     }
 
-    @Override
-    public Project getProject(String name) {
-        return projectRepository.findByName(name);
+    private HttpEntity<String> requestEntity() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", "application/vnd.github.inertia-preview+json");
+        headers.add("Authorization", "Bearer " + apiKey);
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+        return entity;
     }
 
-    @Override
-    public List<Project> getAllProjects() {
-        return projectRepository.findAll();
-    }
-
-    @Override
-    public List<Project> getProjectsWithStatus(boolean isActive) {
-        return projectRepository.findAllByActiveEquals(isActive);
-    }
-
-    @Override
-    public List<Project> getProjectsWithOwner(String owner) {
-        return projectRepository.findAllByOwner(owner);
-    }
-
-    @Override
-    public void updateProject(Project p) {
-
-    }
 }

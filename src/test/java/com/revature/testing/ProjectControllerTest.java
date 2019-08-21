@@ -2,7 +2,7 @@ package com.revature.testing;
 
 import com.revature.assignforce.beans.Project;
 import com.revature.assignforce.beans.ProjectDTO;
-import com.revature.assignforce.controllers.SprintController;
+import com.revature.assignforce.controllers.ProjectController;
 import com.revature.assignforce.service.ProjectServiceProvider;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SprintControllerTest {
+public class ProjectControllerTest {
     @Mock
     ProjectServiceProvider projectServiceProvider;
 
     @InjectMocks
-    SprintController controller = new SprintController();
+    ProjectController controller = new ProjectController();
 
-    List<Project> projectMocks = new ArrayList<>();
+    private List<Project> projectMocks = new ArrayList<>();
 
     @Before
     public void beforeEach() {
@@ -105,8 +105,7 @@ public class SprintControllerTest {
         Assert.assertEquals("Unexpected status", HttpStatus.OK, dtos.getStatusCode());
         Assert.assertArrayEquals("Unexpected list",
                 filterProjectsWithStatus(true).stream()
-                .map(project -> toDTO(project))
-                .collect(Collectors.toList()).toArray(),
+                        .map(this::toDTO).toArray(),
                 dtos.getBody().toArray());
     }
 
@@ -121,8 +120,7 @@ public class SprintControllerTest {
         Assert.assertEquals("Unexpected status", HttpStatus.OK, dtos.getStatusCode());
         Assert.assertArrayEquals("Unexpected list",
                 filterProjectsWithStatus(false).stream()
-                        .map(project -> toDTO(project))
-                        .collect(Collectors.toList()).toArray(),
+                        .map(this::toDTO).toArray(),
                 dtos.getBody().toArray());
     }
 
