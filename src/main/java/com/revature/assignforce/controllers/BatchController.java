@@ -156,9 +156,9 @@ public class BatchController {
 	}
 
 	// update
-	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
+	@PutMapping(value="{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Batch> update(@RequestBody Batch a) {
+	public ResponseEntity<Batch> update(@RequestBody Batch a, @PathVariable Integer id) {
 		a = batchService.update(a);
 		if (a == null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
