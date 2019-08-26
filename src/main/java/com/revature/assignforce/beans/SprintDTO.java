@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 public class SprintDTO {
+    private int id;
     private String url;
     @JsonProperty("created_at")
     private Timestamp createdAt;
@@ -16,6 +17,7 @@ public class SprintDTO {
     private String name;
     @JsonProperty("body")
     private String description;
+    private String state;
 
     public SprintDTO() {}
 
@@ -67,33 +69,53 @@ public class SprintDTO {
         this.description = description;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SprintDTO sprintDTO = (SprintDTO) o;
-        return url.equals(sprintDTO.url) &&
+        return id == sprintDTO.id &&
+                url.equals(sprintDTO.url) &&
                 createdAt.equals(sprintDTO.createdAt) &&
                 Objects.equals(updatedAt, sprintDTO.updatedAt) &&
                 Objects.equals(columnsUrl, sprintDTO.columnsUrl) &&
                 name.equals(sprintDTO.name) &&
-                description.equals(sprintDTO.description);
+                description.equals(sprintDTO.description) &&
+                state.equals(sprintDTO.state);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(url, createdAt, updatedAt, columnsUrl, name, description);
+        return Objects.hash(id, url, createdAt, updatedAt, columnsUrl, name, description, state);
     }
 
     @Override
     public String toString() {
         return "SprintDTO{" +
-                "url='" + url + '\'' +
+                "id=" + id +
+                ", url='" + url + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", columnsUrl='" + columnsUrl + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", state='" + state + '\'' +
                 '}';
     }
 }

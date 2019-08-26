@@ -1,8 +1,6 @@
 package com.revature.assignforce.service;
 
-import com.revature.assignforce.beans.Project;
 import com.revature.assignforce.beans.SprintDTO;
-import com.revature.assignforce.repos.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
