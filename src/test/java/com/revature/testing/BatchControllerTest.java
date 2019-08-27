@@ -258,7 +258,7 @@ public class BatchControllerTest {
 	
 		b1.setEndDate(LocalDate.of(2020, 2, 2));
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
-		ResponseEntity<Batch> reTest = batchController.update(b1);
+		ResponseEntity<Batch> reTest = batchController.update(b1, 1);
 		assertTrue(reTest.getBody().getEndDate().equals(LocalDate.of(2020, 2, 2))
 				&& reTest.getStatusCode() == HttpStatus.OK);
 	}
@@ -279,7 +279,7 @@ public class BatchControllerTest {
 		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
 				1, 1, 1, 1);
 		b1.setEndDate(LocalDate.of(2020, 2, 2));
-		ResponseEntity<Batch> reTest = batchController.update(b1);
+		ResponseEntity<Batch> reTest = batchController.update(b1, 1);
 		assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
 	}
 
