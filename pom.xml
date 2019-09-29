@@ -69,9 +69,9 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.hynnet</groupId>
-			<artifactId>oracle-driver-ojdbc_g</artifactId>
-			<version>12.1.0.2</version>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc7</artifactId>
+			<version>12.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
