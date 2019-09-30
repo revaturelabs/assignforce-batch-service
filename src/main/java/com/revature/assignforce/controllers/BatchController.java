@@ -1,35 +1,61 @@
 package com.revature.assignforce.controllers;
 
-import java.time.LocalDate;
+import java.sql.SQLException;
+
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.service.BatchService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 //@CrossOrigin
 @RestController
-@RequestMapping("b")
+@Api(value = "BatchController")
 public class BatchController {
 
 	@Autowired
 	BatchService batchService;
 
-	// findAll
-	@GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+	/**
+	 * Find All Batches using a get request and return a list of items
+	 * 
+	 * @return	List of all Batches
+	 */
+	@ApiOperation(value = "List All Batches from the System ", response = Iterable.class, tags = "getAllBatches")
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Batch> getAll() {
 		return batchService.getAll();
 	}
 
-	// findOne
+	// 
+	/**
+	 * Find Batch by id using get request and return status 200 - OK. 
+	 * If no batch found, return status 404 - not found
+	 * 
+	 * @param id	Batch by Id
+	 * @return		RequestEntity
+	 */
+	@ApiOperation(value = "Find Batch by Id from the System ", response = ResponseEntity.class, tags = "getBatchById")
 	@GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Batch> getById(@PathVariable int id) {
 		Optional<Batch> b = batchService.findById(id);
@@ -38,114 +64,17 @@ public class BatchController {
 		return new ResponseEntity<>(b.get(), HttpStatus.OK);
 	}
 
-	// find all by location and curriculum
-
 	/**
-	 * <p>Used for getting all the batches given a particular location and Curriculum</p>
-	 * @param locationId The location Id int
-	 * @param curriculumId The curriculum Id int
-	 * @return either the found list of batches and an HttpStatus.OK, or if the list is null or empty, HttpStatus.Not_Found
+	 * 	create batch with unique id, name, start date, end date, curriculum id, trainer id, co-trainer id, 
+	 * 		and return status 201 - created.
+	 * 
+	 * 	If the request doesn't fit the parameters, 
+	 * 		it returns status 400 - bad request
+	 * 
+	 * @param a		Create Batch with unique id, name, start date, end date, curriculum id, trainer id, co-trainer id
+	 * @return		ResponseEntity
 	 */
-	@GetMapping(path = "locAndCur/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Batch>> getByLocationAndCurriculum(@RequestParam("locationId") int locationId,
-															@RequestParam("curriculumId") int curriculumId){
-		List<Batch> locAndCurr = batchService.getAllByLocationAndCurriculum(locationId,curriculumId);
-		if(locAndCurr == null || locAndCurr.isEmpty()){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(locAndCurr, HttpStatus.OK);
-	}
-
-	/**
-	 * <p>Method returns all batches with a starting date between params</p>
-	 * @param startDate Starting date of the search
-	 * @param endDate the last possible date a batch could start and get included in the results
-	 * @return either the batches or a Not_Found HttpStatus
-	 */
-	@GetMapping(path = "startingBetween/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Batch>> getByStartingDateBetween(@RequestParam("start")
-																	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-																@RequestParam("end")
-																@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate){
-
-		List<Batch> startingBetween = batchService.getAllBatchesStartingBetween(startDate,endDate);
-
-		if(startingBetween == null || startingBetween.isEmpty()){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-
-		return new ResponseEntity<>(startingBetween, HttpStatus.OK);
-
-	}
-
-	/**
-	 * <p>Method returns all batches for a trainer with a starting date between the start and end dates</p>
-	 * @param trainerId
-	 * @param startDate
-	 * @param endDate
-	 * @return either the batches or a Not_Found HttpStatus Code.
-	 */
-	@GetMapping(path = "trainerAndStartingBetween/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Batch>> getByTrainerWithStartingDateBetween(@RequestParam("Id")Integer trainerId,
-																		   @RequestParam("start")
-																		   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate startDate,
-																		   @RequestParam("end")
-																			   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate endDate){
-		List<Batch> batches = batchService.getAllBatchesByTrainerStartingBetween(trainerId, startDate,endDate);
-
-		if(batches == null || batches.isEmpty()){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(batches, HttpStatus.OK);
-
-	}
-
-    /**
-     * <p>Method returns all batches for a given curriculum that have a starting date between startDate and endDate</p>
-     * @param curriculumId
-     * @param startDate
-     * @param endDate
-     * @return either the batches or a Not_Found HttpStatus Code.
-     */
-    @GetMapping(path = "curriculumAndStartingBetween/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Batch>> getByCurriculumWithStartingDateBetween(@RequestParam("Id")Integer curriculumId,
-                                                                              @RequestParam("start")
-																			  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate startDate,
-                                                                              @RequestParam("end")
-																				  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate endDate){
-        List<Batch> batches = batchService.getAllBatchesByCurriculumStartingBetween(curriculumId, startDate,endDate);
-
-        if(batches == null || batches.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(batches, HttpStatus.OK);
-
-    }
-
-    /**
-     * <p>Method returns all batches for a given location that have a starting date between startDate and endDate</p>
-     * @param locationId
-     * @param startDate
-     * @param endDate
-     * @return either the batches or a Not_Found HttpStatus code.
-     */
-    @GetMapping(path = "locationAndStartingBetween/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Batch>> getByLocationWithStartingDateBetween(@RequestParam(name = "Id")Integer locationId,
-                                                                            @RequestParam(name = "start")
-																			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate startDate,
-                                                                            @RequestParam(name = "end")
-																				@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate endDate){
-        List<Batch> batches = batchService.getAllBatchesByLocationStartingBetween(locationId, startDate,endDate);
-
-        if(batches == null || batches.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(batches, HttpStatus.OK);
-
-    }
-
-
-    // create
+	@ApiOperation(value = "Create a Batch to insert into System", response = ResponseEntity.class, tags = "addBatch")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Batch> add(@RequestBody Batch a) {
@@ -155,17 +84,30 @@ public class BatchController {
 		return new ResponseEntity<>(a, HttpStatus.CREATED);
 	}
 
-	// update
-	@PutMapping(value="{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
+	/**
+	 * 	Update batches' name, start date, end date, and return status 200 - OK
+	 *	If the request doesn't fit the parameters, it returns status 400 - bad request
+	 * 
+	 * @param a		Update Batch name, start date, end date
+	 * @return		ResponseEntity
+	 */
+	@ApiOperation(value = "Update Batch Information", response = ResponseEntity.class, tags = "updateBatch")
+	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Batch> update(@RequestBody Batch a, @PathVariable Integer id) {
+	public ResponseEntity<Batch> update(@RequestBody Batch a) {
 		a = batchService.update(a);
 		if (a == null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(a, HttpStatus.OK);
 	}
-
-	// delete
+ 
+	/**
+	 * Find a batch by id and delete. Return status 200 - OK
+	 * 
+	 * @param id	Batch By Id
+	 * @return		ResponseEntity
+	 */
+	@ApiOperation(value = "Delete Batch by Id from the System ", response = ResponseEntity.class, tags = "deleteBatchById")
 	@DeleteMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Batch> delete(@PathVariable int id) {
 		batchService.delete(id);
