@@ -3,7 +3,7 @@
 
 package com.revature.testing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
@@ -288,9 +288,11 @@ public class BatchControllerTest {
 		Batch b1 = new Batch(1, "Microservices",  LocalDate.of(2020, 1, 1), LocalDate.of(2020,2,1), 3, 6, 6, skillSet,
 				1, 1, 1, 1);
 		b1.setEndDate(LocalDate.of(2020, 2, 2));
+
 		ResponseEntity<Batch> reTest = batchController.update(b1, 1);
 		//assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
 		assertEquals(HttpStatus.BAD_REQUEST, reTest.getStatusCode());
+
 	}
 
 	@Test
@@ -300,6 +302,7 @@ public class BatchControllerTest {
 		//assertTrue(reTest.getStatusCode() == HttpStatus.OK);
 		assertEquals(HttpStatus.OK, reTest.getStatusCode());
 	}
+
 
 	//added  8/1/19 by Caleb and Tayler
 	//tests for get all by Location and Curriculum
@@ -443,7 +446,5 @@ public class BatchControllerTest {
 		assertEquals(HttpStatus.OK, respBatches.getStatusCode());
 		assertEquals(2, respBatches.getBody().size());
 	}
-
-
 }
 
