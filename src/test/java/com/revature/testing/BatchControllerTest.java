@@ -138,7 +138,8 @@ public class BatchControllerTest {
 		Mockito.when(batchRepository.findAll()).thenReturn(batchList);
 
 		List<Batch> testList = batchController.getAll();
-		assertTrue(testList.size() == 3);
+		//assertTrue(testList.size() == 3);
+		assertEquals(testList.size(), 3);
 	}
 
 	@Test
@@ -159,13 +160,16 @@ public class BatchControllerTest {
 		Optional<Batch> op1 = Optional.ofNullable(b1);
 		Mockito.when(batchRepository.findById(3)).thenReturn(op1);
 		ResponseEntity<Batch> reTest = batchController.getById(3);
-		assertTrue(reTest.getBody().getId() == 3 && reTest.getStatusCode() == HttpStatus.OK);
+		//assertTrue(reTest.getBody().getId() == 3 && reTest.getStatusCode() == HttpStatus.OK);
+		assertEquals(3, reTest.getBody().getId());
+		assertEquals(HttpStatus.OK, reTest.getStatusCode());
 	}
 
 	@Test
 	public void getByIdTestNotFound() {
 		ResponseEntity<Batch> reTest = batchController.getById(6);
-		assertTrue(reTest.getStatusCode() == HttpStatus.NOT_FOUND);
+		//assertTrue(reTest.getStatusCode() == HttpStatus.NOT_FOUND);
+		assertEquals(HttpStatus.NOT_FOUND, reTest.getStatusCode());
 	}
 
 	
@@ -200,7 +204,9 @@ public class BatchControllerTest {
 //		mockLocationServer.verify();
 //		mockCurriculumServer.verify();
 //		mockSkillsServer.verify();
-		assertTrue(reTest.getBody().getId() == 5 && reTest.getStatusCode() == HttpStatus.CREATED);
+		//assertTrue(reTest.getBody().getId() == 5 && reTest.getStatusCode() == HttpStatus.CREATED);
+		assertEquals(5, reTest.getBody().getId());
+		assertEquals(HttpStatus.CREATED, reTest.getStatusCode());
 	}
 
 	
@@ -236,7 +242,8 @@ public class BatchControllerTest {
 //		mockLocationServer.verify();
 //		mockCurriculumServer.verify();
 //		mockSkillsServer.verify();
-		assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
+		//assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
+		assertEquals(HttpStatus.BAD_REQUEST, reTest.getStatusCode());
 	}
 
 	@Test
@@ -259,8 +266,10 @@ public class BatchControllerTest {
 		b1.setEndDate(LocalDate.of(2020, 2, 2));
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 		ResponseEntity<Batch> reTest = batchController.update(b1, 1);
-		assertTrue(reTest.getBody().getEndDate().equals(LocalDate.of(2020, 2, 2))
-				&& reTest.getStatusCode() == HttpStatus.OK);
+		//assertTrue(reTest.getBody().getEndDate().equals(LocalDate.of(2020, 2, 2))
+			//	&& reTest.getStatusCode() == HttpStatus.OK);
+		assertEquals(LocalDate.of(2020, 2, 2), reTest.getBody().getEndDate());
+		assertEquals(HttpStatus.OK, reTest.getStatusCode());
 	}
 
 	@Test
@@ -280,14 +289,16 @@ public class BatchControllerTest {
 				1, 1, 1, 1);
 		b1.setEndDate(LocalDate.of(2020, 2, 2));
 		ResponseEntity<Batch> reTest = batchController.update(b1, 1);
-		assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
+		//assertTrue(reTest.getStatusCode() == HttpStatus.BAD_REQUEST);
+		assertEquals(HttpStatus.BAD_REQUEST, reTest.getStatusCode());
 	}
 
 	@Test
 	public void deleteTest() {
 		Mockito.doNothing().when(batchRepository).deleteById(9);
 		ResponseEntity<Batch> reTest = batchController.delete(9);
-		assertTrue(reTest.getStatusCode() == HttpStatus.OK);
+		//assertTrue(reTest.getStatusCode() == HttpStatus.OK);
+		assertEquals(HttpStatus.OK, reTest.getStatusCode());
 	}
 
 	//added  8/1/19 by Caleb and Tayler
@@ -296,7 +307,7 @@ public class BatchControllerTest {
 	public void locationNotFound(){
 		ResponseEntity<List<Batch>> locTest = batchController.getByLocationAndCurriculum(-1,1);
 
-		assertEquals(true,locTest.getStatusCode() == HttpStatus.NOT_FOUND);
+		assertEquals(locTest.getStatusCode(), HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -312,7 +323,9 @@ public class BatchControllerTest {
 		Mockito.when(batchRepository.findByLocationAndCurriculum(2, 1)).thenReturn(batches);
 
 		ResponseEntity<List<Batch>> locTest = batchController.getByLocationAndCurriculum(2,1);
-		assertEquals(true, (locTest.getStatusCode() == HttpStatus.OK && locTest.getBody().size() == 2));
+		//assertEquals(true, (locTest.getStatusCode() == HttpStatus.OK && locTest.getBody().size() == 2));
+		assertEquals(HttpStatus.OK, locTest.getStatusCode());
+		assertEquals(2, locTest.getBody().size());
 	}
 
 	//added 8/1/19 by Tayler
@@ -325,7 +338,7 @@ public class BatchControllerTest {
 		ResponseEntity<List<Batch>> batches = batchController.getByStartingDateBetween(start, end);
 		System.out.println("Response Batches: " + batches);
 
-		assertEquals(true, batches.getStatusCode() == HttpStatus.NOT_FOUND);
+		assertEquals(batches.getStatusCode(), HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -342,7 +355,9 @@ public class BatchControllerTest {
 		Mockito.when(batchRepository.findByStartDateBetween(start,end)).thenReturn(batches);
 
 		ResponseEntity<List<Batch>> respBatches = batchController.getByStartingDateBetween(start,end);
-		assertEquals(true, (respBatches.getStatusCode()== HttpStatus.OK && respBatches.getBody().size() == 2));
+		//assertEquals(true, (respBatches.getStatusCode()== HttpStatus.OK && respBatches.getBody().size() == 2));
+		assertEquals(HttpStatus.OK, respBatches.getStatusCode());
+		assertEquals(2, respBatches.getBody().size());
 	}
 
 	@Test
@@ -351,7 +366,7 @@ public class BatchControllerTest {
 		LocalDate end = LocalDate.of(2020,4, 25);
 		ResponseEntity<List<Batch>> batches = batchController.getByTrainerWithStartingDateBetween(1, start, end);
 
-		assertEquals(true, batches.getStatusCode() == HttpStatus.NOT_FOUND);
+		assertEquals(batches.getStatusCode(), HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -368,7 +383,9 @@ public class BatchControllerTest {
 		Mockito.when(batchRepository.findByTrainerAndStartDateBetween(2, start, end)).thenReturn(batches);
 
 		ResponseEntity<List<Batch>> respBatches = batchController.getByTrainerWithStartingDateBetween(2,start,end);
-		assertEquals(true, (respBatches.getStatusCode()== HttpStatus.OK && respBatches.getBody().size() == 2));
+		//assertEquals(true, (respBatches.getStatusCode()== HttpStatus.OK && respBatches.getBody().size() == 2));
+		assertEquals(HttpStatus.OK, respBatches.getStatusCode());
+		assertEquals(2, respBatches.getBody().size());
 	}
 
 	@Test
@@ -377,7 +394,7 @@ public class BatchControllerTest {
 		LocalDate end = LocalDate.of(2020,4, 25);
 		ResponseEntity<List<Batch>> batches = batchController.getByLocationWithStartingDateBetween(1, start, end);
 
-		assertEquals(true, batches.getStatusCode() == HttpStatus.NOT_FOUND);
+		assertEquals(batches.getStatusCode(), HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -394,7 +411,9 @@ public class BatchControllerTest {
 		Mockito.when(batchRepository.findByLocationAndStartDateBetween(2, start, end)).thenReturn(batches);
 
 		ResponseEntity<List<Batch>> respBatches = batchController.getByTrainerWithStartingDateBetween(2,start,end);
-		assertEquals(true, (respBatches.getStatusCode()== HttpStatus.OK && respBatches.getBody().size() == 2));
+		//assertEquals(true, (respBatches.getStatusCode()== HttpStatus.OK && respBatches.getBody().size() == 2));
+		assertEquals(HttpStatus.OK, respBatches.getStatusCode());
+		assertEquals(2, respBatches.getBody().size());
 	}
 
 	@Test
@@ -403,7 +422,7 @@ public class BatchControllerTest {
 		LocalDate end = LocalDate.of(2020,4, 25);
 		ResponseEntity<List<Batch>> batches = batchController.getByCurriculumWithStartingDateBetween(1, start, end);
 
-		assertEquals(true, batches.getStatusCode() == HttpStatus.NOT_FOUND);
+		assertEquals(batches.getStatusCode(), HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -420,7 +439,9 @@ public class BatchControllerTest {
 		Mockito.when(batchRepository.findByCurriculumAndStartDateBetween(2, start, end)).thenReturn(batches);
 
 		ResponseEntity<List<Batch>> respBatches = batchController.getByTrainerWithStartingDateBetween(2,start,end);
-		assertEquals(true, (respBatches.getStatusCode()== HttpStatus.OK && respBatches.getBody().size() == 2));
+		//assertEquals(true, (respBatches.getStatusCode()== HttpStatus.OK && respBatches.getBody().size() == 2));
+		assertEquals(HttpStatus.OK, respBatches.getStatusCode());
+		assertEquals(2, respBatches.getBody().size());
 	}
 
 
