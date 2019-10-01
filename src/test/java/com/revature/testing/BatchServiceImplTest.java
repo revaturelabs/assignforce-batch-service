@@ -118,7 +118,8 @@ public class BatchServiceImplTest {
 		
 		List<Batch> testList = batchService.getAll();
         System.out.println(testList.size());
-		assertTrue(testList.size() == 2);
+		//assertTrue(testList.size() == 2);
+		assertEquals(2, testList.size());
 	}
 
 	@Test
@@ -143,7 +144,8 @@ public class BatchServiceImplTest {
 
 		List<Batch> testList = batchService.getAllByCurriculum(3);
 		System.out.println(testList.size());
-		assertTrue(testList.size() == 2);
+		//assertTrue(testList.size() == 2);
+		assertEquals(2, testList.size());
 	}
 
 	@Test
@@ -169,7 +171,8 @@ public class BatchServiceImplTest {
 		List<Batch> testList = batchService.getAllByTrainer(6);
 		testList.remove(1);
 		System.out.println(testList.size());
-		assertTrue(testList.size() == 1);
+		//assertTrue(testList.size() == 1);
+		assertEquals(1, testList.size());
 	}
 
 	@Test
@@ -194,7 +197,8 @@ public class BatchServiceImplTest {
 
 		List<Batch> testList = batchService.getAllByLocation(1);
 		System.out.println(testList.size());
-		assertTrue(testList.size() == 2);
+		//assertTrue(testList.size() == 2);
+		assertEquals(2, testList.size());
 	}
 
 	@Test
@@ -215,7 +219,8 @@ public class BatchServiceImplTest {
 		Mockito.when(batchRepository.findById(1)).thenReturn(op1);
 		
 		Optional<Batch> opTest = batchService.findById(1);
-		assertTrue(opTest.get().getName().equals("Microservices"));
+		//assertTrue(opTest.get().getName().equals("Microservices"));
+		assertEquals("Microservices", opTest.get().getName());
 	}
 	
 	@Test
@@ -236,7 +241,8 @@ public class BatchServiceImplTest {
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 		
 		Batch batchTest = batchService.update(b1);
-		assertTrue(batchTest.getEndDate().equals(LocalDate.of(2019, 1, 6)));
+		//assertTrue(batchTest.getEndDate().equals(LocalDate.of(2019, 1, 6)));
+		assertEquals(LocalDate.of(2019, 1, 6), batchTest.getEndDate());
 	}
 	
 	@Test
@@ -257,7 +263,8 @@ public class BatchServiceImplTest {
 
 		Batch batchTest = batchRepository.save(b1);
         System.out.println("Skill size is " + skillSet.size());
-		assertTrue(batchTest.getSkills().size() == 5);
+		//assertTrue(batchTest.getSkills().size() == 5);
+        assertEquals(5, batchTest.getSkills().size());
 	}
 	
 	@Test

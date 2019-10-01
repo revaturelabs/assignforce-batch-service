@@ -45,6 +45,12 @@ public class BatchConstraintTest {
 	private static Validator validator;
 	
 
+	/*
+	 * - Set up a ValidatorFactory instance before tests are run
+	 * - Define class level Validator instance with validator of the factory
+	 * - These will be used in the testing methods
+	 */
+	
 	  @BeforeClass
 	   public static void setUp() {
 	      ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
