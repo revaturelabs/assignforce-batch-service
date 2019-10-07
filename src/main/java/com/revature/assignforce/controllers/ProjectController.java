@@ -3,6 +3,11 @@ package com.revature.assignforce.controllers;
 import com.revature.assignforce.beans.Project;
 import com.revature.assignforce.beans.ProjectDTO;
 import com.revature.assignforce.service.ProjectServiceProvider;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("p")
+@RequestMapping("/p")
+@Api(value = "ProjectController")
 public class ProjectController {
 
     @Value("${spring.cloud.inetutils.default-hostname}")
@@ -32,6 +38,12 @@ public class ProjectController {
         this.hostName = hostName;
     }
 
+	/**
+	 * Find All Projects using a get request and return a list of items
+	 * 
+	 * @return	List of all Projects
+	 */
+    @ApiOperation(value = "List all Projects from the system", response = ResponseEntity.class, tags = "ProjectController")
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProjectDTO>> getAllProjects(@RequestParam(value = "status",required = false)String status) {
         List<ProjectDTO> projectDTOS = new ArrayList<>();
@@ -48,28 +60,42 @@ public class ProjectController {
         } else {
             projects = projectServiceProvider.getAllProjects();
         }
-
-
         projects.forEach(project -> projectDTOS.add(toDTO(project)));
         return new ResponseEntity<>(projectDTOS, getJsonHeader(), HttpStatus.OK);
     }
 
-    @GetMapping(value="{name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProjectDTO> getProjectByName(@PathVariable String name) {
+	/**
+	 * Find Project by id using get request and return status 200 - OK. 
+	 * If no project found, return status 404 - not found
+	 * 
+	 * @param id	Project by Id
+	 * @return		RequestEntity
+	 */
+    @ApiOperation(value = "Find Project by Name from the System", response = ResponseEntity.class, tags = "ProjectController")
+ //   @GetMapping(value="{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProjectDTO> getProjectByName(@ApiParam(name="id") @PathVariable String name) {
         Project p = projectServiceProvider.getProject(name);
         ResponseEntity<ProjectDTO> responseEntity;
-
         if(p == null) {
             responseEntity = new ResponseEntity<>((ProjectDTO)null, HttpStatus.NOT_FOUND);
         } else {
             responseEntity = new ResponseEntity<>(toDTO(p), getJsonHeader(), HttpStatus.OK);
         }
-
         return responseEntity;
     }
 
+	/**
+	 * 	Update project's name, description, owner
+	 *  If the project isn't found, return 404 - Not Found
+	 *	If the request doesn't fit the parameters, it returns status 204 - No Content
+	 * 
+	 * @param a		Update Project name, description, owner
+	 * @return		ResponseEntity
+	 */
+    @ApiOperation(value = "Update Project Information", response = ResponseEntity.class, tags = "ProjectController")
     @PutMapping("{id}")
-    public ResponseEntity updateProject(@PathVariable int id, @RequestBody ProjectDTO d) {
+    public ResponseEntity updateProject(@ApiParam(name="id") @PathVariable int id, @RequestBody ProjectDTO d) {
       Project p = this.projectServiceProvider.getProjectById(id);
 
       if(p == null) {
