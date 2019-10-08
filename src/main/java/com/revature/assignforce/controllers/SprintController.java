@@ -46,7 +46,7 @@ public class SprintController {
     @ApiOperation(value = "List all Sprints from the System", response = SprintDTO.class, responseContainer="List", tags = "SprintController")
 	@ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 200, message = "OK", response = SprintDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = SprintDTO.class, responseContainer="List")})
     @GetMapping("/sprints")
     public ResponseEntity<List<SprintDTO>> getProjectSprints(@ApiParam(name="name") @PathVariable String name) {
         List<SprintDTO> sprints = issuesServiceProvider.getNativeApiSprints(name);
