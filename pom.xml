@@ -131,6 +131,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+   <groupId>javax.interceptor</groupId>
+   <artifactId>javax.interceptor-api</artifactId>
+   <version>1.2</version>
+</dependency>
 
 
 	</dependencies>
@@ -221,7 +227,7 @@
                             <info>
                                 <title>${project.name}</title>
                                 <description>${project.description}. More on:
-                                    https://dev.assignforce.revaturelabs.com/batches</description>
+                                    https://dev.assignforce.revaturelabs.com</description>
                                 <contact>
                                     <name>August Duet
                                     </name>
