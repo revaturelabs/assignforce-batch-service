@@ -27,6 +27,7 @@ import com.revature.assignforce.service.BatchService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 //@CrossOrigin
 @RestController
@@ -41,7 +42,7 @@ public class BatchController {
 	 * 
 	 * @return	List of all Batches
 	 */
-	@ApiOperation(value = "List All Batches from the System ", response = Iterable.class, tags = "getAllBatches")
+	@ApiOperation(value = "List All Batches from the System ", response = Batch.class, tags = "BatchController")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Batch> getAll() {
 		return batchService.getAll();
@@ -53,11 +54,11 @@ public class BatchController {
 	 * If no batch found, return status 404 - not found
 	 * 
 	 * @param id	Batch by Id
-	 * @return		RequestEntity
+	 * @return		ResponseEntity
 	 */
-	@ApiOperation(value = "Find Batch by Id from the System ", response = ResponseEntity.class, tags = "getBatchById")
+	@ApiOperation(value = "Find Batch by Id from the System ", response = ResponseEntity.class, tags = "BatchController")
 	@GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Batch> getById(@PathVariable int id) {
+	public ResponseEntity<Batch> getById(@ApiParam(name="id") @PathVariable int id) {
 		Optional<Batch> b = batchService.findById(id);
 		if (!b.isPresent())
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -74,7 +75,7 @@ public class BatchController {
 	 * @param a		Create Batch with unique id, name, start date, end date, curriculum id, trainer id, co-trainer id
 	 * @return		ResponseEntity
 	 */
-	@ApiOperation(value = "Create a Batch to insert into System", response = ResponseEntity.class, tags = "addBatch")
+	@ApiOperation(value = "Create a Batch to insert into System", response = ResponseEntity.class, tags = "BatchController")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Batch> add(@RequestBody Batch a) {
@@ -91,7 +92,7 @@ public class BatchController {
 	 * @param a		Update Batch name, start date, end date
 	 * @return		ResponseEntity
 	 */
-	@ApiOperation(value = "Update Batch Information", response = ResponseEntity.class, tags = "updateBatch")
+	@ApiOperation(value = "Update Batch Information", response = ResponseEntity.class, tags = "BatchController")
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Batch> update(@RequestBody Batch a) {
@@ -107,9 +108,9 @@ public class BatchController {
 	 * @param id	Batch By Id
 	 * @return		ResponseEntity
 	 */
-	@ApiOperation(value = "Delete Batch by Id from the System ", response = ResponseEntity.class, tags = "deleteBatchById")
+	@ApiOperation(value = "Delete Batch by Id from the System ", response = ResponseEntity.class, tags = "BatchController")
 	@DeleteMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Batch> delete(@PathVariable int id) {
+	public ResponseEntity<Batch> delete(@ApiParam(name="id") @PathVariable int id) {
 		batchService.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
