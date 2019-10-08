@@ -71,6 +71,8 @@ public class BatchConstraintTest {
 
 	      Set<ConstraintViolation<Batch>> constraintViolations =
 	      validator.validate( myBatch );
+	      
+	      //validator.validate(new Batch());
 
 	      
 	      
@@ -334,7 +336,6 @@ public class BatchConstraintTest {
 	 	      );
 	      
 	   }
-	  
 	  
 	  
 	 

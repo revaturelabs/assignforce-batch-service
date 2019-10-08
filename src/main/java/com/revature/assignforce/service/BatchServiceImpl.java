@@ -160,12 +160,12 @@ public class BatchServiceImpl implements BatchService {
 	 * @param b Batch to be checked
 	 * @return batch after all, if any, changes are made
 	 */
-	private Batch validateReferences(Batch b) {
+	/*private Batch validateReferences(Batch b) {
 		b = findTrainerCommand.findTrainer(b);
 		b = findLocationCommand.findLocation(b);
 		b = findCurriculumCommand.findCurriculum(b);
 		b.setSkills(b.getSkills().stream().filter((skillIdHolder) -> findSkillsCommand.findSkill(skillIdHolder)).collect(Collectors.toSet()));
 		return b;
-	}
+	}*/
 
 }

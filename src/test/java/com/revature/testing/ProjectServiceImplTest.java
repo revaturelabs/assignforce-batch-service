@@ -160,6 +160,21 @@ public class ProjectServiceImplTest {
                 projectMocks.get(0),
                 projectServiceProvider.getProjectById(1));
     }
+    
+    @Test
+    public void shouldUpdateProject() {
+    	projectMocks.get(0).setName("TEST");
+    	
+    	projectServiceProvider.updateProject(projectMocks.get(0));
+    	
+        Mockito
+        		.when(projectRepository.getOne(1))
+        		.thenReturn(projectMocks.get(0));
+        
+        Assert.assertEquals("Unexpected Project",
+        		projectServiceProvider.getProjectById(1).getName(),
+        		"TEST");
+    }
 
     private List<Project> filterActiveProjects(boolean isActive) {
         return projectMocks.stream()

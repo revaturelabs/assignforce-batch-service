@@ -1,6 +1,3 @@
-
-
-
 package com.revature.testing;
 
 import static org.junit.Assert.*;
@@ -410,7 +407,7 @@ public class BatchControllerTest {
 
 		Mockito.when(batchRepository.findByLocationAndStartDateBetween(2, start, end)).thenReturn(batches);
 
-		ResponseEntity<List<Batch>> respBatches = batchController.getByTrainerWithStartingDateBetween(2,start,end);
+		ResponseEntity<List<Batch>> respBatches = batchController.getByLocationWithStartingDateBetween(2,start,end);
 		//assertEquals(true, (respBatches.getStatusCode()== HttpStatus.OK && respBatches.getBody().size() == 2));
 		assertEquals(HttpStatus.OK, respBatches.getStatusCode());
 		assertEquals(2, respBatches.getBody().size());
@@ -438,7 +435,7 @@ public class BatchControllerTest {
 
 		Mockito.when(batchRepository.findByCurriculumAndStartDateBetween(2, start, end)).thenReturn(batches);
 
-		ResponseEntity<List<Batch>> respBatches = batchController.getByTrainerWithStartingDateBetween(2,start,end);
+		ResponseEntity<List<Batch>> respBatches = batchController.getByCurriculumWithStartingDateBetween(2, start, end);
 		//assertEquals(true, (respBatches.getStatusCode()== HttpStatus.OK && respBatches.getBody().size() == 2));
 		assertEquals(HttpStatus.OK, respBatches.getStatusCode());
 		assertEquals(2, respBatches.getBody().size());

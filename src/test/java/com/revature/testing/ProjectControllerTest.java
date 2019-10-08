@@ -66,9 +66,26 @@ public class ProjectControllerTest {
         Mockito
                 .when(projectServiceProvider.getAllProjects())
                 .thenReturn(projectMocks);
+    	
+    	projectServiceProvider.getAllProjects();
+        
         ResponseEntity<List<ProjectDTO>> dtos = controller.getAllProjects(null);
         System.out.println(dtos.getBody());
-        Assert.assertTrue(true);
+        
+        Assert.assertNotEquals(dtos, null);
+        
+        //Assert.assertTrue(true);
+    }
+    
+    @Test
+    public void shouldReturn400BadRequest() {
+		Mockito.when(projectServiceProvider.getAllProjects()).thenReturn(projectMocks);
+
+		projectServiceProvider.getAllProjects();
+
+		ResponseEntity<List<ProjectDTO>> dtos = controller.getAllProjects("test");
+
+		Assert.assertEquals(400, dtos.getStatusCodeValue());
     }
 
     @Test
