@@ -1,0 +1,11 @@
+com.revature.assignforce
+com.revature.assignforce.beans
+com.revature.assignforce.builders
+com.revature.assignforce.commands
+com.revature.assignforce.config
+com.revature.assignforce.controllers
+com.revature.assignforce.repos
+com.revature.assignforce.service
+com.revature.assignforce.validators
+com.revature.testing
+validators

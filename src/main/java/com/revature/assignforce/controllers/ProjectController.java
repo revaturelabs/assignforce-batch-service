@@ -1,12 +1,15 @@
 package com.revature.assignforce.controllers;
 
 import com.revature.assignforce.beans.Project;
+
 import com.revature.assignforce.beans.ProjectDTO;
 import com.revature.assignforce.service.ProjectServiceProvider;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,12 +46,14 @@ public class ProjectController {
 	 * 
 	 * @return	List of all Projects
 	 */
-    @ApiOperation(value = "List all Projects from the system", response = ResponseEntity.class, tags = "ProjectController")
+    @ApiOperation(value = "List all Projects from the system", response = ProjectDTO.class, responseContainer="List", tags = "ProjectController")
+	@ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 200, message = "OK", response = ProjectDTO.class)})
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProjectDTO>> getAllProjects(@RequestParam(value = "status",required = false)String status) {
         List<ProjectDTO> projectDTOS = new ArrayList<>();
         List<Project> projects;
-
         if(status != null) {
             if(status.equals("active") || status.equals("inactive")) {
                 projects = projectServiceProvider.getProjectsWithStatus(status.equals("active"));
@@ -71,7 +76,10 @@ public class ProjectController {
 	 * @param id	Project by Id
 	 * @return		RequestEntity
 	 */
-    @ApiOperation(value = "Find Project by Name from the System", response = ResponseEntity.class, tags = "ProjectController")
+    @ApiOperation(value = "Find Project by Name from the System", response = ProjectDTO.class, tags = "ProjectController")
+	@ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 200, message = "OK", response = ProjectDTO.class)})
  //   @GetMapping(value="{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @GetMapping(value="{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProjectDTO> getProjectByName(@ApiParam(name="id") @PathVariable String name) {
@@ -90,10 +98,14 @@ public class ProjectController {
 	 *  If the project isn't found, return 404 - Not Found
 	 *	If the request doesn't fit the parameters, it returns status 204 - No Content
 	 * 
-	 * @param a		Update Project name, description, owner
+	 * @param d	Update Project name, description, owner
 	 * @return		ResponseEntity
 	 */
-    @ApiOperation(value = "Update Project Information", response = ResponseEntity.class, tags = "ProjectController")
+    @ApiOperation(value = "Update Project Information", response = ProjectDTO.class, tags = "ProjectController")
+	@ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 204, message = "No Content"),
+            @ApiResponse(code = 200, message = "OK", response = ProjectDTO.class)})
     @PutMapping("{id}")
     public ResponseEntity updateProject(@ApiParam(name="id") @PathVariable int id, @RequestBody ProjectDTO d) {
       Project p = this.projectServiceProvider.getProjectById(id);

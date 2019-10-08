@@ -1,11 +1,14 @@
 package com.revature.assignforce.controllers;
 
+import com.revature.assignforce.beans.Project;
 import com.revature.assignforce.beans.SprintDTO;
 import com.revature.assignforce.service.IssuesServiceProvider;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +43,10 @@ public class SprintController {
 	 * 
 	 * @return	ResponseEntity
 	 */
-    @ApiOperation(value = "List all Sprints from the System", response = ResponseEntity.class, tags = "SprintController")
+    @ApiOperation(value = "List all Sprints from the System", response = SprintDTO.class, responseContainer="List", tags = "SprintController")
+	@ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 200, message = "OK", response = SprintDTO.class)})
     @GetMapping("/sprints")
     public ResponseEntity<List<SprintDTO>> getProjectSprints(@ApiParam(name="name") @PathVariable String name) {
         List<SprintDTO> sprints = issuesServiceProvider.getNativeApiSprints(name);
@@ -62,7 +68,7 @@ public class SprintController {
 	 * @param id	Sprint by Id
 	 * @return		ResponseEntity
 	 */
-    @ApiOperation(value = "Get Sprint by Id from the System", response = ResponseEntity.class, tags = "SprintController")
+    @ApiOperation(value = "Get Sprint by Id from the System", response = SprintDTO.class, tags = "SprintController")
     @GetMapping("sprint/{id}")
     public ResponseEntity<SprintDTO> getSprintById(@ApiParam(name="id") @PathVariable int id) {
         return new ResponseEntity<>(null, HttpStatus.OK);
@@ -73,7 +79,7 @@ public class SprintController {
 	 * 
 	 * @return	ResponseEntity 
 	 */
-    @ApiOperation(value = "Get all Sprint Columns", response = ResponseEntity.class, tags = "SprintController")
+    @ApiOperation(value = "Get all Sprint Columns", response = SprintDTO.class, tags = "SprintController")
     @GetMapping("sprint/{id}/columns")
     public ResponseEntity getSprintColumns(@ApiParam(name="id") @PathVariable int id) {
         return null;
