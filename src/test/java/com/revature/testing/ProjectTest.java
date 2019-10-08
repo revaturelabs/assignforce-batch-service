@@ -67,6 +67,26 @@ public class ProjectTest {
 	}
 	
 	@Test
+	public void testEqualsOfProjectAndNonEquivalentProjectId() {
+		Project p1 = new Project();
+		Project p2 = new Project();
+		
+		p1.setActive(true);
+		p1.setDescription("description");
+		p1.setId(1);
+		p1.setName("name");
+		p1.setOwner("owner");
+		
+		p2.setActive(true);
+		p2.setDescription("description");
+		p2.setId(2);
+		p2.setName("name");
+		p2.setOwner("owner");
+		
+		assertEquals(p1.equals(p2), false);
+	}
+	
+	@Test
 	public void testEqualsOfProjectAndNonEquivalentProjectActive() {
 		Project p1 = new Project();
 		Project p2 = new Project();

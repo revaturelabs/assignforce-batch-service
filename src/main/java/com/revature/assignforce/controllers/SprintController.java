@@ -30,7 +30,7 @@ public class SprintController {
 
     public SprintController() {/*default*/}
 
-    @Autowired
+   // @Autowired
     public void setIssuesServiceProvider(IssuesServiceProvider issuesServiceProvider) {
         this.issuesServiceProvider = issuesServiceProvider;
     }

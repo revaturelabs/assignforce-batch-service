@@ -261,10 +261,22 @@ public class BatchServiceImplTest {
 		Batch b1 = new Batch(1, "Microservices",LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 1, 5, skillSet, 1,1,1, 1);
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 
-		Batch batchTest = batchRepository.save(b1);
+		//Batch batchTest = batchRepository.save(b1);
+		Batch batchTest = batchService.create(b1);
         System.out.println("Skill size is " + skillSet.size());
 		//assertTrue(batchTest.getSkills().size() == 5);
-        assertEquals(5, batchTest.getSkills().size());
+       // assertEquals(5, batchTest.getSkills().size());
+        Optional<Batch> test = batchService.findById(batchTest.getId());
+        assertEquals(true, test.isPresent());
+	}
+	
+	@Test
+	public void createTestWithNullSkills() {
+		Batch b1 = new Batch(1, "Microservices",LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 1, 5, null, 1,1,1, 1);
+		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
+
+		Batch batchTest = batchService.create(b1);
+        assertEquals(0, batchTest.getSkills().size());
 	}
 	
 	@Test
@@ -277,7 +289,7 @@ public class BatchServiceImplTest {
 
 	@Test
 	public void deleteTest() {
-		SkillIdHolder s1 = new SkillIdHolder(1);
+		/*SkillIdHolder s1 = new SkillIdHolder(1);
 		SkillIdHolder s2 = new SkillIdHolder(2);
 		SkillIdHolder s3 = new SkillIdHolder(3);
 		SkillIdHolder s4 = new SkillIdHolder(4);
@@ -290,14 +302,42 @@ public class BatchServiceImplTest {
 		skillSet.add(s5);
 		Batch b1 = new Batch(20, "Microservices",LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet, 1,1,1, 1);
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
-		batchRepository.save(b1);
+		//batchRepository.save(b1);
+		batchService.create(b1);
 //		batchService.create(b1);
 	//deleting batch
-		Mockito.doNothing().when(batchRepository).deleteById(20);
-		batchRepository.deleteById(b1.getId());
+		//Mockito.doNothing().when(batchRepository).deleteById(20);
+		//batchRepository.deleteById(b1.getId());
 //		batchService.delete(b1.getId());
-		Optional<Batch> batchTest1 = batchService.findById(20);
-		assertFalse(batchTest1.isPresent());
+		Optional<Batch> batchTest1 = batchService.findById(b1.getId());
+		assertFalse(batchTest1.isPresent());*/
+		
+		//****************************************************************************************
+		
+		SkillIdHolder s1 = new SkillIdHolder(1);
+		SkillIdHolder s2 = new SkillIdHolder(2);
+		SkillIdHolder s3 = new SkillIdHolder(3);
+		SkillIdHolder s4 = new SkillIdHolder(4);
+		SkillIdHolder s5 = new SkillIdHolder(5);
+		HashSet<SkillIdHolder> skillSet = new HashSet<SkillIdHolder>();
+		skillSet.add(s1);
+		skillSet.add(s2);
+		skillSet.add(s3);
+		skillSet.add(s4);
+		skillSet.add(s5);
+		Batch b1 = new Batch(1, "Microservices",LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 1, 5, skillSet, 1,1,1, 1);
+		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
+
+		Batch batchTest = batchService.create(b1);
+        
+		Mockito.doNothing().when(batchRepository).deleteById(batchTest.getId());
+        batchService.delete(batchTest.getId());
+        
+        Optional<Batch> test = batchService.findById(batchTest.getId());
+        Mockito.when(batchRepository.findById(batchTest.getId())).thenReturn(test);
+        
+        assertEquals(true, test.isPresent());
 	}
+
 
 }
