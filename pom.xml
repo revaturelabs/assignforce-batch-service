@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.revature.assignforce</groupId>
@@ -16,7 +16,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.3.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -90,6 +90,28 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.8.0</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.8.0</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/io.swagger/swagger-annotations -->
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>1.5.15</version>
+		</dependency>
+
+
 		<!-- Added dependencies for Unit testing -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -116,72 +138,72 @@
 	<build>
 		<finalName>batch-service</finalName>
 		<plugins>
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<configuration>
-						<mainClass>com.revature.assignforce.BatchServiceApplication</mainClass>
-						<addResources>true</addResources>
-					</configuration>
-					<executions>
-						<execution>
-							<goals>
-								<goal>repackage</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.revature.assignforce.BatchServiceApplication</mainClass>
+					<addResources>true</addResources>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
-				<!-- Sonar Scanner -->
-				<plugin>
-					<groupId>org.sonarsource.scanner.maven</groupId>
-					<artifactId>sonar-maven-plugin</artifactId>
-					<version>3.6.0.1398</version>
-					<executions>
-						<execution>
-							<phase>verify</phase>
-							<goals>
-								<goal>sonar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
+			<!-- Sonar Scanner -->
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.6.0.1398</version>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>sonar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
-				<!-- JaCoCo -->
-				<plugin>
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.7.9</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>prepare-agent</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>report</id>
-							<phase>prepare-package</phase>
-							<goals>
-								<goal>report</goal>
-							</goals>
-							<configuration>
-								<destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
-								<propertyName>surefireArgLine</propertyName>
-							</configuration>
-						</execution>
-						<execution>
-							<id>post-unit-test</id>
-							<phase>test</phase>
-							<goals>
-								<goal>report</goal>
-							</goals>
-							<configuration>
-								<dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-								<outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
+			<!-- JaCoCo -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.9</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+							<propertyName>surefireArgLine</propertyName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+							<outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

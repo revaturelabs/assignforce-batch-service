@@ -339,6 +339,7 @@ public class BatchServiceImplTest {
         assertEquals(true, test.isPresent());
 	}
 
+<<<<<<< HEAD
 	@Test
 	public void dateIncorrectOrderTest(){
 		LocalDate date1 = LocalDate.of(2020, 3, 20);
@@ -446,4 +447,6 @@ public class BatchServiceImplTest {
 
 		assertEquals( batchList.size(), batches.size());
 	}
+=======
+>>>>>>> origin/testing
 }
