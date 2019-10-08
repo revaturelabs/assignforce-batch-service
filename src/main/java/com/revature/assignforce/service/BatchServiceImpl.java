@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.revature.assignforce.beans.Batch;
@@ -22,6 +23,11 @@ import com.revature.assignforce.repos.SkillRepository;
 
 @Transactional
 @Service
+/*
+ * Only users with role SVP can have access to 
+ * these methods.
+ */
+//@PreAuthorize("hasRole('SVP')")
 public class BatchServiceImpl implements BatchService {
 
 	@Autowired
