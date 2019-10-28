@@ -1,7 +1,15 @@
 package com.revature.assignforce.controllers;
 
+import com.revature.assignforce.beans.Project;
 import com.revature.assignforce.beans.SprintDTO;
 import com.revature.assignforce.service.IssuesServiceProvider;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -14,7 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("p/{name}")
+@RequestMapping("/p/{name}")
+@Api(value = "SprintController")
 public class SprintController {
 
     @Value("${spring.cloud.inetutils.default-hostname}")
@@ -24,15 +33,23 @@ public class SprintController {
 
     public SprintController() {/*default*/}
 
-    @Autowired
+   // @Autowired
     public void setIssuesServiceProvider(IssuesServiceProvider issuesServiceProvider) {
         this.issuesServiceProvider = issuesServiceProvider;
     }
 
+	/**
+	 * Find All Sprints using a get request and return a list of items
+	 * 
+	 * @return	ResponseEntity
+	 */
+    @ApiOperation(value = "List all Sprints from the System", response = SprintDTO.class, responseContainer="List", tags = "SprintController")
+	@ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 200, message = "OK", response = SprintDTO.class, responseContainer="List")})
     @GetMapping("/sprints")
-    public ResponseEntity<List<SprintDTO>> getProjectSprints(@PathVariable String name) {
+    public ResponseEntity<List<SprintDTO>> getProjectSprints(@ApiParam(name="name") @PathVariable String name) {
         List<SprintDTO> sprints = issuesServiceProvider.getNativeApiSprints(name);
-
         if(sprints == null || sprints.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
@@ -45,13 +62,26 @@ public class SprintController {
         }
     }
 
+	/**
+	 * Find Sprint by id using get request and return status 200 - OK. 
+	 * 
+	 * @param id	Sprint by Id
+	 * @return		ResponseEntity
+	 */
+    @ApiOperation(value = "Get Sprint by Id from the System", response = SprintDTO.class, tags = "SprintController")
     @GetMapping("sprint/{id}")
-    public ResponseEntity<SprintDTO> getSprintById(@PathVariable int id) {
+    public ResponseEntity<SprintDTO> getSprintById(@ApiParam(name="id") @PathVariable int id) {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
+	/**
+	 * Find Sprint columns by Id
+	 * 
+	 * @return	ResponseEntity 
+	 */
+    @ApiOperation(value = "Get all Sprint Columns", response = SprintDTO.class, tags = "SprintController")
     @GetMapping("sprint/{id}/columns")
-    public ResponseEntity getSprintColumns(@PathVariable int id) {
+    public ResponseEntity getSprintColumns(@ApiParam(name="id") @PathVariable int id) {
         return null;
     }
 

@@ -118,7 +118,8 @@ public class BatchServiceImplTest {
 		
 		List<Batch> testList = batchService.getAll();
         System.out.println(testList.size());
-		assertTrue(testList.size() == 2);
+		//assertTrue(testList.size() == 2);
+		assertEquals(2, testList.size());
 	}
 
 	@Test
@@ -143,7 +144,8 @@ public class BatchServiceImplTest {
 
 		List<Batch> testList = batchService.getAllByCurriculum(3);
 		System.out.println(testList.size());
-		assertTrue(testList.size() == 2);
+		//assertTrue(testList.size() == 2);
+		assertEquals(2, testList.size());
 	}
 
 	@Test
@@ -169,7 +171,8 @@ public class BatchServiceImplTest {
 		List<Batch> testList = batchService.getAllByTrainer(6);
 		testList.remove(1);
 		System.out.println(testList.size());
-		assertTrue(testList.size() == 1);
+		//assertTrue(testList.size() == 1);
+		assertEquals(1, testList.size());
 	}
 
 	@Test
@@ -194,7 +197,8 @@ public class BatchServiceImplTest {
 
 		List<Batch> testList = batchService.getAllByLocation(1);
 		System.out.println(testList.size());
-		assertTrue(testList.size() == 2);
+		//assertTrue(testList.size() == 2);
+		assertEquals(2, testList.size());
 	}
 
 	@Test
@@ -215,7 +219,8 @@ public class BatchServiceImplTest {
 		Mockito.when(batchRepository.findById(1)).thenReturn(op1);
 		
 		Optional<Batch> opTest = batchService.findById(1);
-		assertTrue(opTest.get().getName().equals("Microservices"));
+		//assertTrue(opTest.get().getName().equals("Microservices"));
+		assertEquals("Microservices", opTest.get().getName());
 	}
 	
 	@Test
@@ -236,7 +241,8 @@ public class BatchServiceImplTest {
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 		
 		Batch batchTest = batchService.update(b1);
-		assertTrue(batchTest.getEndDate().equals(LocalDate.of(2019, 1, 6)));
+		//assertTrue(batchTest.getEndDate().equals(LocalDate.of(2019, 1, 6)));
+		assertEquals(LocalDate.of(2019, 1, 6), batchTest.getEndDate());
 	}
 	
 	@Test
@@ -255,9 +261,22 @@ public class BatchServiceImplTest {
 		Batch b1 = new Batch(1, "Microservices",LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 1, 5, skillSet, 1,1,1, 1);
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
 
-		Batch batchTest = batchRepository.save(b1);
+		//Batch batchTest = batchRepository.save(b1);
+		Batch batchTest = batchService.create(b1);
         System.out.println("Skill size is " + skillSet.size());
-		assertTrue(batchTest.getSkills().size() == 5);
+		//assertTrue(batchTest.getSkills().size() == 5);
+       // assertEquals(5, batchTest.getSkills().size());
+        Optional<Batch> test = batchService.findById(batchTest.getId());
+        assertEquals(true, test.isPresent());
+	}
+	
+	@Test
+	public void createTestWithNullSkills() {
+		Batch b1 = new Batch(1, "Microservices",LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 1, 5, null, 1,1,1, 1);
+		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
+
+		Batch batchTest = batchService.create(b1);
+        assertEquals(0, batchTest.getSkills().size());
 	}
 	
 	@Test
@@ -270,7 +289,7 @@ public class BatchServiceImplTest {
 
 	@Test
 	public void deleteTest() {
-		SkillIdHolder s1 = new SkillIdHolder(1);
+		/*SkillIdHolder s1 = new SkillIdHolder(1);
 		SkillIdHolder s2 = new SkillIdHolder(2);
 		SkillIdHolder s3 = new SkillIdHolder(3);
 		SkillIdHolder s4 = new SkillIdHolder(4);
@@ -283,122 +302,42 @@ public class BatchServiceImplTest {
 		skillSet.add(s5);
 		Batch b1 = new Batch(20, "Microservices",LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 6, 5, skillSet, 1,1,1, 1);
 		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
-		batchRepository.save(b1);
+		//batchRepository.save(b1);
+		batchService.create(b1);
 //		batchService.create(b1);
 	//deleting batch
-		Mockito.doNothing().when(batchRepository).deleteById(20);
-		batchRepository.deleteById(b1.getId());
+		//Mockito.doNothing().when(batchRepository).deleteById(20);
+		//batchRepository.deleteById(b1.getId());
 //		batchService.delete(b1.getId());
-		Optional<Batch> batchTest1 = batchService.findById(20);
-		assertFalse(batchTest1.isPresent());
+		Optional<Batch> batchTest1 = batchService.findById(b1.getId());
+		assertFalse(batchTest1.isPresent());*/
+		
+		//****************************************************************************************
+		
+		SkillIdHolder s1 = new SkillIdHolder(1);
+		SkillIdHolder s2 = new SkillIdHolder(2);
+		SkillIdHolder s3 = new SkillIdHolder(3);
+		SkillIdHolder s4 = new SkillIdHolder(4);
+		SkillIdHolder s5 = new SkillIdHolder(5);
+		HashSet<SkillIdHolder> skillSet = new HashSet<SkillIdHolder>();
+		skillSet.add(s1);
+		skillSet.add(s2);
+		skillSet.add(s3);
+		skillSet.add(s4);
+		skillSet.add(s5);
+		Batch b1 = new Batch(1, "Microservices",LocalDate.of(2018, 12, 5), LocalDate.of(2019, 1, 5), 3, 1, 5, skillSet, 1,1,1, 1);
+		Mockito.when(batchRepository.save(b1)).thenReturn(b1);
+
+		Batch batchTest = batchService.create(b1);
+        
+		Mockito.doNothing().when(batchRepository).deleteById(batchTest.getId());
+        batchService.delete(batchTest.getId());
+        
+        Optional<Batch> test = batchService.findById(batchTest.getId());
+        Mockito.when(batchRepository.findById(batchTest.getId())).thenReturn(test);
+        
+        assertEquals(true, test.isPresent());
 	}
 
-	@Test
-	public void dateIncorrectOrderTest(){
-		LocalDate date1 = LocalDate.of(2020, 3, 20);
-		LocalDate date2 = LocalDate.of(2020, 4,20);
-
-		List<Batch> batches = batchService.getAllBatchesStartingBetween(date2, date1);
-
-		assertEquals( null, batches);
-	}
-	@Test
-	public void dateCorrectOrderTest(){
-		LocalDate date1 = LocalDate.of(2020, 3, 20);
-		LocalDate date2 = LocalDate.of(2020, 4,20);
-
-		List<Batch> batchList = new ArrayList<>();
-		batchList.add(new Batch());
-		batchList.add(new Batch());
-		batchList.add(new Batch());
-
-
-		Mockito.when(batchRepository.findByStartDateBetween(date1, date2)).thenReturn(batchList);
-
-		List<Batch> batches = batchService.getAllBatchesStartingBetween(date1, date2);
-
-		assertEquals( batchList.size(), batches.size());
-	}
-
-	@Test
-	public void dateIncorrectOrderTestByTrainer(){
-		LocalDate date1 = LocalDate.of(2020, 3, 20);
-		LocalDate date2 = LocalDate.of(2020, 4,20);
-
-		List<Batch> batches = batchService.getAllBatchesByTrainerStartingBetween(1, date2, date1);
-
-		assertEquals( null, batches);
-	}
-	@Test
-	public void dateCorrectOrderTestByTrainer(){
-		LocalDate date1 = LocalDate.of(2020, 3, 20);
-		LocalDate date2 = LocalDate.of(2020, 4,20);
-
-		List<Batch> batchList = new ArrayList<>();
-		batchList.add(new Batch());
-		batchList.add(new Batch());
-		batchList.add(new Batch());
-
-
-		Mockito.when(batchRepository.findByTrainerAndStartDateBetween(1, date1, date2)).thenReturn(batchList);
-
-		List<Batch> batches = batchService.getAllBatchesByTrainerStartingBetween(1, date1, date2);
-
-		assertEquals( batchList.size(), batches.size());
-	}
-
-	@Test
-	public void dateIncorrectOrderTestByCurriculum(){
-		LocalDate date1 = LocalDate.of(2020, 3, 20);
-		LocalDate date2 = LocalDate.of(2020, 4,20);
-
-		List<Batch> batches = batchService.getAllBatchesByCurriculumStartingBetween(1, date2, date1);
-
-		assertEquals( null, batches);
-	}
-	@Test
-	public void dateCorrectOrderTestByCurriculum(){
-		LocalDate date1 = LocalDate.of(2020, 3, 20);
-		LocalDate date2 = LocalDate.of(2020, 4,20);
-
-		List<Batch> batchList = new ArrayList<>();
-		batchList.add(new Batch());
-		batchList.add(new Batch());
-		batchList.add(new Batch());
-
-
-		Mockito.when(batchRepository.findByCurriculumAndStartDateBetween(1, date1, date2)).thenReturn(batchList);
-
-		List<Batch> batches = batchService.getAllBatchesByCurriculumStartingBetween(1, date1, date2);
-
-		assertEquals( batchList.size(), batches.size());
-	}
-
-	@Test
-	public void dateIncorrectOrderTestByLocation(){
-		LocalDate date1 = LocalDate.of(2020, 3, 20);
-		LocalDate date2 = LocalDate.of(2020, 4,20);
-
-		List<Batch> batches = batchService.getAllBatchesByLocationStartingBetween(1, date2, date1);
-
-		assertEquals( null, batches);
-	}
-	@Test
-	public void dateCorrectOrderTestByLocation(){
-		LocalDate date1 = LocalDate.of(2020, 3, 20);
-		LocalDate date2 = LocalDate.of(2020, 4,20);
-
-		List<Batch> batchList = new ArrayList<>();
-		batchList.add(new Batch());
-		batchList.add(new Batch());
-		batchList.add(new Batch());
-
-
-		Mockito.when(batchRepository.findByLocationAndStartDateBetween(1, date1, date2)).thenReturn(batchList);
-
-		List<Batch> batches = batchService.getAllBatchesByLocationStartingBetween(1, date1, date2);
-
-		assertEquals( batchList.size(), batches.size());
-	}
 
 }

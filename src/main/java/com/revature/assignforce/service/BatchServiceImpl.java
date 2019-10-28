@@ -1,6 +1,5 @@
 package com.revature.assignforce.service;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.revature.assignforce.beans.Batch;
@@ -23,6 +23,11 @@ import com.revature.assignforce.repos.SkillRepository;
 
 @Transactional
 @Service
+/*
+ * Only users with role SVP can have access to 
+ * these methods.
+ */
+//@PreAuthorize("hasRole('SVP')")
 public class BatchServiceImpl implements BatchService {
 
 	@Autowired
@@ -110,49 +115,7 @@ public class BatchServiceImpl implements BatchService {
 	public List<Batch> getAllByLocation(int locationId){
 		return batchRepository.findByLocation(locationId);
 	}
-
-	@Override
-	public List<Batch> getAllByLocationAndCurriculum(int locationId, int curriculumId) {
-		return batchRepository.findByLocationAndCurriculum(locationId,curriculumId);
-
-	}
-
-	@Override
-	public List<Batch> getAllBatchesStartingBetween(LocalDate startDate, LocalDate endDate) {
-		if(startDate.isBefore(endDate)){
-			return batchRepository.findByStartDateBetween(startDate, endDate);
-		}else{
-			return null;
-		}
-
-	}
-
-	public List<Batch> getAllBatchesByTrainerStartingBetween(Integer trainerID, LocalDate startDate, LocalDate endDate){
-		if(startDate.isBefore(endDate)){
-			return batchRepository.findByTrainerAndStartDateBetween(trainerID, startDate, endDate);
-		}else{
-			return null;
-		}
-	}
-
-    @Override
-    public List<Batch> getAllBatchesByLocationStartingBetween(Integer locationId, LocalDate startDate, LocalDate endDate) {
-        if(startDate.isBefore(endDate)){
-            return batchRepository.findByLocationAndStartDateBetween(locationId,startDate,endDate);
-        }else{
-            return null;
-        }
-    }
-
-    @Override
-    public List<Batch> getAllBatchesByCurriculumStartingBetween(Integer curriculumId, LocalDate startDate, LocalDate endDate) {
-        if(startDate.isBefore(endDate)){
-            return batchRepository.findByCurriculumAndStartDateBetween(curriculumId,startDate,endDate);
-        }else{
-            return null;
-        }
-    }
-
+	
 	/**
 	 * Checks for referential integrity. The method will first call FindTrainer
 	 * Command and check if the trainer exists, then move on to Location and Curriculum
@@ -160,12 +123,12 @@ public class BatchServiceImpl implements BatchService {
 	 * @param b Batch to be checked
 	 * @return batch after all, if any, changes are made
 	 */
-	private Batch validateReferences(Batch b) {
+	/*private Batch validateReferences(Batch b) {
 		b = findTrainerCommand.findTrainer(b);
 		b = findLocationCommand.findLocation(b);
 		b = findCurriculumCommand.findCurriculum(b);
 		b.setSkills(b.getSkills().stream().filter((skillIdHolder) -> findSkillsCommand.findSkill(skillIdHolder)).collect(Collectors.toSet()));
 		return b;
-	}
+	}*/
 
 }
