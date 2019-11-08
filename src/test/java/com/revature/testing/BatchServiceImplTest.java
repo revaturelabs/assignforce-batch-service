@@ -4,7 +4,6 @@ package com.revature.testing;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;

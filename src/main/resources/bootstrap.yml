@@ -11,3 +11,8 @@ management:
     web:
       exposure:
         include: health
+
+revaturepro:
+  username : ${REVPRO_USER:test_user}
+  password: ${REVPRO_Password:test_password}
+  urlAuthenticate: ${REVPRO_Password:https://dev3.revature.com/caliber/authentication/login}
