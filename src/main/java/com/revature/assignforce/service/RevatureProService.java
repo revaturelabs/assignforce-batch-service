@@ -11,7 +11,6 @@ public class RevatureProService {
 
     ArrayList<Batch> allBatches;
 
-
     RevatureProUserDTO authenticate(){
 
         RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
