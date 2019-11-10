@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.InetSocketAddress;
+
 
 @Service()
 public class RevatureProRestClient {
@@ -25,6 +27,8 @@ public class RevatureProRestClient {
     private String password;
     @Value("${revaturepro.urlAuthenticate}")
     private String url;
+
+    private String encryptedToken;
 
     public RevatureProRestClient(RestTemplateBuilder restTemplateBuilder) {
         restTemplate = restTemplateBuilder.build();
@@ -41,14 +45,18 @@ public class RevatureProRestClient {
         }
 
     // RestClient for getting batch data from the RevaturePro Batch API
-    public ResponseEntity<RevatureProBatchDTO> getBatches() {
+    public ResponseEntity<RevatureProBatchDTO> getBatches(String encryptedToken) {
+
+        this.encryptedToken = encryptedToken;
+
+        InetSocketAddress batchURL = new InetSocketAddress("url", 8080);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("encryptedToken","custom-header-value");
         headers.setContentType(MediaType.APPLICATION_JSON);
-        //headers.setHost("");
-        headers.set("Host","dev3.revature.com");
-        HttpEntity<String> entity = new HttpEntity<>("paramters",headers);
+        headers.setHost(batchURL);
+        headers.set("encryptedToken", encryptedToken);
+
+        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
         return restTemplate.getForEntity(url, RevatureProBatchDTO.class);
     }

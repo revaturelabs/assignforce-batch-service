@@ -29,7 +29,9 @@ public class RevatureProService {
 
         RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
         RevatureProRestClient revatureProRestClient = new RevatureProRestClient(restTemplateBuilder);
-        ResponseEntity<RevatureProBatchDTO> batches = revatureProRestClient.getBatches();
+
+        // Call the getBatches method from revatureProRestClient and pass in the authentication token
+        ResponseEntity<RevatureProBatchDTO> batches = revatureProRestClient.getBatches(authenticatedUser.getToken());
 
         this.allBatches = batches.getBody();
 
