@@ -1,28 +1,38 @@
 package com.revature.assignforce.service;
 
 import com.revature.assignforce.beans.Batch;
+import com.revature.assignforce.beans.RevatureProBatchDTO;
 import com.revature.assignforce.beans.RevatureProUserDTO;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RevatureProService {
 
-    ArrayList<Batch> allBatches;
+    RevatureProBatchDTO allBatches;
 
-    RevatureProUserDTO authenticate(){
+    RevatureProUserDTO authenticatedUser;
+
+    void authenticate(){
 
         RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
         RevatureProRestClient revatureProRestClient = new RevatureProRestClient(restTemplateBuilder);
-        RevatureProUserDTO user = new RevatureProUserDTO();
 
-        return user;
+        ResponseEntity<RevatureProUserDTO> user = revatureProRestClient.authenticate();
+
+        this.authenticatedUser = user.getBody();
     }
 
-    ArrayList<Batch> getRevProBatches(){
+    void getRevProBatches(){
 
-        return null;
+        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+        RevatureProRestClient revatureProRestClient = new RevatureProRestClient(restTemplateBuilder);
+        ResponseEntity<RevatureProBatchDTO> batches = revatureProRestClient.getBatches();
+
+        this.allBatches = batches.getBody();
+
     }
 
     Boolean batchesToDatabase(){
