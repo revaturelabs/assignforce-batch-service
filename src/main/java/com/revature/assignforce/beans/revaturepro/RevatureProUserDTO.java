@@ -1,4 +1,4 @@
-package com.revature.assignforce.beans;
+package com.revature.assignforce.beans.revaturepro;
 
 public class RevatureProUserDTO {
 

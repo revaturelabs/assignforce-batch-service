@@ -1,8 +1,7 @@
 package com.revature.assignforce.service;
 
-import com.revature.assignforce.beans.RevatureProBatchDTO;
-import com.revature.assignforce.beans.RevatureProUserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.revature.assignforce.beans.revaturepro.RevatureProBatchDTO;
+import com.revature.assignforce.beans.revaturepro.RevatureProUserDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -26,7 +25,10 @@ public class RevatureProRestClient {
     @Value("${revaturepro.password}")
     private String password;
     @Value("${revaturepro.urlAuthenticate}")
-    private String url;
+    private String urlAuthenticate;
+
+    @Value("${revaturepro.urlGetBatches}")
+    private String urlGetBatches;
 
     private String encryptedToken;
 
@@ -41,24 +43,29 @@ public class RevatureProRestClient {
         entity.getBody().setUsername(username);
         entity.getBody().setPassword(password);
 
-        return restTemplate.postForEntity(url, entity, RevatureProUserDTO.class);
+        ResponseEntity<RevatureProUserDTO> response= restTemplate.postForEntity(urlAuthenticate, entity, RevatureProUserDTO.class);
+
+        // Save the authentication token to a class variable to use when performing get requests
+        this.encryptedToken = response.getBody().getToken();
+
+        return response;
         }
 
     // RestClient for getting batch data from the RevaturePro Batch API
-    public ResponseEntity<RevatureProBatchDTO> getBatches(String encryptedToken) {
+    public ResponseEntity<RevatureProBatchDTO> getBatches() {
 
-        this.encryptedToken = encryptedToken;
+        InetSocketAddress batchURL = new InetSocketAddress(urlGetBatches, 8080);
 
-        InetSocketAddress batchURL = new InetSocketAddress("url", 8080);
-
+        // Create request headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setHost(batchURL);
-        headers.set("encryptedToken", encryptedToken);
+        headers.set("encryptedToken", this.encryptedToken);
 
+        // Add headers to request (entity)
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
-        return restTemplate.getForEntity(url, RevatureProBatchDTO.class);
+        return restTemplate.getForEntity(urlGetBatches, RevatureProBatchDTO.class);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.revature.testing;
 
-import com.revature.assignforce.beans.RevatureProUserDTO;
+import com.revature.assignforce.beans.revaturepro.RevatureProUserDTO;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

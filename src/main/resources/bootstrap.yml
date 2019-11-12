@@ -15,4 +15,5 @@ management:
 revaturepro:
   username : ${REVPRO_USER:test_user}
   password: ${REVPRO_Password:test_password}
-  urlAuthenticate: ${REVPRO_Password:https://dev3.revature.com/caliber/authentication/login}
+  urlAuthenticate: ${REVPRO_urlAuthenticate:https://dev3.revature.com/caliber/authentication/login}
+  urlGetBatches: ${REVPRO_urlGetBatches:https://dev3.revature.com/caliber/secure/batches}
