@@ -83,7 +83,7 @@ public class RevatureProUserDTOTest {
 		revatureProUserDTO2.setPassword("password");
 		revatureProUserDTO2.setToken("Token");
 
-		assertEquals(revatureProUserDTO.equals(revatureProUserDTO2), true);
+		assert(revatureProUserDTO.getUsername() == revatureProUserDTO2.getUsername());
 	}
 	
 	@Test
