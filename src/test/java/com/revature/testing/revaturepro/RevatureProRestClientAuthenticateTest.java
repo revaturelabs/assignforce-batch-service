@@ -1,4 +1,4 @@
-package com.revature.testing;
+package com.revature.testing.revaturepro;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.assignforce.beans.revaturepro.RevatureProBatchDTO;

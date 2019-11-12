@@ -1,4 +1,4 @@
-package com.revature.testing;
+package com.revature.testing.revaturepro;
 
 import com.revature.assignforce.beans.revaturepro.RevatureProUserDTO;
 import org.junit.BeforeClass;
