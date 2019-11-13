@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -64,13 +66,23 @@ public class RevatureProService {
             RevatureProData data = (RevatureProData) batch.getData();
 
             Session session = sessionFactory.getCurrentSession();
-            String insertQuery = "insert into Batch (Batch_ID, Batch_Name, start_Date, end_Date, Curriculum_Id," +
-                    "Trainer_Id, Cotrainer_Id, Batch_ID, Skill_ID, LOCATION_ID, BUILDING_ID, ROOM_ID, Class_Size)";
 
-            Query query = session.createQuery(insertQuery)
-                    .setParameter("Batch_ID", data.getSalesforceId());
+            Batch abatch = new Batch();
+            abatch.setId(Integer.parseInt(data.getSalesforceId()));
+            abatch.setName(data.getName());
+            abatch.setStartDate(LocalDate.parse(data.getStartDate().substring(0, 10)));
+            abatch.setEndDate(LocalDate.parse(data.getEndDate().substring(0, 10)));
+            // abatch.setCurriculum();
+            // abatch.setTrainer();
+            // abatch.setCoTrainer();
+            // abatch.setSkills(data.getSkill());
+            abatch.setLocation(Integer.parseInt(data.getLocation().substring(3,5))); // It's on you guys if this doesn't work
+            // abatch.setType <- No such thing in Batch
 
-            int rowsCopied = query.executeUpdate();
+            session.save(abatch);
+            session.getTransaction().commit();
+            sessionFactory.close();
+
         }
 
     }
