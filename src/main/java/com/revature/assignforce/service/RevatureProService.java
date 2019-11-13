@@ -56,25 +56,6 @@ public class RevatureProService {
         }
     }
 
-    void RevatureProDatabaseInsert(){
-
-        for ( RevatureProBatchDTO batch: this.allBatches) {
-
-            // Parse info
-            RevatureProData data = (RevatureProData) batch.getData();
-
-            Session session = sessionFactory.getCurrentSession();
-            String insertQuery = "insert into Batch (Batch_ID, Batch_Name, start_Date, end_Date, Curriculum_Id," +
-                    "Trainer_Id, Cotrainer_Id, Batch_ID, Skill_ID, LOCATION_ID, BUILDING_ID, ROOM_ID, Class_Size)";
-
-            Query query = session.createQuery(insertQuery)
-                    .setParameter("Batch_ID", data.getSalesforceId());
-
-            int rowsCopied = query.executeUpdate();
-        }
-
-    }
-
     public List<Batch> getRDSBatches() {
         return RDSBatches;
     }

@@ -3,6 +3,7 @@ package com.revature.testing.revaturepro;
 import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.repos.revaturepro.RpBatchService;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes= RpBatchService.class)
 
+@Ignore
 public class RevatureProH2InsertTest {
 
 	@Autowired
