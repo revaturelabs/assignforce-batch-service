@@ -7,12 +7,12 @@ import com.revature.assignforce.beans.revaturepro.RevatureProUserDTO;
 import com.revature.assignforce.repos.revaturepro.RpBatchService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import java.util.List;
 
@@ -53,6 +53,34 @@ public class RevatureProService {
     void RDSbatchesToDatabase(){
         for (Batch batch: this.RDSBatches) {
             rpBatchService.save(batch);
+        }
+    }
+
+    void RevatureProDatabaseInsert() {
+
+        for (RevatureProBatchDTO batch : this.allBatches) {
+
+            // Parse info
+            RevatureProData data = (RevatureProData) batch.getData();
+
+            Session session = sessionFactory.getCurrentSession();
+
+            Batch abatch = new Batch();
+            abatch.setId(Integer.parseInt(data.getSalesforceId()));
+            abatch.setName(data.getName());
+            abatch.setStartDate(LocalDate.parse(data.getStartDate().substring(0, 10)));
+            abatch.setEndDate(LocalDate.parse(data.getEndDate().substring(0, 10)));
+            // abatch.setCurriculum();
+            // abatch.setTrainer();
+            // abatch.setCoTrainer();
+            // abatch.setSkills(data.getSkill());
+            abatch.setLocation(Integer.parseInt(data.getLocation().substring(3, 5))); // It's on you guys if this doesn't work
+            // abatch.setType <- No such thing in Batch
+
+            session.save(abatch);
+            session.getTransaction().commit();
+            sessionFactory.close();
+
         }
     }
 
