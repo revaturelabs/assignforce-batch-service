@@ -56,6 +56,8 @@ public class RevatureProService {
 
     void RevatureProDatabaseInsert(){
 
+        int counter = (int) Math.random()*1000;
+
         for ( RevatureProBatchDTO batch: this.allBatches) {
 
             // Parse info
@@ -64,7 +66,8 @@ public class RevatureProService {
             Session session = sessionFactory.getCurrentSession();
 
             Batch abatch = new Batch();
-            abatch.setId(Integer.parseInt(data.getSalesforceId()));
+            abatch.setId(counter);
+            // abatch.setId(Integer.parseInt(data.getSalesforceId()));
             abatch.setName(data.getName());
             abatch.setStartDate(LocalDate.parse(data.getStartDate().substring(0, 10)));
             abatch.setEndDate(LocalDate.parse(data.getEndDate().substring(0, 10)));
@@ -74,6 +77,8 @@ public class RevatureProService {
             // abatch.setSkills(data.getSkill());
             abatch.setLocation(Integer.parseInt(data.getLocation().substring(3,5))); // It's on you guys if this doesn't work
             // abatch.setType <- No such thing in Batch
+
+            counter++;
 
             session.save(abatch);
             session.getTransaction().commit();
