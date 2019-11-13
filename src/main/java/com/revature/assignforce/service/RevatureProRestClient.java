@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.InetSocketAddress;
+import java.util.List;
 
 
 @Service()
@@ -52,7 +53,7 @@ public class RevatureProRestClient {
         }
 
     // RestClient for getting batch data from the RevaturePro Batch API
-    public ResponseEntity<RevatureProBatchDTO> getBatches() {
+    public List<RevatureProBatchDTO> getBatches() {
 
         InetSocketAddress batchURL = new InetSocketAddress(urlGetBatches, 8080);
 
@@ -64,8 +65,10 @@ public class RevatureProRestClient {
 
         // Add headers to request (entity)
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+        ResponseEntity batches = restTemplate.getForEntity(urlGetBatches, RevatureProBatchDTO[].class);
 
-        return restTemplate.getForEntity(urlGetBatches, RevatureProBatchDTO.class);
+
+        return (List<RevatureProBatchDTO>) batches.getBody();
     }
 
 }

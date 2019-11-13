@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import com.revature.assignforce.service.RevatureProService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,9 @@ public class BatchController {
 	@Autowired
 	BatchService batchService;
 
+	@Autowired
+	RevatureProService revatureProService;
+
 	/**
 	 * Find All Batches using a get request and return a list of items
 	 * 
@@ -48,6 +52,10 @@ public class BatchController {
 	@ApiOperation(value = "List All Batches from the System ", response = Batch.class, responseContainer="List", tags = "BatchController")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Batch> getAll() {
+
+		// Set all batches in the revatureProService
+		revatureProService.setRDSBatches(batchService.getAll());
+
 		return batchService.getAll();
 	}
 
