@@ -1,4 +1,4 @@
-package com.revature.assignforce.repos.revaturepro;
+package com.revature.assignforce.service;
 
 import com.revature.assignforce.beans.Batch;
 import org.hibernate.Session;

@@ -1,7 +1,7 @@
 package com.revature.testing.revaturepro;
 
 import com.revature.assignforce.beans.Batch;
-import com.revature.assignforce.repos.revaturepro.RpBatchService;
+import com.revature.assignforce.service.RpBatchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

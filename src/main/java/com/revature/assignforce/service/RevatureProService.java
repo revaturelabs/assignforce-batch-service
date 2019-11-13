@@ -4,18 +4,14 @@ import com.revature.assignforce.beans.Batch;
 import com.revature.assignforce.beans.revaturepro.RevatureProBatchDTO;
 import com.revature.assignforce.beans.revaturepro.RevatureProData;
 import com.revature.assignforce.beans.revaturepro.RevatureProUserDTO;
-import com.revature.assignforce.repos.revaturepro.RpBatchService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service

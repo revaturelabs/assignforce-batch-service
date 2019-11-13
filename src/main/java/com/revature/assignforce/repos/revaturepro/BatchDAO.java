@@ -1,6 +1,7 @@
 package com.revature.assignforce.repos.revaturepro;
 
 import com.revature.assignforce.beans.Batch;
+import com.revature.assignforce.service.RpBatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
