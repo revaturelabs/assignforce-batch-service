@@ -2,11 +2,9 @@ package com.revature.assignforce.repos.revaturepro;
 
 import com.revature.assignforce.beans.Batch;
 import org.hibernate.Session;
+import com.revature.assignforce.config.H2Config;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;

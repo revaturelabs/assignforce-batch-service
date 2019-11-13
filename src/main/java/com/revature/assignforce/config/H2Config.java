@@ -47,7 +47,7 @@ public class H2Config {
         settings.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         settings.setProperty("hibernate.show_sql", "true");
         settings.setProperty("hibernate.format_sql", "true");
-        settings.setProperty("hibernate.hbm2ddl.auto", "true");
+        settings.setProperty("hibernate.hbm2ddl.auto", "create-drop");
         return settings;
     }
 
