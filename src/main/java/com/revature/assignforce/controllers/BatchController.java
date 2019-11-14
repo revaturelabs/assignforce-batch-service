@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import com.revature.assignforce.beans.BatchH2;
+import com.revature.assignforce.service.RevatureProService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.http.HttpStatus;
@@ -40,6 +42,9 @@ public class BatchController {
 	@Autowired
 	BatchService batchService;
 
+	@Autowired
+	RevatureProService revatureProService;
+
 	/**
 	 * Find All Batches using a get request and return a list of items
 	 * 
@@ -48,7 +53,32 @@ public class BatchController {
 	@ApiOperation(value = "List All Batches from the System ", response = Batch.class, responseContainer="List", tags = "BatchController")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Batch> getAll() {
-		return batchService.getAll();
+
+		// Add the RDS batch data to the RevatureProService
+		List<Batch> bService = batchService.getAll();
+		revatureProService.setRDSBatchesOld(bService);
+		// Request authentication from RevaturePro
+		HttpStatus status = revatureProService.authenticate();
+		successStatus = false;
+
+		if (status.value() == 200) {
+			// Get the Batch data from Revature Pro
+			revatureProService.getBatches();
+			// insert Revature Pro data into RDS batch object
+			revatureProService.RevatureProDatabaseInsert();
+			successStatus = true;
+		}
+
+		//return batchService.getAll();
+		return revatureProService.getRDSBatchesOld();
+	}
+
+	private boolean successStatus;
+
+	public boolean getAllSuccess(){
+
+		return successStatus;
+
 	}
 
 	// 
