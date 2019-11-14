@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class ProjectController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 200, message = "OK", response = ProjectDTO.class)})
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("isAuthenticated() and hasAnyRole('SVP of Technology','Trainer','Manager of Technology','Center Head')")
     public ResponseEntity<List<ProjectDTO>> getAllProjects(@RequestParam(value = "status",required = false)String status) {
         List<ProjectDTO> projectDTOS = new ArrayList<>();
         List<Project> projects;
@@ -82,6 +84,7 @@ public class ProjectController {
             @ApiResponse(code = 200, message = "OK", response = ProjectDTO.class)})
  //   @GetMapping(value="{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @GetMapping(value="{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("isAuthenticated() and hasAnyRole('SVP of Technology','Trainer','Manager of Technology','Center Head')")
     public ResponseEntity<ProjectDTO> getProjectByName(@ApiParam(name="id") @PathVariable String name) {
         Project p = projectServiceProvider.getProject(name);
         ResponseEntity<ProjectDTO> responseEntity;
@@ -107,6 +110,7 @@ public class ProjectController {
             @ApiResponse(code = 204, message = "No Content"),
             @ApiResponse(code = 200, message = "OK", response = ProjectDTO.class)})
     @PutMapping("{id}")
+    @PreAuthorize("isAuthenticated() and hasAnyRole('SVP of Technology','Trainer','Manager of Technology','Center Head')")
     public ResponseEntity updateProject(@ApiParam(name="id") @PathVariable int id, @RequestBody ProjectDTO d) {
       Project p = this.projectServiceProvider.getProjectById(id);
 
@@ -119,12 +123,14 @@ public class ProjectController {
       return new ResponseEntity(null, HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("isAuthenticated() and hasAnyRole('SVP of Technology','Trainer','Manager of Technology','Center Head')")
     private HttpHeaders getJsonHeader() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         return headers;
     }
 
+    @PreAuthorize("isAuthenticated() and hasAnyRole('SVP of Technology','Trainer','Manager of Technology','Center Head')")
     private ProjectDTO toDTO(Project p) {
         ProjectDTO dto = new ProjectDTO();
         dto.setName(p.getName());
@@ -137,6 +143,7 @@ public class ProjectController {
         return dto;
     }
 
+    @PreAuthorize("isAuthenticated() and hasAnyRole('SVP of Technology','Trainer','Manager of Technology','Center Head')")
     private Project mergeDTO(ProjectDTO d) {
         Project p = new Project();
         p.setId(d.getId());
