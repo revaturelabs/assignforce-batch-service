@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,6 +49,7 @@ public class SprintController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 200, message = "OK", response = SprintDTO.class, responseContainer="List")})
     @GetMapping("/sprints")
+    @PreAuthorize("isAuthenticated() and hasAnyRole('SVP of Technology','Trainer','Manager of Technology','Center Head')")
     public ResponseEntity<List<SprintDTO>> getProjectSprints(@ApiParam(name="name") @PathVariable String name) {
         List<SprintDTO> sprints = issuesServiceProvider.getNativeApiSprints(name);
         if(sprints == null || sprints.isEmpty()) {
@@ -70,6 +72,7 @@ public class SprintController {
 	 */
     @ApiOperation(value = "Get Sprint by Id from the System", response = SprintDTO.class, tags = "SprintController")
     @GetMapping("sprint/{id}")
+    @PreAuthorize("isAuthenticated() and hasAnyRole('SVP of Technology','Trainer','Manager of Technology','Center Head')")
     public ResponseEntity<SprintDTO> getSprintById(@ApiParam(name="id") @PathVariable int id) {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
@@ -81,6 +84,7 @@ public class SprintController {
 	 */
     @ApiOperation(value = "Get all Sprint Columns", response = SprintDTO.class, tags = "SprintController")
     @GetMapping("sprint/{id}/columns")
+    @PreAuthorize("isAuthenticated() and hasAnyRole('SVP of Technology','Trainer','Manager of Technology','Center Head')")
     public ResponseEntity getSprintColumns(@ApiParam(name="id") @PathVariable int id) {
         return null;
     }
