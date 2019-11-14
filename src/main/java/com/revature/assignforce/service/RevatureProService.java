@@ -1,43 +1,41 @@
 package com.revature.assignforce.service;
 
 import com.revature.assignforce.beans.Batch;
+import com.revature.assignforce.beans.BatchH2;
 import com.revature.assignforce.beans.revaturepro.RevatureProBatchDTO;
 import com.revature.assignforce.beans.revaturepro.RevatureProData;
 import com.revature.assignforce.beans.revaturepro.RevatureProUserDTO;
-import com.revature.assignforce.repos.revaturepro.RpBatchService;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class RevatureProService {
 
-    @Autowired
-    RpBatchService rpBatchService;
-
-    @Autowired
-    private SessionFactory sessionFactory;
 
     List<RevatureProBatchDTO> allBatches;
 
     List<Batch> RDSBatches;
+    List<Batch> RDSBatchesOld;
 
-    void authenticate(){
+    public HttpStatus authenticate(){
 
         RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
         RevatureProRestClient revatureProRestClient = new RevatureProRestClient(restTemplateBuilder);
 
         ResponseEntity<RevatureProUserDTO> user = revatureProRestClient.authenticate();
+
+        return user.getStatusCode();
+
     }
 
-    void getBatches(){
+    public void getBatches(){
 
         RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
         RevatureProRestClient revatureProRestClient = new RevatureProRestClient(restTemplateBuilder);
@@ -50,36 +48,39 @@ public class RevatureProService {
 
     }
 
-    void RDSbatchesToDatabase(){
-        for (Batch batch: this.RDSBatches) {
-            rpBatchService.save(batch);
-        }
+    public void AddToRDSBatch(Batch batch){
+
+        if (RDSBatchesOld == null){ RDSBatchesOld = new ArrayList<Batch>(); }
+
+        this.RDSBatchesOld.add(batch);
+
     }
 
-    void RevatureProDatabaseInsert() {
-
-        for (RevatureProBatchDTO batch : this.allBatches) {
+    public void RevatureProDatabaseInsert() {
+        for (int i = 0; i<this.allBatches.size();i++ ){
 
             // Parse info
-            RevatureProData data = (RevatureProData) batch.getData();
+            List<RevatureProData> data = this.allBatches.get(i).getData();
 
-            Session session = sessionFactory.getCurrentSession();
-
+            System.out.println(data.size());
+            System.out.println(data.get(0).getName());
             Batch abatch = new Batch();
-            abatch.setId(Integer.parseInt(data.getSalesforceId()));
-            abatch.setName(data.getName());
-            abatch.setStartDate(LocalDate.parse(data.getStartDate().substring(0, 10)));
-            abatch.setEndDate(LocalDate.parse(data.getEndDate().substring(0, 10)));
-            // abatch.setCurriculum();
-            // abatch.setTrainer();
-            // abatch.setCoTrainer();
-            // abatch.setSkills(data.getSkill());
-            abatch.setLocation(Integer.parseInt(data.getLocation().substring(3, 5))); // It's on you guys if this doesn't work
-            // abatch.setType <- No such thing in Batch
+            abatch.setId(Integer.parseInt(data.get(0).getSalesforceId()));
+            abatch.setName(data.get(0).getName());
+            abatch.setStartDate(LocalDate.parse(data.get(0).getStartDate().substring(0, 10)));
+            abatch.setEndDate(LocalDate.parse(data.get(0).getEndDate().substring(0, 10)));
 
-            session.save(abatch);
-            session.getTransaction().commit();
-            sessionFactory.close();
+            System.out.println(data.get(0).getEndDate());
+            System.out.println(data.get(0).getLocation());
+            abatch.setLocation(Integer.parseInt(data.get(0).getLocation().substring(3, 5))); // It's on you guys if this doesn't work
+
+            if (abatch == null){
+                System.out.println(99999);
+            }
+
+            this.AddToRDSBatch(abatch);
+            System.out.println(abatch.toString());
+            System.out.println(this.RDSBatchesOld.size());
 
         }
     }
@@ -88,7 +89,39 @@ public class RevatureProService {
         return RDSBatches;
     }
 
+
+    public void setRDSBatchesOld(List<Batch> RDSBatches) {
+        this.RDSBatchesOld = RDSBatches;
+    }
+
     public void setRDSBatches(List<Batch> RDSBatches) {
         this.RDSBatches = RDSBatches;
+    }
+
+    public static List<BatchH2> convertToBatchH2(List<Batch> batchList)  {
+
+        List<BatchH2> h2List = new ArrayList<>();
+
+        for (Batch abatch : batchList) {
+
+            h2List.add(new BatchH2(abatch));
+        }
+
+        return h2List;
+
+    }
+
+    public List<RevatureProBatchDTO> getAllBatches() {
+        return allBatches;
+    }
+
+    public void setAllBatches(List<RevatureProBatchDTO> allBatches) {
+        System.out.println(allBatches.get(0).getData().get(0).getLocation());
+        System.out.println("ASDFvefcwG");
+        this.allBatches = allBatches;
+    }
+
+    public List<Batch> getRDSBatchesOld() {
+        return RDSBatchesOld;
     }
 }
