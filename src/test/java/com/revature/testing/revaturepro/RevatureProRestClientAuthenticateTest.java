@@ -1,7 +1,6 @@
 package com.revature.testing.revaturepro;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.assignforce.beans.revaturepro.RevatureProBatchDTO;
 import com.revature.assignforce.beans.revaturepro.RevatureProUserDTO;
 import com.revature.assignforce.service.RevatureProRestClient;
 
@@ -37,10 +36,12 @@ public class RevatureProRestClientAuthenticateTest {
 
 	@Before
 	public void setUp() throws Exception {
+		// Create a DTO object
 		RevatureProUserDTO authorizationDTO = new RevatureProUserDTO();
 		authorizationDTO.setToken("yourToken");
 
 		String userDtoString = objectMapper.writeValueAsString(authorizationDTO);
+		// Define
 		this.server.expect(requestTo("https://dev3.revature.com/caliber/authentication/login"))
 				.andRespond(withSuccess(userDtoString, MediaType.APPLICATION_JSON));
 	}
@@ -63,8 +64,10 @@ public class RevatureProRestClientAuthenticateTest {
 	public void restClientAuthenticateResponseTypeTest()
 			throws Exception {
 
+			// Create a test class
 			RevatureProUserDTO test = new RevatureProUserDTO();
-			// Call the authenticate method and check to see if the response includes the token defined above
+
+			// Call the authenticate method
 			ResponseEntity<RevatureProUserDTO> response = this.revatureProRestClient.authenticate();
 
 			Class<? extends RevatureProUserDTO> responseType = response.getBody().getClass();

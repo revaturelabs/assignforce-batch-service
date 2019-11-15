@@ -58,7 +58,7 @@ public class RevatureProInsertTest {
 		System.out.println(dtoList.get(0).getStatusCode());
 		System.out.println(dtoList.get(0).getData().get(0).getName());
 		System.out.println(dtoList.get(0).getData().get(0).getLocation());
-		System.out.println("TESTTTT");
+
 		revatureProService.setAllBatches(dtoList);
 
 		revatureProService.RevatureProDatabaseInsert();
@@ -66,7 +66,7 @@ public class RevatureProInsertTest {
 	}
 
 	@Test
-	public void revatureProH2InsertTest() throws Exception {
+	public void revatureProInsertTest() throws Exception {
 
 		List<RevatureProData> dataList = new ArrayList<RevatureProData>();
 
