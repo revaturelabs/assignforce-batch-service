@@ -6,11 +6,14 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import com.revature.assignforce.beans.BatchH2;
+import com.revature.assignforce.service.RevatureProService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +44,9 @@ public class BatchController {
 	@Autowired
 	BatchService batchService;
 
+	@Autowired
+	RevatureProService revatureProService;
+
 	/**
 	 * Find All Batches using a get request and return a list of items
 	 * 
@@ -48,8 +54,34 @@ public class BatchController {
 	 */
 	@ApiOperation(value = "List All Batches from the System ", response = Batch.class, responseContainer="List", tags = "BatchController")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("isAuthenticated() and hasAnyRole('SVP of Technology','Trainer','Manager of Technology','Center Head')")
 	public List<Batch> getAll() {
-		return batchService.getAll();
+
+		// Add the RDS batch data to the RevatureProService
+		List<Batch> bService = batchService.getAll();
+		revatureProService.setRDSBatchesOld(bService);
+		// Request authentication from RevaturePro
+		HttpStatus status = revatureProService.authenticate();
+		successStatus = false;
+
+		if (status.value() == 200) {
+			// Get the Batch data from Revature Pro
+			revatureProService.getBatches();
+			// insert Revature Pro data into RDS batch object
+			revatureProService.RevatureProDatabaseInsert();
+			successStatus = true;
+		}
+
+		//return batchService.getAll();
+		return revatureProService.getRDSBatchesOld();
+	}
+
+	private boolean successStatus;
+
+	public boolean getAllSuccess(){
+
+		return successStatus;
+
 	}
 
 	// 
@@ -67,6 +99,7 @@ public class BatchController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 200, message = "OK", response = Batch.class)})
 	@GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("isAuthenticated() and hasAnyRole('SVP of Technology','Trainer','Manager of Technology','Center Head')")
 	public ResponseEntity<Batch> getById(@ApiParam(name="id") @PathVariable int id) {
 		Optional<Batch> b = batchService.findById(id);
 		if (!b.isPresent())
@@ -90,6 +123,7 @@ public class BatchController {
             @ApiResponse(code = 201, message = "Created", response = Batch.class)})
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("isAuthenticated() and hasRole('Manager of Technology')")
 	public ResponseEntity<Batch> add(@RequestBody Batch a) {
 		a = batchService.create(a);
 		if (a == null)
@@ -110,6 +144,7 @@ public class BatchController {
             @ApiResponse(code = 200, message = "OK", response = Batch.class)})
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("isAuthenticated() and hasRole('Manager of Technology')")
 	public ResponseEntity<Batch> update(@RequestBody Batch a) {
 		a = batchService.update(a);
 		if (a == null)
@@ -125,6 +160,7 @@ public class BatchController {
 	 */
 	@ApiOperation(value = "Delete Batch by Id from the System ", response = Batch.class, tags = "BatchController")
 	@DeleteMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("isAuthenticated() and hasRole('Manager of Technology')")
 	public ResponseEntity<Batch> delete(@ApiParam(name="id") @PathVariable int id) {
 		batchService.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);
