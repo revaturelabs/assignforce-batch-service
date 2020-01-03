@@ -35,6 +35,7 @@ import io.swagger.annotations.ApiResponses;
 //@CrossOrigin
 @RestController
 @Api(value = "BatchController")
+@RequestMapping("/batches")
 public class BatchController {
 
 	@Autowired
